@@ -1,0 +1,109 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    background-color: #FAFAFA;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    background-color: #FAFAFA;
+}
+
+.article {
+    height: 500px;
+    width: 350px;
+    margin: auto;
+    color: #3B666B;
+    position: relative
+}
+
+.box-join {
+    position: relative;
+    height: 480px;
+    width: 350px;
+    margin-top: 80px;
+    background-color: #FFFFFF;
+    border: 1px solid #DBDBDB;
+}
+
+.box-logo {
+    height: 50px;
+    width: 175px;
+    line-height: 50px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.img-logo {
+    height: 50px;
+    width: 175px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.text-info {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 30px 40px 10px 40px;
+    color: #8E8E8E;
+    text-align: center;
+}
+
+.box-input {
+    position: relative;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.input-join {
+    height: 38px;
+    width: 268px;
+    margin: 3px;
+    padding-inline: 8px;
+    border: 1px solid #EDEDED;
+    border-radius: 3px;
+    color: #8E8E8E;
+    background-color: #FAFAFA;
+    outline: none;
+}
+
+.box-button {
+    height: 30px;
+    width: 275px;
+    margin: auto;
+}
+
+.button {
+    height: 30px;
+    width: 275px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #C0DFFD;
+    color: #FFFFFF;
+    border-style: none;
+    border-radius: 3px;
+    margin-top: 30px;
+    outline: none;
+}
+
+.box-login {
+    height: 70px;
+    width: 350px;
+    line-height: 40px;
+    background-color: #FFFFFF;
+    border: 1px solid #DBDBDB;
+    margin-top: 10px;
+}
+
+.text-signin {
+    font-size: 15px;
+    font-weight: 600;
+    color: #8E8E8E;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.text-signin > a {
+    color: #0095F6;
+}

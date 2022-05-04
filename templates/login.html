@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/loginstyle.css">
+    <title>로그인</title>
+
+    <!--ajax 연결 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        })
+
+        function login() {
+            let id = $('#id').val()
+            let pwd = $('#pwd').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: {'id_give': id, 'pwd_give': pwd},
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.reload()
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<main class="container">
+    <article class="article">
+        <div class="box-login"> <!-- join box -->
+            <div class="box-logo"> <!-- logo img -->
+                <img alt="Instagram" class="img-logo" src="/static/img/logo.png">
+            </div>
+            <div class="box-input"> <!-- input box -->
+                <input class="input-join" type="text" id="id" placeholder="전화번호 사용자 이름 또는 이메일"> <!-- input id -->
+                <input class="input-join" type="password" id="pwd" placeholder="비밀번호"> <!-- input pw -->
+            </div>
+            <div class="box-button"> <!-- button box -->
+                <button class="button" onclick="login()" type="button">로그인</button> <!-- button -->
+            </div>
+        </div>
+        <div class="box-join"> <!--join box-->
+            <p class="text-join">
+                계정이 없으신가요?
+                <a href="/move_join">가입하기</a>
+            </p>
+        </div>
+    </article>
+</main>
+<footer>
+    <div> <!-- line first -->
+    </div>
+    <div> <!-- line second -->
+    </div>
+    <div> <!-- copyright -->
+    </div>
+</footer>
+</body>
+</html>
