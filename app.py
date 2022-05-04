@@ -41,8 +41,9 @@ def signup():
     # 입력받은 패스워드 값 해싱하여 암호화
     hashed_pw = hashlib.sha256(pwd_receive.encode('utf-8')).hexdigest()
 
-    id_dup = bool(db.USER.find_one({'id': id_receive}))
+
     # 아이디 중복 여부 체크
+    id_dup = bool(db.USER.find_one({'id': id_receive}))
     if id_dup:
         return jsonify({'result': 'success','exist': id_dup, 'msg': '중복된 아이디 입니다.'})
     else:
