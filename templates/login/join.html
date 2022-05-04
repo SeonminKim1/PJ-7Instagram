@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/css/joinstyle.css">
+    <link rel="stylesheet" href="../../static/css/joinstyle.css">
     <title>회원가입</title>
     <!-- 아이콘 font awesome 연결-->
     <script src="https://kit.fontawesome.com/ff113c8133.js" crossorigin="anonymous"></script>
@@ -20,7 +20,7 @@
                 } else {
                     $('#id_check').text('')
                 }
-                // 정규 표현식을 이용한 아이디 이메일 형식 제한
+                // 정규 표현식을 이용한 아이디 형식 제한
                 let id_regExp = /^[a-zA-Z0-9]{4,12}$/;
                 if (!id_regExp.test(id)) {
                     $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
@@ -102,7 +102,7 @@
     <article class="article">
         <div class="box-join"> <!-- join box -->
             <div class="box-logo"> <!-- logo img -->
-                <img alt="Instagram" class="img-logo" src="/static/images/logo.png">
+                <img alt="Instagram" class="img-logo" src="../../static/images/logo.png">
             </div>
             <h2 class="text-info">
                 친구들의 사진과 동영상을 보려면 가입하세요.
@@ -136,4 +136,3 @@
 </footer>
 </body>
 </html>
-

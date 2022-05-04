@@ -18,17 +18,17 @@ db = client.luckyseven
 # 최초 접속 시 연결되는 홈 페이지 지정
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return render_template('/login/login.html')
 
 
 @app.route('/move_login')
 def move_login():
-    return render_template('login.html')
+    return render_template('/login/login.html')
 
 
 @app.route('/move_join')
 def move_join():
-    return render_template('join.html')
+    return render_template('/login/join.html')
 
 
 # 회원가입 입력받은 값을 받아 DB에 추가하기
