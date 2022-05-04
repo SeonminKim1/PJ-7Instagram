@@ -51,8 +51,8 @@ def signup():
             'pwd': hashed_pw,
             'name': name_receive,
             'nickname': nick_receive,
-            'follower': {},
-            'following': {},
+            'follower': [],
+            'following': [],
             'profile_img': ''
         }
         db.USER.insert_one(doc)

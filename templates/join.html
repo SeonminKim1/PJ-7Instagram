@@ -4,40 +4,81 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/joinstyle.css">
     <title>회원가입</title>
-
+    <!-- 아이콘 font awesome 연결-->
+    <script src="https://kit.fontawesome.com/ff113c8133.js" crossorigin="anonymous"></script>
     <!--ajax 연결 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            // id 값을 입력했을 때
+            $('#id').blur(function () {
+                let id = $('#id').val()
+                // 입력받은 값 중 입력하지 않은 값이 있을 경우
+                if (id == "") {
+                    $('#id_check').html('<i class="fa-solid fa-circle-exclamation"></i>')
+                    return;
+                } else {
+                    $('#id_check').text('')
+                }
+                // 정규 표현식을 이용한 아이디 이메일 형식 제한
+                let id_regExp = /^[a-zA-Z0-9]{4,12}$/;
+                if (!id_regExp.test(id)) {
+                    $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+                    return;
+                } else {
+                    $('#id_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
+                    return;
+                }
 
+
+                // // 정규 표현식을 이용한 닉네임 양식 제한
+                // function is_nickname(asValue) {
+                //     var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
+                //     return regExp.test(asValue);
+                // }
+                //
+                // if (!is_nickname(nick)) {
+                //     alert('닉네임은 2자에서 10자까지 입니다..')
+                //     return;
+                // }
+                //
+                // // 정규 표현식을 이용한 비밀번호 양식 제한
+                // function is_password(asValue) {
+                //     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+                //     return regExp.test(asValue);
+                // }
+                //
+                // if (!is_password(pwd)) {
+                //     alert('비밀번호는 8-20자까지입니다.')
+                //     return;
+                // }
+                //
+                //
+                // if (name == "") {
+                //     alert('이름을 입력해 주세요')
+                //     $("#name").focus()
+                //     return;
+                // }
+                // if (is_email(id))
+                //     if (nick == "") {
+                //         alert('닉네임을 입력해 주세요')
+                //         $("#nickname").focus()
+                //         return;
+                //     }
+                // if (pwd == "") {
+                //     alert('패스워드를 입력해 주세요')
+                //     $("#pwd").focus()
+                //     return;
+                // }
+            })
         })
 
         function join() {
+            // 입력한 값들 가져와 변수에 저장
             let id = $('#id').val()
             let name = $('#name').val()
             let nick = $('#nickname').val()
             let pwd = $('#pwd').val()
-            // 입력받은 값 중 입력하지 않은 값이 있을 경우
-            if (id == "") {
-                alert('아이디를 입력해 주세요')
-                $("#id").focus()
-                return;
-            }
-            if (name == "") {
-                alert('이름을 입력해 주세요')
-                $("#name").focus()
-                return;
-            }
-            if (nick == "") {
-                alert('닉네임을 입력해 주세요')
-                $("#nickname").focus()
-                return;
-            }
-            if (pwd == "") {
-                alert('패스워드를 입력해 주세요')
-                $("#pwd").focus()
-                return;
-            }
             $.ajax({
                 type: "POST",
                 url: "/join",
@@ -67,7 +108,8 @@
                 친구들의 사진과 동영상을 보려면 가입하세요.
             </h2>
             <div class="box-input"> <!-- input box -->
-                <input class="input-join" type="text" id="id" placeholder="휴대폰 번호 또는 이메일 주소"> <!-- input id -->
+                <input class="input-join" type="text" id="id" placeholder="휴대폰 번호 또는 이메일 주소">
+                <span id="id_check"></span><!-- input id -->
                 <input class="input-join" type="text" id="name" placeholder="성명"> <!-- input name -->
                 <input class="input-join" type="text" id="nickname" placeholder="사용자 이름"> <!-- input nickname -->
                 <input class="input-join" type="password" id="pwd" placeholder="비밀번호"> <!-- input pw -->
@@ -94,3 +136,4 @@
 </footer>
 </body>
 </html>
+
