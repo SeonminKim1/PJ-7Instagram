@@ -17,34 +17,12 @@
             let name = $('#name').val()
             let nick = $('#nickname').val()
             let pwd = $('#pwd').val()
-            // 입력받은 값 중 입력하지 않은 값이 있을 경우
-            if (id == "") {
-                alert('아이디를 입력해 주세요')
-                $("#id").focus()
-                return;
-            }
-            if (name == "") {
-                alert('이름을 입력해 주세요')
-                $("#name").focus()
-                return;
-            }
-            if (nick == "") {
-                alert('닉네임을 입력해 주세요')
-                $("#nickname").focus()
-                return;
-            }
-            if (pwd == "") {
-                alert('패스워드를 입력해 주세요')
-                $("#pwd").focus()
-                return;
-            }
             $.ajax({
                 type: "POST",
                 url: "/join",
                 data: {'id_give': id, 'name_give': name, 'nick_give': nick, 'pwd_give': pwd},
                 success: function (response) {
-                    // 아이디가 중복일 경우
-                    if (response['exist']) {
+                    if (response['exist']){
                         alert(response["msg"])
                     } else {
                         alert(response["msg"])
