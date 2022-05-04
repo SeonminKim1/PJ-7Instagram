@@ -1,21 +1,229 @@
-<!DOCTYPE html>
-<html lang="ko">
-    <head>
-        <!-- Webpage Title -->
-        <title>Flask Template</title>
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/feed_main.css') }}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed_main.css') }}">
 
-    </head>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <body>
-        <div class="container">
-            <div class="info">
-                <h1>읽은 책에 대해 말씀해주세요.</h1>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/bee3d4f913.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Title -->
+    <title>인스타그램 클론 플젝</title>
+
+</head>
+<script type="text/javascript">
+    $(document).ready(function () {
+        showFeed();
+    });
+    function showFeed() {
+        console.log('showFeed method')
+        $.ajax({
+            type: "GET",
+            url: "",
+            data: {id: id, nickname:nickname},
+            success: function (response) {
+                alert(response["msg"]);
+            }
+        })
+    }
+</script>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid" style="justify-content: space-between; flex-wrap: nowrap; min-width: 1000px">
+            <!-- Brand Logo -->
+            <div>
+                <a class="navbar-brand">
+                    <img style='width:100px;'
+                         src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
+                </a>
             </div>
+
+            <!-- Search Bar -->
+            <div>
+                <input class="form-control me-2" style="width: 400px" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            
+            <!-- nav 상단 바로가기 -->
+            <div class = "nav-btns">
+                <div class = "nav-btn"><i class="fa-solid fa-house"></i></div>
+                <div class = "nav-btn"><i class="fa-regular fa-message"></i></div>
+                <div class = "nav-btn"><i class="fa-regular fa-pen-to-square"></i></div>
+                <div class = "nav-btn"><i class="fa-regular fa-compass"></i></div>
+                <div class = "nav-btn"><i class="fa-regular fa-heart"></i></div>
+                <div class = "nav-btn"><i class="fa-regular fa-user"></i></div>
+            </div>
+        </div> <!-- nav안 main div -->
+    </nav>
+
+    <div class="article">
+        <div class = "feed_box_area">
+            <!-- 여기서부터 피드박스 -->
+            {% for feed in feeds %}
+            <div class="feed_box">
+                <!-- 피드 - 첫 헤더 (프로필 이미지, 닉네임 등)-->
+                <div class='feed_header_div'>
+                    <div class='feed_profile_div'>
+                        <div class="profile_box_div">
+                            <img class="profile" src="{{ feed.profile_img}}">
+                        </div>
+                        <div>{{ feed.nickname }}</div>
+                    </div>
+                    <div class = "extra_modal"><b>···</b>
+                    </div>
+                </div>
+
+                <!-- 피드 - 프로필 이미지-->
+                <div>
+                    <img class='feed_images' src="{{ feed.feed_images[0] }}">
+                </div>
+
+                <!-- 피드 본문 좋아요, 북마크-->
+                <div>
+                    <div class = 'feed_like_bookmark_div'>
+                        <div>
+                            <span class="favorite material-icons-outlined">♡</span>
+                            <span class="favorite material-icons-outlined"><i class="fa-regular fa-message"></i></span>
+                            <span class="favorite material-icons-outlined"><i class="fa-regular fa-paper-plane"></i></span>
+                        </div>
+                        
+                        <div>
+                            <span class="bookmark material-icons-outlined"><i class="fa-regular fa-bookmark"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 피드 본문, 좋아요-->
+                <div class="feed_like_div">좋아요 {{ feed.like|length}}개</div>
+                <div class="feed_content_div">
+                    <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
+                </div>
+
+                <!-- 피드 본문 Tag -->
+                <div class = 'feed_tag_div'> #tag1 #tag2 #tag3 #tag4</div>
+
+                <!-- 댓글 더보기 -->
+                <div class = 'feed_reply_view_div'>
+                    댓글 {{feed.reply|length}}개 더보기 
+                </div>
+
+                <!-- 댓글 View -->
+                <div>
+                    {% for reply in feed.reply %}
+                        <div class = 'feed_reply_div'>
+                            <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- 댓글 달기 -->
+                <div class = "feed_reply_write_div">
+                    <input type="text" class="feed_reply_write" placeholder="댓글 달기..">
+                        <div class="feed_reply_upload">게시
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div> <!-- feed_box_area -->
+        <!-- 여기까지 피드박스 -->
+
+        <!-- 추천 박스 -->
+        <div class = "recommend_box">
+            <!-- 마이 프로필 -->
+            <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
+                 프로필구역
+
+            </div>
+            <!-- 회원님을 위한 추천 -->
+            <div style="display: flex;flex-direction: row; justify-content: space-between; margin:15px 0px 15px 0px">
+                <div style="font-weight: bold; color: gray">
+                    회원님을 위한 추천
+                </div>
+                <div>
+                    <a href="#" style="font-weight: bold;color: black;text-decoration: none">모두보기</a>
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
+                <div style="display: flex; flex-direction: row">
+                    <div class="box" style="width: 35px; height: 35px">
+                        <img class="profile"
+                            src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
+                    </div>
+                    <div style="margin-left:10px; text-align:left">
+                        <div style="font-weight:bold; font-size: 14px">
+                            김xx
+                        </div>
+                        <div style="color:gray; font-size:14px">
+                            친구1
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <a href="#" style="font-size:14px; font-weight:bold; text-decoration:none">팔로우</a>
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
+                <div style="display: flex; flex-direction: row">
+                    <div class="box" style="width: 35px; height: 35px">
+                        <img class="profile"
+                            src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
+                    </div>
+                    <div style="margin-left:10px; text-align:left">
+                        <div style="font-weight:bold; font-size: 14px">
+                            박xx
+                        </div>
+                        <div style="color:gray; font-size:14px">
+                            친구2
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <a href="#" style="font-size:14px; font-weight:bold; text-decoration:none">팔로우</a>
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
+                <div style="display: flex; flex-direction: row">
+                    <div class="box" style="width: 35px; height: 35px">
+                        <img class="profile"
+                            src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
+                    </div>
+                    <div style="margin-left:10px; text-align:left">
+                        <div style="font-weight:bold; font-size: 14px">
+                            이xx
+                        </div>
+                        <div style="color:gray; font-size:14px">
+                            친구3
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <a href="#" style="font-size:14px; font-weight:bold; text-decoration:none">팔로우</a>
+                </div>
+            </div>
+            <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br> 
+                개인정보처리방침·약관·위치·인기 계정·해시태그·언어
+            </div>
+            <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> © 2022 INSTAGRAM FROM META</div>
         </div>
-    </body>
+    </div>
+
+    <!--
+    <footer class='footer' style='background-color:black; height:80px; display:flex; justify-content:center; align-item:center;'>
+        <div class='footer-text' style='color:white; font-size:20px;'> 
+            Seonmin Kim Instgram Clone Coding Project
+        </div>
+    </footer>
+    -->
+</body>
 </html>
