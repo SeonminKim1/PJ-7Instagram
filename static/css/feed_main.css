@@ -1,0 +1,26 @@
+* {
+    font-family: "Do Hyeon", sans-serif;
+}
+body{
+    background-color: aqua;
+}
+h1, h5 {
+    display: inline;
+}
+
+.container{
+    background-color: yellowgreen;
+}
+
+.info {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.review {
+    text-align: center;
+}
+
+.reviews {
+    margin-top: 100px;
+}
