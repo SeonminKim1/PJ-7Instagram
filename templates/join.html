@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/joinstyle.css">
+    <title>회원가입</title>
+
+    <!--ajax 연결 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        })
+
+        function join() {
+            let id = $('#id').val()
+            let name = $('#name').val()
+            let nick = $('#nickname').val()
+            let pwd = $('#pwd').val()
+            $.ajax({
+                type: "POST",
+                url: "/join",
+                data: {'id_give': id, 'name_give': name, 'nick_give': nick, 'pwd_give': pwd},
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.replace('/')
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<main class="container">
+    <article class="article">
+        <div class="box-join"> <!-- join box -->
+            <div class="box-logo"> <!-- logo img -->
+                <img alt="Instagram" class="img-logo" src="/static/img/logo.png">
+            </div>
+            <h2 class="text-info">
+                친구들의 사진과 동영상을 보려면 가입하세요.
+            </h2>
+            <div class="box-input"> <!-- input box -->
+                <input class="input-join" type="text" id="id" placeholder="휴대폰 번호 또는 이메일 주소"> <!-- input id -->
+                <input class="input-join" type="text" id="name" placeholder="성명"> <!-- input name -->
+                <input class="input-join" type="text" id="nickname" placeholder="사용자 이름"> <!-- input nickname -->
+                <input class="input-join" type="password" id="pwd" placeholder="비밀번호"> <!-- input pw -->
+            </div>
+            <div class="box-button"> <!-- button box -->
+                <button class="button" type="button" onclick="join()">가입</button> <!-- button -->
+            </div>
+        </div>
+        <div class="box-login"> <!--login box-->
+            <p class="text-signin">
+                계정이 있으신가요?
+                <a href="/move_login">로그인</a>
+            </p>
+        </div>
+    </article>
+</main>
+<footer>
+    <div> <!-- line first -->
+    </div>
+    <div> <!-- line second -->
+    </div>
+    <div> <!-- copyright -->
+    </div>
+</footer>
+</body>
+</html>
