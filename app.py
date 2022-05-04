@@ -46,14 +46,13 @@ def signup():
         return jsonify({'result': 'exist', 'msg': '중복된 아이디 입니다.'})
     else:
         doc = {
-            'ID': id_receive,
-            'PWD': hashed_pw,
-            'NAME': name_receive,
-            'NICKNAME': nick_receive,
-            'FOLLOWER': '',
-            'FOLLOWING': '',
-            'FROFILE_IMG': '',
-            'MYPAGE_LINK': ''
+            'id': id_receive,
+            'pwd': hashed_pw,
+            'name': name_receive,
+            'nickname': nick_receive,
+            'follower': '',
+            'following': '',
+            'profile_img': ''
         }
         db.USER.insert_one(doc)
         return jsonify({'result': 'success', 'msg': '회원 가입 완료'})
