@@ -22,11 +22,11 @@
                 url: "/join",
                 data: {'id_give': id, 'name_give': name, 'nick_give': nick, 'pwd_give': pwd},
                 success: function (response) {
-                    if (response['result'] == 'success'){
+                    if (response['exist']){
                         alert(response["msg"])
-                        window.location.replace('/')
                     } else {
                         alert(response["msg"])
+                        window.location.replace('/')
                     }
 
                 }

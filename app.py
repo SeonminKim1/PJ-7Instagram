@@ -41,30 +41,22 @@ def signup():
     # 입력받은 패스워드 값 해싱하여 암호화
     hashed_pw = hashlib.sha256(pwd_receive.encode('utf-8')).hexdigest()
 
+    id_dup = bool(db.USER.find_one({'id': id_receive}))
     # 아이디 중복 여부 체크
-    if bool(db.USER.find_one({'ID': id_receive})):
-        return jsonify({'result': 'exist', 'msg': '중복된 아이디 입니다.'})
+    if id_dup:
+        return jsonify({'result': 'success','exist': id_dup, 'msg': '중복된 아이디 입니다.'})
     else:
         doc = {
             'id': id_receive,
             'pwd': hashed_pw,
             'name': name_receive,
             'nickname': nick_receive,
-            'follower': '',
-            'following': '',
+            'follower': {},
+            'following': {},
             'profile_img': ''
         }
         db.USER.insert_one(doc)
         return jsonify({'result': 'success', 'msg': '회원 가입 완료'})
-
-
-# 회원가입 아이디 중복 체크
-@app.route('/join_check_dup', methods=['POST'])
-def check_dup():
-    username_receive = request.form['username_give']
-    exists = bool(db.users.find_one({"username": username_receive}))
-    return jsonify({'result': 'success', 'exists': exists})
-
 
 # 로그인
 @app.route("/login", methods=["POST"])
