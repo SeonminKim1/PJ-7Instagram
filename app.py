@@ -23,21 +23,19 @@ def home():
     try:
         # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
-        user_info = db.USER.find_one({"id": payload['id']})
-        print(user_info)
+      #   print(payload)
+        user_info = list(db.USER.find_one({"id": payload['id']}))
+        feed_info = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
+
+      #   print(user_info)
         return render_template('/Feed/index.html',
-                               nickname=user_info["nickname"],
-                               name=user_info["name"],
-                               id=user_info["id"],
-                               password=user_info["pwd"])
+                               feeds=feed_info, users=user_info)
         # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login"))
     except jwt.exceptions.DecodeError:
         # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login"))
-
 
 @app.route('/login')
 def login():
