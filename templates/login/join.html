@@ -22,7 +22,6 @@
                     success: function (response) {
                         if (response['duplicate']) {
                             $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                            return;
                         } else {
                             $('#id_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
                         }
@@ -39,10 +38,8 @@
                 let id_regExp = /^[a-zA-Z0-9]{4,12}$/;
                 if (!id_regExp.test(id)) {
                     $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                    return;
                 } else {
                     $('#id_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                    return;
                 }
 
 
@@ -61,10 +58,8 @@
                 let id_regExp = /^[a-zA-Z0-9!@#$]{8,20}$/;
                 if (!id_regExp.test(id)) {
                     $('#pwd_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                    return;
                 } else {
                     $('#pwd_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                    return;
                 }
 
             })
@@ -83,10 +78,8 @@
                 let id_regExp = /^[a-zA-Z가-힣]{3,12}$/;
                 if (!id_regExp.test(id)) {
                     $('#name_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                    return;
                 } else {
                     $('#name_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                    return;
                 }
 
             })
@@ -101,7 +94,6 @@
                     success: function (response) {
                         if (response['duplicate']) {
                             $('#nick_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                            return;
                         } else {
                             $('#nick_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
                         }
@@ -118,10 +110,8 @@
                 let id_regExp = /^[a-zA-Z0-9가-힣_!@#$.]{3,12}$/;
                 if (!id_regExp.test(id)) {
                     $('#nick_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                    return;
                 } else {
                     $('#nick_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                    return;
                 }
 
             })
@@ -134,18 +124,17 @@
             let nick = $('#nickname').val()
             let pwd = $('#pwd').val()
             $.ajax({
-                type: "POST",
-                url: "/app/join",
-                data: {'id_give': id, 'name_give': name, 'nick_give': nick, 'pwd_give': pwd},
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.href = '/login'
+                    type: "POST",
+                    url: "/app/join",
+                    data: {'id_give': id, 'name_give': name, 'nick_give': nick, 'pwd_give': pwd},
+                    success: function (response) {
+                        alert(response["msg"])
+                        window.location.href = '/login'
+                    }
+
+
                 }
-
-            }
-        }
-
-        )
+            )
         }
     </script>
 </head>
