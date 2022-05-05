@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+
+    <!--파비콘-->
+    <link rel="icon" href="https://cdn.icon-icons.com/icons2/1211/PNG/128/1491580658-yumminkysocialmedia06_83104.png">
+    <title>Instagram</title>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+
+    <script>
+        const myModal = document.getElementById('myModal');
+        const myInput = document.getElementById('myInput');
+
+        myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+        })
+
+    </script>
+
+</head>
+
+<body>
+<nav>
+    <div class="head">
+        <img class="logo" alt="logo"
+             src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png">
+        <input class="input_search" type="search" placeholder="검색">
+        <div class="menu">
+            <img src="/static/img/home.png" alt="home">
+            <img src="/static/img/dm.png" alt="DM">
+            <img src="/static/img/explore.png" alt="explore">
+            <img src="/static/img/compass.png" alt="compass">
+            <img src="/static/img/heart.png" alt="heart">
+            <img src="/static/img/myprofile.png" alt="myprofile">
+        </div>
+    </div>
+</nav>
+<section>
+    <div class="my_info">
+        <img src="https://cdn.pixabay.com/photo/2016/02/27/06/43/cherry-blossom-tree-1225186_960_720.jpg"
+             alt="myprofilepic">
+        <div class="info_box">
+            <div class="nick_name">
+                Nackname
+                <button class="profile_btn">프로필 편집</button>
+            </div>
+            <div class="user_info">
+                <div>게시물 3</div>
+                <div>팔로워 2</div>
+                <div>팔로우 2</div>
+            </div>
+            <div class="user_name">
+                이름
+            </div>
+        </div>
+    </div>
+    <div class="menu_bar">
+        <div>게시물</div>
+        <div>저장됨</div>
+        <div>태그됨</div>
+    </div>
+    <article>
+        <img src="https://cdn.pixabay.com/photo/2018/10/11/09/24/slr-camera-3739242_960_720.jpg"
+             alt="artpic">
+        <img src="https://cdn.pixabay.com/photo/2021/03/25/09/10/fog-6122490_960_720.jpg"
+             alt="artpic">
+        <img src="https://cdn.pixabay.com/photo/2015/07/28/09/34/baby-864137_960_720.jpg"
+             alt="artpic">
+    </article>
+    <article>
+        <img src="https://cdn.pixabay.com/photo/2021/03/25/09/10/fog-6122490_960_720.jpg"
+             alt="artpic">
+        <img src="https://cdn.pixabay.com/photo/2015/07/28/09/34/baby-864137_960_720.jpg"
+             alt="artpic">
+        <img src="https://cdn.pixabay.com/photo/2018/10/11/09/24/slr-camera-3739242_960_720.jpg"
+             alt="artpic">
+    </article>
+    <article>
+        <img src="https://cdn.pixabay.com/photo/2015/07/28/09/34/baby-864137_960_720.jpg"
+             alt="artpic">
+        <img src="https://cdn.pixabay.com/photo/2018/10/11/09/24/slr-camera-3739242_960_720.jpg"
+             alt="artpic">
+        <img src="https://cdn.pixabay.com/photo/2021/03/25/09/10/fog-6122490_960_720.jpg"
+             alt="artpic">
+    </article>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-ing">
+                <span>신고</span>
+            </div>
+            <div class="modal-ing">
+                <span>팔로우 취소</span>
+            </div>
+            <div class="modal-ing">
+                게시물로 이동
+            </div>
+            <div class="modal-ing">
+                공유대상...
+            </div>
+            <div class="modal-ing">
+                링크복사
+            </div>
+            <div class="modal-ing">
+                퍼가기
+            </div>
+            <div class="modal-ing" data-bs-dismiss="modal">
+                취소
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
