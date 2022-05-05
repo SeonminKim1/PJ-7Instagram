@@ -17,7 +17,7 @@ db = client.luckyseven # DataBase 명
 def home():
    return render_template('Feed/test.html')
 
-@app.route('/feed', methods=['GET'])
+@app.route('/feed', methods=['POST'])
 def Feed():
    feeds = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
    users = list(db.USER.find({})) # id, pwd, name, nickname, follower, following, profile_img

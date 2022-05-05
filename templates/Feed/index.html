@@ -28,8 +28,8 @@
         console.log('showFeed method')
         $.ajax({
             type: "GET",
-            url: "",
-            data: {id: id, nickname:nickname},
+            url: "/feed",
+            data: "",
             success: function (response) {
                 alert(response["msg"]);
             }
@@ -127,8 +127,7 @@
                 <!-- 댓글 달기 -->
                 <div class = "feed_reply_write_div">
                     <input type="text" class="feed_reply_write" placeholder="댓글 달기..">
-                        <div class="feed_reply_upload">게시
-                    </div>
+                    <div class="feed_reply_upload">게시</div>
                 </div>
             </div>
             {% endfor %}
