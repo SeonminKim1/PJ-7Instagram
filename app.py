@@ -77,7 +77,7 @@ def api_join():
 def id_dup():
     id_receive = request.form['id_give']
     id_dup = bool(db.USER.find_one({'id': id_receive}))
-    return jsonify({'duplicate': id_dup});
+    return jsonify({'duplicate': id_dup})
 
 
 # ajax에서 비동기식으로 닉네임 중복 확인을 위해 따로 함수 정의
@@ -85,7 +85,7 @@ def id_dup():
 def nick_dup():
     nick_receive = request.form['nick_give']
     nick_dup = bool(db.USER.find_one({'nickname': nick_receive}))
-    return jsonify({'duplicate': nick_dup});
+    return jsonify({'duplicate': nick_dup})
 
 
 # 로그인 id, pwd 값 받아와서 판별 후 토큰 생성
@@ -143,6 +143,11 @@ def api_valid():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+@app.route('/feed', methods=['POST'])
+def Feed():
+   feeds = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
+   users = list(db.USER.find({})) # id, pwd, name, nickname, follower, following, profile_img
+   return render_template('Feed/index.html', feeds=feeds, users=users)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
