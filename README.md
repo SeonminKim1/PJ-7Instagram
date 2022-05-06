@@ -18,7 +18,7 @@
 │   │   ├── index.html
 │   │   └── ...
 │   │
-│   └── Mypage // 마이페이지
+│   └── Profilepage // 프로필페이지
 │       ├── index.html
 │       └── ...
 │
