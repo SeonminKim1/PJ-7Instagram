@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# lucky-seven
-=======
 ### Structure
 ```
 ├── services // 기능 함수들
@@ -32,4 +29,3 @@
 ```
 python app.py
 ```
->>>>>>> 0845252dc459ad2771876db47df1903dc90e620f

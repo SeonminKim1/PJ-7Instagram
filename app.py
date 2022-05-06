@@ -23,21 +23,19 @@ def home():
     try:
         # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
-        user_info = db.USER.find_one({"id": payload['id']})
-        print(user_info)
+      #   print(payload)
+        user_info = list(db.USER.find_one({"id": payload['id']}))
+        feed_info = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
+
+      #   print(user_info)
         return render_template('/Feed/index.html',
-                               nickname=user_info["nickname"],
-                               name=user_info["name"],
-                               id=user_info["id"],
-                               password=user_info["pwd"])
+                               feeds=feed_info, users=user_info)
         # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login"))
     except jwt.exceptions.DecodeError:
         # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login"))
-
 
 @app.route('/login')
 def login():
@@ -77,7 +75,7 @@ def api_join():
 def id_dup():
     id_receive = request.form['id_give']
     id_dup = bool(db.USER.find_one({'id': id_receive}))
-    return jsonify({'duplicate': id_dup});
+    return jsonify({'duplicate': id_dup})
 
 
 # ajax에서 비동기식으로 닉네임 중복 확인을 위해 따로 함수 정의
@@ -85,7 +83,7 @@ def id_dup():
 def nick_dup():
     nick_receive = request.form['nick_give']
     nick_dup = bool(db.USER.find_one({'nickname': nick_receive}))
-    return jsonify({'duplicate': nick_dup});
+    return jsonify({'duplicate': nick_dup})
 
 
 # 로그인 id, pwd 값 받아와서 판별 후 토큰 생성
@@ -143,6 +141,11 @@ def api_valid():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+@app.route('/feed', methods=['POST'])
+def Feed():
+   feeds = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
+   users = list(db.USER.find({})) # id, pwd, name, nickname, follower, following, profile_img
+   return render_template('Feed/index.html', feeds=feeds, users=users)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
