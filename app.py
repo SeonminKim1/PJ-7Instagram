@@ -30,9 +30,15 @@ def home():
             feed = list(db.FEED.find({'nickname': follower}))  # num, nickname, feed_images, content, like, reply
             if feed is not None:
                 feed_info.extend(feed)
-        # print(feed_info, len(feed_info))
-        # all_users = list(db.USER.find({}, {'_id': False}))
-        # for follow_list in user_info['follow']:
+        print(feed_info, len(feed_info))
+
+        # # 회원님을 위한 추천 리스트 출력
+        # all_users = list(db.USER.find({}, {'nickname': True, '_id': False}))
+        # print(all_users)
+        # my_followers = list(db.USER.find({'id': payload['id']}, {'follower': True, '_id':False}))
+        # print(my_followers)
+        # for all_users_nick in all_users['nickname'] :
+
 
         # print(user_info)
         return render_template('/Feed/index.html',
@@ -49,6 +55,11 @@ def home():
 def login():
     return render_template('/login/login.html')
 
+@app.route('/logout')
+def logout():
+    token_receive = request.cookies.get('mytoken')
+    if token_receive is not None:
+        return jsonify({'msg':'로그아웃 완료!'})
 
 @app.route('/join')
 def join():
