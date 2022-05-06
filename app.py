@@ -27,6 +27,8 @@ def home():
         user_info = list(db.USER.find_one({"id": payload['id']}))
         feed_info = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
 
+        user_info['follow']
+
       #   print(user_info)
         return render_template('/Feed/index.html',
                                feeds=feed_info, users=user_info)
@@ -119,6 +121,7 @@ def Feed():
     feeds = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
     users = list(db.USER.find({})) # id, pwd, name, nickname, follower, following, profile_img
     return render_template('Feed/index.html', feeds=feeds, users=users)
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
