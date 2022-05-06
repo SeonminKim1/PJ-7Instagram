@@ -27,7 +27,8 @@ def home():
         user_info = list(db.USER.find_one({"id": payload['id']}))
         feed_info = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
 
-        user_info['follow']
+        all_users = list(db.USER.find({}, {'_id': False}))
+        for follow_list in user_info['follow']:
 
       #   print(user_info)
         return render_template('/Feed/index.html',
