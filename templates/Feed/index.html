@@ -86,12 +86,15 @@
             <div class="feed_box">
                 <!-- 피드 - 첫 헤더 (프로필 이미지, 닉네임 등)-->
                 <div class='feed_header_div'>
-                    <div class='feed_profile_div'>
-                        <div class="profile_box_div">
-                            <img class="profile" src="{{ feed.profile_img}}">
+                    <a id = "tag_a" href="{{url_for('profile', feed_nickname = feed.nickname)}}">
+                        <div class='feed_profile_div'>
+                            <div class="profile_box_div">
+                                <img class="profile" src="{{ feed.profile_img}}">
+                            </div>
+                            <div>{{ feed.nickname }}</div>
                         </div>
-                        <div>{{ feed.nickname }}</div>
-                    </div>
+                    </a>
+
                     <div class = "extra_modal"><b>···</b>
                     </div>
                 </div>

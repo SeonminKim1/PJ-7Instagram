@@ -1,4 +1,3 @@
-from ast import Not
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import hashlib
 import jwt
@@ -24,17 +23,14 @@ def home():
     try:
         # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # USER의 Following 들의 nickname 필드로 Feed들 조회
+        # TODO => Feed_info list 시간 순으로 Sorting 필요
         user_info = db.USER.find_one({"id": payload['id']})  # id, num, nickname, feed_images, content, like, reply
         feed_info = []
         for follower in user_info['following']:
             feed = list(db.FEED.find({'nickname': follower}))  # num, nickname, feed_images, content, like, reply
             if feed is not None:
                 feed_info.extend(feed)
-        # print(feed_info, len(feed_info))
-        # all_users = list(db.USER.find({}, {'_id': False}))
-        # for follow_list in user_info['follow']:
-
-        # print(user_info)
         return render_template('/Feed/index.html',
                                feeds=feed_info, users=user_info)
         # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
@@ -149,6 +145,12 @@ def api_valid():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+@app.route('/api/profile')
+def profile():
+    feed_nickname = request.args.get('feed_nickname')
+    if feed_nickname is not None:
+        user = list(db.USER.find({'nickname': feed_nickname}))  # num, nickname, feed_images, content, like, reply
+    return render_template('/profile/profile.html', user = user) 
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
