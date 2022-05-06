@@ -48,7 +48,7 @@ def join():
 
 
 # 회원가입 입력받은 값을 받아 DB에 추가하기
-@app.route("/app/join", methods=["POST"])
+@app.route("/api/join", methods=["POST"])
 def api_join():
     id_receive = request.form['id_give']
     name_receive = request.form['name_give']
@@ -71,7 +71,7 @@ def api_join():
 
 
 # ajax에서 비동기식으로 아이디 중복 확인을 위해 따로 함수 정의
-@app.route("/app/id_dup", methods=["POST"])
+@app.route("/api/id_dup", methods=["POST"])
 def id_dup():
     id_receive = request.form['id_give']
     id_dup = bool(db.USER.find_one({'id': id_receive}))
@@ -79,7 +79,7 @@ def id_dup():
 
 
 # ajax에서 비동기식으로 닉네임 중복 확인을 위해 따로 함수 정의
-@app.route("/app/nick_dup", methods=["POST"])
+@app.route("/api/nick_dup", methods=["POST"])
 def nick_dup():
     nick_receive = request.form['nick_give']
     nick_dup = bool(db.USER.find_one({'nickname': nick_receive}))
@@ -87,7 +87,7 @@ def nick_dup():
 
 
 # 로그인 id, pwd 값 받아와서 판별 후 토큰 생성
-@app.route("/app/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def api_login():
     id_receive = request.form['id_give']
     pwd_receive = request.form['pwd_give']
@@ -114,38 +114,11 @@ def api_login():
         return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호가 일치하지 않습니다.'})
 
 
-# [유저 정보 확인 API]
-# 로그인된 유저만 call 할 수 있는 API입니다.
-# 유효한 토큰을 줘야 올바른 결과를 얻어갈 수 있습니다.
-@app.route('/api/valid', methods=['GET'])
-def api_valid():
-    token_receive = request.cookies.get('mytoken')
-
-    # try / catch 문?
-    # try 아래를 실행했다가, 에러가 있으면 except 구분으로 가란 얘기입니다.
-
-    try:
-        # token을 시크릿키로 디코딩합니다.
-        # 보실 수 있도록 payload를 print 해두었습니다. 우리가 로그인 시 넣은 그 payload와 같은 것이 나옵니다.
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
-
-        # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
-        # 여기에선 그 예로 닉네임을 보내주겠습니다.
-        userinfo = db.user.find_one({'id': payload['id']}, {'_id': 0})
-        return jsonify({'result': 'success', 'nickname': userinfo['nick']})
-
-    except jwt.ExpiredSignatureError:
-        # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
-        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
-    except jwt.exceptions.DecodeError:
-        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
-
 @app.route('/feed', methods=['POST'])
 def Feed():
-   feeds = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
-   users = list(db.USER.find({})) # id, pwd, name, nickname, follower, following, profile_img
-   return render_template('Feed/index.html', feeds=feeds, users=users)
+    feeds = list(db.FEED.find({})) # num, nickname, feed_images, content, like, reply
+    users = list(db.USER.find({})) # id, pwd, name, nickname, follower, following, profile_img
+    return render_template('Feed/index.html', feeds=feeds, users=users)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정

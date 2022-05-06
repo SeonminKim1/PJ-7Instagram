@@ -14,127 +14,138 @@
             // id 값을 입력했을 때
             $('#id').blur(function () {
                 let id = $('#id').val()
-                // 아이디 중복 확인
-                $.ajax({
-                    type: "POST",
-                    url: '/app/id_dup',
-                    data: {'id_give': id},
-                    success: function (response) {
-                        if (response['duplicate']) {
-                            $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                        } else {
-                            $('#id_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                        }
-                    }
-                })
                 // 입력받은 값 중 입력하지 않은 값이 있을 경우
                 if (id == "") {
                     $('#id_check').html('<i class="fa-solid fa-circle-exclamation"></i>')
-                    return;
+                    $('#hidden-id').val('false')
                 } else {
-                    $('#id_check').text('')
+                    // 아이디 중복 확인
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/id_dup',
+                        data: {'id_give': id},
+                        success: function (response) {
+                            if (response['duplicate']) {
+                                $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+                                $('#hidden-id').val('false')
+                            } else {
+                                // 정규 표현식을 이용한 아이디 형식 제한 영문 소문자, 대문자, 숫자, 4-30자
+                                let id_regExp = /^[a-zA-Z0-9]([a-zA-Z0-9]*)(@)([a-zA-Z0-9]*)(\.)([a-zA-Z]*){4,40}$/;
+                                if (!id_regExp.test(id)) {
+                                    $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+                                    $('#hidden-id').val('false')
+                                } else {
+                                    $('#id_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
+                                    $('#hidden-id').val('true')
+                                }
+                            }
+                        }
+                    })
                 }
-                // 정규 표현식을 이용한 아이디 형식 제한
-                let id_regExp = /^[a-zA-Z0-9]{4,12}$/;
-                if (!id_regExp.test(id)) {
-                    $('#id_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+            })
+            // nickname 값을 입력했을 때
+            $('#nickname').blur(function () {
+                let nick = $('#nickname').val()
+                // 입력받은 값 중 입력하지 않은 값이 있을 경우
+                if (nick == "") {
+                    $('#nick_check').html('<i class="fa-solid fa-circle-exclamation"></i>')
+                    $('#hidden-nick').val('false')
                 } else {
-                    $('#id_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
+                    // 닉네임 중복 확인
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/nick_dup',
+                        data: {'nick_give': nick},
+                        success: function (response) {
+                            if (response['duplicate']) {
+                                $('#nick_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+                                $('#hidden-nick').val('false')
+                            } else {
+                                // 정규 표현식을 이용한 닉네임 형식 제한 영문 소문자, 대문자, 숫자, _ . ! @ 4-12자
+                                let nick_regExp = /^[a-zA-Z0-9_.!@]{4,12}$/;
+                                if (!nick_regExp.test(nick)) {
+                                    $('#nick_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+                                    $('#hidden-nick').val('false')
+                                } else {
+                                    $('#nick_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
+                                    $('#hidden-nick').val('true')
+                                }
+                            }
+                        }
+                    })
                 }
-
-
             })
             // pwd 값을 입력했을 때
             $('#pwd').blur(function () {
-                let id = $('#pwd').val()
+                let pwd = $('#pwd').val()
                 // 입력받은 값 중 입력하지 않은 값이 있을 경우
                 if (pwd == "") {
                     $('#pwd_check').html('<i class="fa-solid fa-circle-exclamation"></i>')
-                    return;
+                    $('#hidden-pwd').val('false')
                 } else {
-                    $('#pwd_check').text('')
+                    // 정규 표현식을 이용한 패스워드 형식 제한 영문 소문자, 대문자, 숫자,!@#$%^ 8-20자
+                    let pwd_regExp = /^[a-zA-Z0-9!@#$%^]{8,20}$/;
+                    if (!pwd_regExp.test(pwd)) {
+                        $('#pwd_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+                        $('#hidden-pwd').val('false')
+                    } else {
+                        $('#pwd_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
+                        $('#hidden-pwd').val('true')
+                    }
                 }
-                // 정규 표현식을 이용한 아이디 형식 제한
-                let id_regExp = /^[a-zA-Z0-9!@#$]{8,20}$/;
-                if (!id_regExp.test(id)) {
-                    $('#pwd_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                } else {
-                    $('#pwd_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                }
-
             })
             // name 값을 입력했을 때
             $('#name').blur(function () {
                 let name = $('#name').val()
-
                 // 입력받은 값 중 입력하지 않은 값이 있을 경우
                 if (name == "") {
                     $('#name_check').html('<i class="fa-solid fa-circle-exclamation"></i>')
-                    return;
+                    $('#hidden-name').val('false')
                 } else {
-                    $('#name_check').text('')
-                }
-                // 정규 표현식을 이용한 아이디 형식 제한
-                let id_regExp = /^[a-zA-Z가-힣]{3,12}$/;
-                if (!id_regExp.test(id)) {
-                    $('#name_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                } else {
-                    $('#name_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                }
-
-            })
-            // nickname 값을 입력했을 때
-            $('#nickname').blur(function () {
-                let nickname = $('#nickname').val()
-                // 닉네임 중복 확인
-                $.ajax({
-                    type: "POST",
-                    url: '/app/nick_dup',
-                    data: {'nick_give': nickname},
-                    success: function (response) {
-                        if (response['duplicate']) {
-                            $('#nick_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                        } else {
-                            $('#nick_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                        }
+                    // 정규 표현식을 이용한 이름 형식 제한 영문 소문자, 대문자, 한글, 2-20자
+                    let name_regExp = /^[a-zA-Z가-힣]{2,20}$/;
+                    if (!name_regExp.test(name)) {
+                        $('#name_check').html('<i class="fa-regular fa-circle-xmark"></i>')
+                        $('#hidden-name').val('false')
+                    } else {
+                        $('#name_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
+                        $('#hidden-name').val('true')
                     }
-                })
-                // 입력받은 값 중 입력하지 않은 값이 있을 경우
-                if (nickname == "") {
-                    $('#nick_check').html('<i class="fa-solid fa-circle-exclamation"></i>')
-                    return;
-                } else {
-                    $('#nick_check').text('')
                 }
-                // 정규 표현식을 이용한 아이디 형식 제한
-                let id_regExp = /^[a-zA-Z0-9가-힣_!@#$.]{3,12}$/;
-                if (!id_regExp.test(id)) {
-                    $('#nick_check').html('<i class="fa-regular fa-circle-xmark"></i>')
-                } else {
-                    $('#nick_check').html('<i class=\"fa-regular fa-circle-check\"></i>')
-                }
-
             })
         })
 
         function join() {
-            // 입력한 값들 가져와 변수에 저장
-            let id = $('#id').val()
-            let name = $('#name').val()
-            let nick = $('#nickname').val()
-            let pwd = $('#pwd').val()
-            $.ajax({
-                    type: "POST",
-                    url: "/app/join",
-                    data: {'id_give': id, 'name_give': name, 'nick_give': nick, 'pwd_give': pwd},
-                    success: function (response) {
-                        alert(response["msg"])
-                        window.location.href = '/login'
+            if ($('#hidden-id').val() == 'true') {
+                if ($('#hidden-nick').val() == 'true') {
+                    if ($('#hidden-name').val() == 'true') {
+                        if ($('#hidden-pwd').val() == 'true') {
+                            // 입력한 값들 가져와 변수에 저장
+                            let id = $('#id').val()
+                            let name = $('#name').val()
+                            let nick = $('#nickname').val()
+                            let pwd = $('#pwd').val()
+                            $.ajax({
+                                type: "POST",
+                                url: "/api/join",
+                                data: {'id_give': id, 'name_give': name, 'nick_give': nick, 'pwd_give': pwd},
+                                success: function (response) {
+                                    alert(response["msg"])
+                                    window.location.href = '/login'
+                                }
+                            })
+                        } else {
+                            alert('패스워드는 영대소문자, 숫자 특수문자 8-20자 입니다.!')
+                        }
+                    } else {
+                        alert('이름은 한글, 영문 2-20자입니다.')
                     }
-
-
+                } else {
+                  alert('닉네임은 영대소문자,한글,숫자, 4-12자입니다.')
                 }
-            )
+            } else {
+                alert('아이디는 이메일형식입니다.')
+            }
         }
     </script>
 </head>

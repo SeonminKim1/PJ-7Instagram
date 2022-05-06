@@ -20,7 +20,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/app/login",
+                url: "/api/login",
                 data: {'id_give': id, 'pwd_give': pwd},
                 success: function (response) {
                     if(response['result'] == 'success') {
