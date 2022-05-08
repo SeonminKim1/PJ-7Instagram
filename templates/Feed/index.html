@@ -48,6 +48,7 @@
         showFeed();
     });
 
+    // Feed 조회 - GET
     function showFeed() {
         console.log('showFeed method')
         $.ajax({
@@ -56,6 +57,21 @@
             data: "",
             success: function (response) {
                 alert(response["msg"]);
+            }
+        })
+    }
+    
+    // 댓글 작성 - POST
+    function reply_write(nickname, feed_num) {
+        let reply_content = $(".feed_reply_write").val()
+        // console.log('댓글 닉네임, 내용, Feed 넘버', nickname, reply_conten, feed_num)
+        $.ajax({
+            type:'POST',
+            url: "/api/reply/writing",
+            data: { nickname:nickname, reply_content: reply_content, feed_num:feed_num},
+            success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
             }
         })
     }
@@ -145,7 +161,7 @@
 
             <!-- 댓글 View -->
             <div>
-                {% for reply in feed.reply %}
+                {% for reply in feed.reply[::-1][:2] %}
                 <div class='feed_reply_div'>
                     <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}
                 </div>
@@ -155,11 +171,18 @@
             <!-- 댓글 달기 -->
             <div class="feed_reply_write_div">
                 <input type="text" class="feed_reply_write" placeholder="댓글 달기..">
-                <div class="feed_reply_upload">게시</div>
+                <button class="feed_reply_upload" onclick="reply_write('{{user_info.nickname}}', '{{feed.num}}')">게시</button>
             </div>
         </div>
         {% endfor %}
     </div> <!-- feed_box_area -->
+    <div class="modal hidden">
+        <div class="bg"></div>
+        <div class="modalBox">
+          <p>인스타 게시글 모달 입니다.</p>
+          <button class="closeBtn">✖</button>
+        </div>
+    </div>
     <!-- 여기까지 피드박스 -->
 
     <!-- 추천 박스 -->
@@ -254,4 +277,19 @@
 </footer>
 -->
 </body>
+<script>
+    const open = () => {
+        console.log('open')
+        document.querySelector(".modal").classList.remove("hidden");
+      }
+    
+      const close = () => {
+        console.log('close')
+        document.querySelector(".modal").classList.add("hidden");
+      }
+    
+      document.querySelector(".feed_reply_view_div").addEventListener("click", open);
+      document.querySelector(".closeBtn").addEventListener("click", close);
+      document.querySelector(".bg").addEventListener("click", close);
+</script>
 </html>
