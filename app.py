@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 import hashlib
 import jwt
 import datetime
+import random
 
 app = Flask(__name__)
 
@@ -40,22 +41,34 @@ def home():
         for all_users_nick in all_users:
             print(all_users_nick['nickname'])
             all_users_nick_list.append(all_users_nick['nickname'])
-        print(all_users_nick_list)
+        print(all_users_nick_list)  # 모든 유저의 닉 리스트
+        print(user_info['following'])  # 내가 팔로우한 유저의 닉 리스트
 
-        print(user_info['follower'])
+        # 모든 유저 닉 - 내가 팔로잉중인 유저 닉 - 나의 닉네임 = 추천 친구 리스트
         recommend_info = []
-        recommend_nick = set(all_users_nick_list) - set(user_info['follower'])
+        recommend_nick = list(set(all_users_nick_list) - set(user_info['following']))  # 내 팔로잉 유저들 제외
+        recommend_nick.remove(user_info['nickname'])  # 나 제외
+        print(recommend_nick)
         for recommend in recommend_nick:
             reco = list(db.USER.find({'nickname': recommend}))
             if reco is not None:
                 recommend_info.extend(reco)
-        print(recommend_info)
 
+        print(recommend_info)
+        # 추천 친구 리스트 중 랜덤으로 중복 허용하지 않으면서 3개만 뽑아서 출력
+        try:
+            recommend_3 = random.sample(recommend_info, 3)
+            return render_template('/Feed/index.html',
+                                   feeds=feed_info, users=user_info, recommend=recommend_3)
+        except:
+            recommend_3 = None
+
+        print(recommend_3)
         # print(user_info)
         return render_template('/Feed/index.html',
-                               feeds=feed_info, users=user_info, recommend=recommend_info)
+                               feeds=feed_info, users=user_info)
     except jwt.ExpiredSignatureError:
-    # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
+        # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
         return render_template('/login/login.html')
     except jwt.exceptions.DecodeError:
         return render_template('/login/login.html')
@@ -146,6 +159,7 @@ def api_login():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호가 일치하지 않습니다.'})
 
+
 # [유저 정보 확인 API]
 # 로그인된 유저만 call 할 수 있는 API입니다.
 # 유효한 토큰을 줘야 올바른 결과를 얻어갈 수 있습니다.
@@ -173,12 +187,14 @@ def api_valid():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+
 @app.route('/api/profile')
 def profile():
     feed_nickname = request.args.get('feed_nickname')
     if feed_nickname is not None:
         user = list(db.USER.find({'nickname': feed_nickname}))  # num, nickname, feed_images, content, like, reply
-    return render_template('/profile/profile.html', user = user) 
+    return render_template('/profile/profile.html', user=user)
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
