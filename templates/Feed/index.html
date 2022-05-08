@@ -119,33 +119,8 @@
 </script>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid" style="justify-content: space-between; flex-wrap: nowrap; min-width: 1000px">
-        <!-- Brand Logo -->
-        <div>
-            <a class="navbar-brand">
-                <img style='width:100px;'
-                     src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
-            </a>
-        </div>
 
-        <!-- Search Bar -->
-        <div>
-            <input class="form-control me-2" style="width: 400px" type="search" placeholder="Search"
-                   aria-label="Search">
-        </div>
-
-        <!-- nav 상단 바로가기 -->
-        <div class="nav-btns">
-            <div class="nav-btn"><i class="fa-solid fa-house"></i></div>
-            <div class="nav-btn"><i class="fa-regular fa-message"></i></div>
-            <div class="nav-btn"><i class="fa-regular fa-pen-to-square"></i></div>
-            <div class="nav-btn"><i class="fa-regular fa-compass"></i></div>
-            <div class="nav-btn"><i class="fa-regular fa-heart"></i></div>
-            <div class="nav-btn"><i class="fa-regular fa-user"></i></div>
-        </div>
-    </div> <!-- nav안 main div -->
-</nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
 
 <div class="article">
     <div class="feed_box_area">
