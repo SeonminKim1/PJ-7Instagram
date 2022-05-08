@@ -19,11 +19,12 @@ db = client.luckyseven
 # 최초 접속 시 연결되는 홈 페이지 지정
 @app.route('/')
 def home():
-    # 현재 컴퓨터에 저장 된 쿠키 중 'mytoken'인 쿠키 가져 와 변수에 저장
     token_receive = request.cookies.get('mytoken')
     try:
-        # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
+        # token을 시크릿키로 디코딩합니다.
+        # 보실 수 있도록 payload를 print 해두었습니다. 우리가 로그인 시 넣은 그 payload와 같은 것이 나옵니다.
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
         user_info = db.USER.find_one({"id": payload['id']})  # id, num, nickname, feed_images, content, like, reply
         feed_info = []
         for follower in user_info['following']:
@@ -32,34 +33,45 @@ def home():
                 feed_info.extend(feed)
         print(feed_info, len(feed_info))
 
-        # # 회원님을 위한 추천 리스트 출력
-        # all_users = list(db.USER.find({}, {'nickname': True, '_id': False}))
-        # print(all_users)
-        # my_followers = list(db.USER.find({'id': payload['id']}, {'follower': True, '_id':False}))
-        # print(my_followers)
-        # for all_users_nick in all_users['nickname'] :
+        # 회원님을 위한 추천 리스트 출력
+        all_users_nick_list = []
+        # 모든 유저의 닉네임 추출
+        all_users = list(db.USER.find({}, {'nickname': True, '_id': False}))
+        for all_users_nick in all_users:
+            print(all_users_nick['nickname'])
+            all_users_nick_list.append(all_users_nick['nickname'])
+        print(all_users_nick_list)
 
+        print(user_info['follower'])
+        recommend_info = []
+        recommend_nick = set(all_users_nick_list) - set(user_info['follower'])
+        for recommend in recommend_nick:
+            reco = list(db.USER.find({'nickname': recommend}))
+            if reco is not None:
+                recommend_info.extend(reco)
+        print(recommend_info)
 
         # print(user_info)
         return render_template('/Feed/index.html',
-                               feeds=feed_info, users=user_info)
-        # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
+                               feeds=feed_info, users=user_info, recommend=recommend_info)
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login"))
+    # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
+        return render_template('/login/login.html')
     except jwt.exceptions.DecodeError:
-        # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
-        return redirect(url_for("login"))
+        return render_template('/login/login.html')
 
 
 @app.route('/login')
 def login():
     return render_template('/login/login.html')
 
+
 @app.route('/logout')
 def logout():
     token_receive = request.cookies.get('mytoken')
     if token_receive is not None:
-        return jsonify({'msg':'로그아웃 완료!'})
+        return jsonify({'msg': '로그아웃 완료!'})
+
 
 @app.route('/join')
 def join():
@@ -69,6 +81,8 @@ def join():
 # 회원가입 입력받은 값을 받아 DB에 추가하기
 @app.route("/api/join", methods=["POST"])
 def api_join():
+    # data = json.loads(request.data) request.data로 get()으로 받아오는 방식으로 사용가능
+    # id_receive = data.get('id_give')
     id_receive = request.form['id_give']
     name_receive = request.form['name_give']
     nick_receive = request.form['nick_give']
@@ -131,34 +145,6 @@ def api_login():
         return jsonify({'result': 'success', 'token': token, 'msg': '로그인 성공'})
     else:
         return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호가 일치하지 않습니다.'})
-
-
-# [유저 정보 확인 API]
-# 로그인된 유저만 call 할 수 있는 API입니다.
-# 유효한 토큰을 줘야 올바른 결과를 얻어갈 수 있습니다.
-@app.route('/api/valid', methods=['GET'])
-def api_valid():
-    token_receive = request.cookies.get('mytoken')
-
-    # try / catch 문?
-    # try 아래를 실행했다가, 에러가 있으면 except 구분으로 가란 얘기입니다.
-
-    try:
-        # token을 시크릿키로 디코딩합니다.
-        # 보실 수 있도록 payload를 print 해두었습니다. 우리가 로그인 시 넣은 그 payload와 같은 것이 나옵니다.
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
-
-        # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
-        # 여기에선 그 예로 닉네임을 보내주겠습니다.
-        userinfo = db.user.find_one({'id': payload['id']}, {'_id': 0})
-        return jsonify({'result': 'success', 'nickname': userinfo['nick']})
-
-    except jwt.ExpiredSignatureError:
-        # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
-        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
-    except jwt.exceptions.DecodeError:
-        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
 
 if __name__ == '__main__':
