@@ -4,6 +4,7 @@ import jwt
 import datetime
 
 app = Flask(__name__)
+app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 SECRET_KEY = '$lucky7'
 
@@ -120,15 +121,15 @@ def home():
         # USER의 Following 들의 nickname 필드로 Feed들 조회
         user_info = db.USER.find_one({"id": payload['id']})  # id, num, nickname, feed_images, content, like, reply
         feed_info = []
-        for follower in user_info['following']:
-            feed = list(db.FEED.find({'nickname': follower}))  # num, nickname, feed_images, content, like, reply
-            if feed is not None:
-                feed_info.extend(feed)
-
-        # Feed 시간 순으로 Sorting
-        feed_info = sorted(feed_info, key=lambda x: x['date'], reverse=True) # 최신 글 순서로 Sorting
+        if user_info is not None: # Following이 한명이라도 있을 떄
+            for follower in user_info['following']:
+                feed = list(db.FEED.find({'nickname': follower}))  # num, nickname, feed_images, content, like, reply
+                if feed is not None:
+                    feed_info.extend(feed)
+            # Feed 시간 순으로 Sorting
+            feed_info = sorted(feed_info, key=lambda x: x['date'], reverse=True) # 최신 글 순서로 Sorting
         return render_template('/Feed/index.html',
-                               feeds=feed_info, user_info=user_info)
+                            feeds=feed_info, user_info=user_info)
     except jwt.ExpiredSignatureError: # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
     except jwt.exceptions.DecodeError: # 해당 token이 다르다면 login 페이지로 redirect
@@ -154,6 +155,91 @@ def write_reply():
     # 4) Feed DB reply Update
     db.FEED.update_one({'num':feed_num}, {'$set':{'reply':feed_reply}})
     return jsonify({'msg': '댓글 작성 완료'})
+
+# 좋아요 - USER DB, FEED DB Update
+# 좋아요 누름 - USER DB의 like에 Feed Number ID 추가 / Feed DB의 like에 {nickname, date } 추가
+# 좋아요 취소 - USER DB의 like에 Feed Number ID 제거 / Feed DB의 like에 해당 {nickname, date } 제거
+@app.route('/api/like', methods=['POST'])
+def is_like():
+    # 1) Request 에서 넘겨받은 값
+    is_like = request.form['is_like']
+    nickname = request.form['nickname'] # 현재 계정 nickname
+    feed_num = request.form['feed_num'] # 현재 Feed Num
+    # print('==', is_like, nickname, feed_num)
+
+    # 2) Feed Number로 Feed 조회
+    feed = db.FEED.find_one({'num':feed_num}) # 해당 Feed Info
+    user = db.USER.find_one({'nickname':nickname}) # 해당 User Info
+    feed_like, user_like = feed['like'], user['like']
+
+    # 3) DB Update 할 List 만들기
+    if is_like == '1': # 제거
+        user_like.remove(feed_num) # USER DB의 like에서 Feed Number 제거
+        # Feed DB의 like에서 해당 Nickname 제거
+        for like_dict in feed_like:
+            if like_dict['nickname'] == nickname:
+                feed_like.remove(like_dict)
+                break        
+
+    else: # is_like == '0' # 추가
+        x_cond = (feed_num not in user_like)
+        y_cond = (nickname not in [x['nickname'] for x in feed_like])
+        if x_cond and y_cond:
+            user_like.append(feed_num) # USER DB의 like에 Feed Number ID 추가
+            # Feed DB의 like에 {nickname, date } 추가
+            date = datetime.datetime.today().strftime("%Y.%m.%d.%H.%M.%S") 
+            feed_like.append({'nickname':nickname, 'date':date})
+
+    # 4) Feed DB like 필드 Update
+    db.FEED.update_one({'num':feed_num}, {'$set':{'like':feed_like}})
+    db.USER.update_one({'nickname':nickname}, {'$set':{'like':user_like}})
+
+    if is_like =='1':
+        return jsonify({'msg': '좋아요 제거 Update 완료'})
+    else:
+        return jsonify({'msg': '좋아요 Update 완료'})
+
+# 북마크 - USER DB, FEED DB Update
+# 북마크 누름 - USER DB의 bookmark에 Feed Number ID 추가 / Feed DB의 bookmark에 {nickname, date } 추가
+# 북마크 취소 - USER DB의 bookmark에 Feed Number ID 제거 / Feed DB의 bookmark에 해당 {nickname, date } 제거
+@app.route('/api/bookmark', methods=['POST'])
+def is_bookmark():
+    # 1) Request 에서 넘겨받은 값
+    is_bookmark = request.form['is_bookmark']
+    nickname = request.form['nickname'] # 현재 계정 nickname
+    feed_num = request.form['feed_num'] # 현재 Feed Num
+
+    # 2) Feed Number로 Feed 조회
+    feed = db.FEED.find_one({'num':feed_num}) # 해당 Feed Info
+    user = db.USER.find_one({'nickname':nickname}) # 해당 User Info
+    feed_bookmark, user_bookmark = feed['bookmark'], user['bookmark']
+
+    # 3) DB Update 할 List 만들기
+    if is_bookmark == '1': # 제거
+        user_bookmark.remove(feed_num) # USER DB의 bookmark에서 Feed Number 제거
+        # Feed DB의 bookmark에서 해당 Nickname 제거
+        for bookmark_dict in feed_bookmark:
+            if bookmark_dict['nickname'] == nickname:
+                feed_bookmark.remove(bookmark_dict)
+                break        
+
+    else: # is_bookmark == '0' # 추가
+        x_cond = (feed_num not in user_bookmark)
+        y_cond = (nickname not in [x['nickname'] for x in feed_bookmark])
+        if x_cond and y_cond:
+            user_bookmark.append(feed_num) # USER DB의 bookmark에 Feed Number ID 추가
+            # Feed DB의 bookmark에 {nickname, date } 추가
+            date = datetime.datetime.today().strftime("%Y.%m.%d.%H.%M.%S") 
+            feed_bookmark.append({'nickname':nickname, 'date':date})
+
+    # 4) Feed DB bookmark 필드 Update
+    db.FEED.update_one({'num':feed_num}, {'$set':{'bookmark':feed_bookmark}})
+    db.USER.update_one({'nickname':nickname}, {'$set':{'bookmark':user_bookmark}})
+
+    if is_bookmark =='1':
+        return jsonify({'msg': '북마크 취소 Update 완료'})
+    else:
+        return jsonify({'msg': '북마크 등록 Update 완료'})
 
 ### ================ Profile Page (Mypage) ================
 @app.route('/api/profile')

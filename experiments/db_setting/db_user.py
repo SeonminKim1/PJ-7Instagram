@@ -17,6 +17,8 @@ user_list = [
         'nickname':"jhpark",
         'follower':["smkim",'mgkim'],
         'following':['shhwang', 'yhgong'],
+        'like':['1'],
+        'bookmark':['1'],
         'profile_img': "https://cdn.econovill.com/news/photo/201603/285365_95988_038.png",
     },
     {
@@ -26,6 +28,8 @@ user_list = [
         'nickname':"smkim",
         'follower':["jhpark",'mgkim'],
         'following':['shhwang', 'yhgong'],
+        'like':[],
+        'bookmark':[],
         'profile_img': 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/133.png'
     },
     {
@@ -35,6 +39,8 @@ user_list = [
         'nickname':"shhwang",
         'follower':["jhpark",'mgkim', 'yhgong'],
         'following':['smkim', 'yhgong'],
+        'like':['1','2','3'],
+        'bookmark':['1','2','3'],
         'profile_img': 'http://img.marieclairekorea.com/2017/01/mck_586f4006b4e9f-375x375.jpg',
     },
     {
@@ -44,6 +50,8 @@ user_list = [
         'nickname':"mgkim",
         'follower':["jhpark",'mgkim', 'shhwang', 'yhgong'],
         'following': ["jhpark",'mgkim', 'shhwang', 'yhgong'],
+        'like':['2'],
+        'bookmark':['2'],
         'profile_img': "https://i.pinimg.com/736x/8e/5b/a9/8e5ba9d814a3a3eba006a2dccab26c2e--pokemon-mignon-piggy-bank.jpg"
     },
 ]

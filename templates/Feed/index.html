@@ -50,7 +50,6 @@
 
     // Feed 조회 - GET
     function showFeed() {
-        console.log('showFeed method')
         $.ajax({
             type: "GET",
             url: "/",
@@ -70,6 +69,48 @@
             url: "/api/reply/writing",
             data: { nickname:nickname, reply_content: reply_content, feed_num:feed_num},
             success: function (response) {
+                alert(response["msg"]);
+                window.location.reload();
+            }
+        })
+    }
+
+    // 좋아요/안좋아요 DB 수정 - POST
+    function like_func(nickname, feed_num){
+        let heart = $("#heart").text()
+        let is_like = 0;
+        if (heart == '♥'){
+            is_like = 1;
+        }else{
+            is_like = 0;
+        }
+        console.log('===', nickname, feed_num, heart, is_like)
+        $.ajax({
+            type:'POST',
+            url: '/api/like',
+            data: {nickname:nickname, feed_num:feed_num, is_like:is_like}, // like가 0이면 안좋아함, 1이면 좋아함
+            success: function (response){
+                alert(response["msg"]);
+                window.location.reload();
+            }
+        })
+    }
+
+    // 좋아요/안좋아요 DB 수정 - POST
+    function bookmark_func(nickname, feed_num){
+        let bookmark = $("#bookmark").text()
+        let is_bookmark = 0;
+        if (bookmark == '■'){
+            is_bookmark = 1;
+        }else{
+            is_bookmark = 0;
+        }
+        console.log('======', nickname, feed_num, bookmark, is_bookmark)
+        $.ajax({
+            type:'POST',
+            url: '/api/bookmark',
+            data: {nickname:nickname, feed_num:feed_num, is_bookmark:is_bookmark}, // like가 0이면 안좋아함, 1이면 좋아함
+            success: function (response){
                 alert(response["msg"]);
                 window.location.reload();
             }
@@ -130,17 +171,38 @@
                 <img class='feed_images' src="{{ feed.feed_images[0] }}">
             </div>
 
-            <!-- 피드 본문 좋아요, 북마크-->
+            <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
             <div>
                 <div class='feed_like_bookmark_div'>
+                    <!-- 좋아요 -->
                     <div>
-                        <span class="favorite material-icons-outlined">♡</span>
+                        <span onclick = "like_func('{{user_info.nickname}}', '{{feed.num}}')">
+                        {% set nickname_list = [] %}
+                        {% for like_dict in feed.like %}
+                            <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
+                        {% endfor %}
+                        {% if user_info.nickname in nickname_list %}
+                            <span id='heart'>♥</span>
+                        {% else %}
+                            <span id='heart'>♡</span>
+                        {% endif %}
+                        </span>
+
+                        <!-- 게시글 보기, 공유하기-->
                         <span class="favorite material-icons-outlined"><i class="fa-regular fa-message"></i></span>
                         <span class="favorite material-icons-outlined"><i class="fa-regular fa-paper-plane"></i></span>
                     </div>
-
-                    <div>
-                        <span class="bookmark material-icons-outlined"><i class="fa-regular fa-bookmark"></i></span>
+                    <!-- bookmark -->
+                    <div onclick = "bookmark_func('{{user_info.nickname}}', '{{feed.num}}')">
+                        {% set nickname_list = [] %}
+                        {% for bookmark_dict in feed.bookmark %}
+                            <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
+                        {% endfor %}
+                        {% if user_info.nickname in nickname_list %}
+                            <span id='bookmark'>■</span>
+                        {% else %}
+                            <span id='bookmark'>□</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
