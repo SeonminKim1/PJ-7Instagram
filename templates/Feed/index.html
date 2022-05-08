@@ -19,6 +19,7 @@
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--쿠키를 사용하기 위한 cdn -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
 
@@ -166,8 +167,7 @@
     <div class="recommend_box">
         <!-- 마이 프로필 -->
         <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
-            프로필구역
-
+            프로필출력
         </div>
         <!-- 회원님을 위한 추천 -->
         <div style="display: flex;flex-direction: row; justify-content: space-between; margin:15px 0px 15px 0px">
@@ -178,18 +178,21 @@
                 <a href="#" style="font-weight: bold;color: black;text-decoration: none">모두보기</a>
             </div>
         </div>
+        <!-- 추천 회원 출력  -->
+        {% for reco in recommend %}
         <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
+
             <div style="display: flex; flex-direction: row">
                 <div class="box" style="width: 35px; height: 35px">
                     <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
+                         src="{{ reco.profile_img }}">
                 </div>
                 <div style="margin-left:10px; text-align:left">
                     <div style="font-weight:bold; font-size: 14px">
-                        김xx
+                        {{reco.nickname}}
                     </div>
                     <div style="color:gray; font-size:14px">
-                        친구1
+                        회원님을 위한 추천
                     </div>
                 </div>
             </div>
@@ -198,46 +201,8 @@
                 <a href="#" style="font-size:14px; font-weight:bold; text-decoration:none">팔로우</a>
             </div>
         </div>
-        <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
-                </div>
-                <div style="margin-left:10px; text-align:left">
-                    <div style="font-weight:bold; font-size: 14px">
-                        박xx
-                    </div>
-                    <div style="color:gray; font-size:14px">
-                        친구2
-                    </div>
-                </div>
-            </div>
+        {% endfor %}
 
-            <div>
-                <a href="#" style="font-size:14px; font-weight:bold; text-decoration:none">팔로우</a>
-            </div>
-        </div>
-        <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
-                </div>
-                <div style="margin-left:10px; text-align:left">
-                    <div style="font-weight:bold; font-size: 14px">
-                        이xx
-                    </div>
-                    <div style="color:gray; font-size:14px">
-                        친구3
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a href="#" style="font-size:14px; font-weight:bold; text-decoration:none">팔로우</a>
-            </div>
-        </div>
         <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br>
             개인정보처리방침·약관·위치·인기 계정·해시태그·언어
         </div>
