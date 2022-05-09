@@ -1,24 +1,78 @@
-<div class="container-fluid" style="justify-content: space-between; flex-wrap: nowrap; min-width: 1000px">
-    <!-- Brand Logo -->
-    <div>
-        <a class="navbar-brand">
-            <img style='width:100px;' src="{{url_for('static', filename='img/logo.png') }}">
-        </a>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Search Bar -->
-    <div>
-        <input class="form-control me-2" style="width: 400px" type="search" placeholder="Search"
-                aria-label="Search">
-    </div>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- nav 상단 바로가기 -->
-    <div class="nav-btns">
-        <div class="nav-btn"><i class="fa-solid fa-house"></i></div>
-        <div class="nav-btn"><i class="fa-regular fa-message"></i></div>
-        <div class="nav-btn"><i class="fa-regular fa-pen-to-square"></i></div>
-        <div class="nav-btn"><i class="fa-regular fa-compass"></i></div>
-        <div class="nav-btn"><i class="fa-regular fa-heart"></i></div>
-        <div class="nav-btn"><i class="fa-regular fa-user"></i></div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <script> <!-- 새 게시물 모달 -->
+        window.onload = function () {
+
+            function onClick() {
+                document.querySelector('.modal-post').style.display = 'block';
+                document.querySelector('.modal-overlay').style.display = 'block';
+            }
+
+            function offClick() {
+                document.querySelector('.modal-post').style.display = 'none';
+                document.querySelector('.modal-overlay').style.display = 'none';
+            }
+
+            document.getElementById('btn-post').addEventListener('click', onClick);
+            document.querySelector('.modal-close').addEventListener('click', offClick);
+
+        };
+    </script>
+
+
+    <link rel="stylesheet" href="static/navstyle.css">
+
+    <title>Instagram</title>
+</head>
+<body>
+<!--nav: 로고, 검색창, 창 이동할 수 있는 픽토그램 6종-->
+<nav id="nav">
+    <div class="box-nav">
+        <div class="box-logo">
+            <img alt="Instagram" class="img-logo" src="static/nav-img/instagram_logo.png">
+        </div>
+        <div class="box-input">
+            <input class="search" type="text" value="검색">
+        </div>
+        <div class="icons">
+            <button class="btn"><img alt="Home" class="btm-img" src="static/nav-img/home.png"></button>
+            <button class="btn"><img alt="Message" class="btm-img" src="static/nav-img/dm.png"></button>
+            <button id="btn-post" class="btn"><img alt="Post" class="btm-img" src="static/nav-img/post.png"></button>
+            <div class="modal-overlay">
+                <div class="modal-post">
+                    <div class="box-modal">
+                        <div class="post-title">새 게시물 만들기</div>
+                        <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+                        <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+                        <button class="btn-content">컴퓨터에서 선택</button>
+                        <div class="modal-close"><a href="#">close</a></div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn"><img alt="Compass" class="btm-img" src="static/nav-img/compass.png"></button>
+            <button class="btn"><img alt="Like" class="btm-img" src="static/nav-img/heart-w.png"></button>
+            <button class="btn"><img class="img-profile" alt="profile" src="static/nav-img/sparta.png"></button>
+        </div>
     </div>
-</div> <!-- nav안 main div -->
+</nav>
+</body>
+</html>
