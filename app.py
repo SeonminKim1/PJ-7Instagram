@@ -111,6 +111,8 @@ def api_join():
         'nickname': nick_receive,
         'follower': [],
         'following': [],
+        'like': [],
+        'bookmark': [],
         'profile_img': ''
     }
     db.USER.insert_one(doc)
@@ -141,24 +143,29 @@ def home():
         all_users = list(db.USER.find({}, {'nickname': True, '_id': False}))
         for all_users_nick in all_users:
             all_users_nick_list.append(all_users_nick['nickname'])
-        print(all_users_nick_list)  # 모든 유저의 닉 리스트
-        print(user_info['following'])  # 내가 팔로우한 유저의 닉 리스트
+        # print(all_users_nick_list)  # 모든 유저의 닉 리스트
+        # print(user_info['following'])  # 내가 팔로우한 유저의 닉 리스트
 
         # 모든 유저 닉 - 내가 팔로잉중인 유저 닉 - 나의 닉네임 = 추천 친구 리스트
         recommend_info = []
         recommend_nick = list(set(all_users_nick_list) - set(user_info['following']))  # 내 팔로잉 유저들 제외
         recommend_nick.remove(user_info['nickname'])  # 나 제외
-        print(recommend_nick)
+        # print(recommend_nick)
         for recommend in recommend_nick:
             reco = list(db.USER.find({'nickname': recommend}))
             if reco is not None:
                 recommend_info.extend(reco)
 
-        print(recommend_info)
+        # print(recommend_info)
         # 추천 친구 리스트 중 랜덤으로 중복 허용하지 않으면서 3개만 뽑아서 출력
-        recommend_3 = random.sample(recommend_info, 1)
-        return render_template('/Feed/index.html',
+        if len(recommend_info) >= 3:
+            recommend_3 = random.sample(recommend_info, 3)
+            return render_template('/Feed/index.html',
                                feeds=feed_info, users=user_info, recommend=recommend_3)
+        else:
+            recommend_3 = '추천 할 회원이 없습니다.'
+            return render_template('/Feed/index.html',
+                                   feeds=feed_info, users=user_info, recommend=recommend_3 )
 
     except jwt.ExpiredSignatureError: # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
@@ -271,6 +278,31 @@ def is_bookmark():
     else:
         return jsonify({'msg': '북마크 등록 Update 완료'})
 
+### nickname을 받아와서 내 계정에 팔로우 되어있는지 확인
+### 팔로우 - nickname 을 받아와서 DB에 저장
+### 언팔로우 - nickname 을 받아와서 DB에서 제거
+@app.route('/api/follow', methods=['POST'])
+def is_following():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    print(payload['id'])
+    follow_nick = request.form['nick_give']
+    print(follow_nick)
+
+    my_follow = db.USER.find_one({'id':payload['id']})
+    print(my_follow['following'])
+
+    if follow_nick in my_follow['following']:
+        db.USER.update_one({'id': payload['id']}, {'$pull': {'following': follow_nick}})
+        print('DB 에 팔로우 제거 완료!')
+        return jsonify(({'result': 'success', 'is_following': 0}))
+
+    else:
+        db.USER.update_one({'id': payload['id']}, {'$push': {'following': follow_nick}})
+        print('DB 에 팔로우 추가 완료!')
+        return jsonify({'result': 'success', 'is_following': 1})
+
+
 ### ================ Profile Page (Mypage) ================
 @app.route('/api/profile')
 def profile():
@@ -279,8 +311,7 @@ def profile():
         user = list(db.USER.find({'nickname': feed_nickname}))  # num, nickname, feed_images, content, like, reply
     return render_template('/profile/profile.html', user=user)
 
-
-
 ### ================ Main ================
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
+
