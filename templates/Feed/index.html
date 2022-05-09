@@ -78,9 +78,9 @@
 
     // 좋아요/안좋아요 DB 수정 - POST
     function like_func(nickname, feed_num){
-        let heart = $("#heart").text()
+        let heart = event.target.attributes.getNamedItem('data-heart').value;
         let is_like = 0;
-        if (heart == '♥'){
+        if (heart == '1'){
             is_like = 1;
         }else{
             is_like = 0;
@@ -117,13 +117,38 @@
             }
         })
     }
+    
 </script>
+<script>
+    const body = document.querySelector('body');
+    const modal = document.querySelector('.modal');
+    const btnOpenPopup = document.querySelector('.btn-open-popup');
 
+    btnOpenPopup.addEventListener('click', () => {
+      modal.classList.toggle('show');
+
+      if (modal.classList.contains('show')) {
+        body.style.overflow = 'hidden';
+      }
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.classList.toggle('show');
+        console.log(modal.classList)
+        if (!modal.classList.contains('show')) {
+          body.style.overflow = 'auto';
+        }
+      }
+    });
+  </script>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
 
+<button class="btn-open-popup" style="height:300px;">Modal 띄우기</button>
 <div class="article">
+    
     <div class="feed_box_area">
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
@@ -158,9 +183,10 @@
                             <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
                         {% endfor %}
                         {% if users.nickname in nickname_list %}
-                            <span id='heart'>♥</span>
+                            <img style='width:100px;' >
+                            <img class="like-icon" src="{{url_for('static', filename='img/heart-solid.svg') }}" data-heart="1">
                         {% else %}
-                            <span id='heart'>♡</span>
+                            <img class="like-icon" src="{{url_for('static', filename='img/heart-regular.svg') }}" data-heart="0">
                         {% endif %}
                         </span>
 
@@ -214,13 +240,6 @@
         </div>
         {% endfor %}
     </div> <!-- feed_box_area -->
-    <div class="modal hidden">
-        <div class="bg"></div>
-        <div class="modalBox">
-          <p>인스타 게시글 모달 입니다.</p>
-          <button class="closeBtn">✖</button>
-        </div>
-    </div>
     <!-- 여기까지 피드박스 -->
 
     <!-- 추천 박스 -->
@@ -270,7 +289,13 @@
         <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> © 2022 INSTAGRAM FROM META</div>
     </div>
 </div>
-
+<div class="modal hidden">
+    <div class="bg"></div>
+    <div class="modalBox">
+      <p>인스타 게시글 모달 입니다.</p>
+      <button class="closeBtn">✖</button>
+    </div>
+</div>
 <!--
 <footer class='footer' style='background-color:black; height:80px; display:flex; justify-content:center; align-item:center;'>
     <div class='footer-text' style='color:white; font-size:20px;'>

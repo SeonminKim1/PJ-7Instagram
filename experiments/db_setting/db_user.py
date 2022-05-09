@@ -27,7 +27,7 @@ user_list = [
         'name': "김선민",
         'nickname':"smkim",
         'follower':["jhpark",'mgkim'],
-        'following':['shhwang', 'yhgong'],
+        'following':['shhwang', 'jhpark'],
         'like':[],
         'bookmark':[],
         'profile_img': 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/133.png'

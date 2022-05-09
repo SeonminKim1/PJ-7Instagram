@@ -225,9 +225,9 @@ def is_like():
     db.USER.update_one({'nickname':nickname}, {'$set':{'like':user_like}})
 
     if is_like =='1':
-        return jsonify({'msg': '좋아요 제거 Update 완료'})
+        return jsonify({'msg': '좋아요 제거 Update 완료', 'is_like':0})
     else:
-        return jsonify({'msg': '좋아요 Update 완료'})
+        return jsonify({'msg': '좋아요 Update 완료', 'is_like':1})
 
 # 북마크 - USER DB, FEED DB Update
 # 북마크 누름 - USER DB의 bookmark에 Feed Number ID 추가 / Feed DB의 bookmark에 {nickname, date } 추가
