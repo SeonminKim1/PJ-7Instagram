@@ -3,6 +3,7 @@ import hashlib
 import jwt
 import datetime
 import random
+import certifi
 
 app = Flask(__name__)
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
@@ -13,7 +14,7 @@ SECRET_KEY = '$lucky7'
 from pymongo import MongoClient
 
 client = MongoClient(
-    'mongodb+srv://luckyseven:luckyseven@cluster0.2hyld.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+    'mongodb+srv://luckyseven:luckyseven@cluster0.2hyld.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',tlsCAFile=certifi.where())
 db = client.luckyseven
 
 
@@ -171,7 +172,7 @@ def home():
         else:
             recommend_3 = '추천 할 회원이 없습니다.'
             return render_template('/Feed/index.html',
-                                   feeds=feed_info, users=user_info, recommend=recommend_3 )
+                                   feeds=feed_info, users=user_info, recommend=recommend_3)
 
     except jwt.ExpiredSignatureError: # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
