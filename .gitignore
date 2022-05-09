@@ -1,0 +1,4 @@
+venv/*
+*.idea/*
+idea/misc.xml
+__pycache__/app.cpython-38.pyc
