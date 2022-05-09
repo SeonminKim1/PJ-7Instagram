@@ -44,6 +44,21 @@
         showFeed();
     });
 
+    window.onload = function () {
+        function onClick() {
+            document.querySelector('.modal-post').style.display = 'block';
+            document.querySelector('.modal-overlay').style.display = 'block';
+        }
+
+        function offClick() {
+            document.querySelector('.modal-post').style.display = 'none';
+            document.querySelector('.modal-overlay').style.display = 'none';
+        }
+
+        document.getElementById('btn-post').addEventListener('click', onClick);
+        document.querySelector('.modal-close').addEventListener('click', offClick);
+    };
+
     // Feed 조회 - GET
     function showFeed() {
         $.ajax({
@@ -175,7 +190,7 @@
                                 <div>{{ feed.nickname }}</div>
                             </div>
                         </a>
-                        <div class="extra_modal"><b>···</b>
+                        <div class="extra_modal"><img class="like-icon" src="{{url_for('static', filename='img/more.png') }}">
                         </div>
                     </div>
 
@@ -189,7 +204,7 @@
                         <div class='feed_like_bookmark_div'>
                             <!-- 좋아요 -->
                             <div>
-                                    <span onclick="like_func('{{ users.nickname }}', '{{ feed.num }}')">
+                                <span onclick="like_func('{{ users.nickname }}', '{{ feed.num }}')">
                                     {% set nickname_list = [] %}
                                     {% for like_dict in feed.like %}
                                         <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
@@ -199,7 +214,7 @@
                                     {% else %}
                                         <img class="like-icon" src="{{url_for('static', filename='img/heart-regular.svg') }}" data-heart="0">
                                     {% endif %}
-                                    </span>
+                                </span>
 
                                 <!-- 게시글 보기, 공유하기-->
                                 <img class="message-icon" src="{{url_for('static', filename='img/message-regular.svg') }}">
@@ -271,7 +286,6 @@
             {% else %}
                 {% for reco in recommend %}
                     <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
-
                         <div style="display: flex; flex-direction: row">
                             <div class="box" style="width: 35px; height: 35px">
                                 <img class="profile"
@@ -301,7 +315,7 @@
         </div>
     </div>
 
-<!-- 게시글 작성 모달 
+<!-- 게시글 작성 모달 -->
 <div class="modal-overlay">
     <div class="modal-post">
         <div class="box-modal">
@@ -313,7 +327,6 @@
         </div>
     </div>
 </div>
--->
 <!-- 화면 View 모달 
 <div class="modal-overlay">
     <div class="modal-post">
