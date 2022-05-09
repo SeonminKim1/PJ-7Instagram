@@ -157,7 +157,6 @@ def home():
         recommend_info = []
         recommend_nick = list(set(all_users_nick_list) - set(user_info['following']))  # 내 팔로잉 유저들 제외
         recommend_nick.remove(user_info['nickname'])  # 나 제외
-        # print(recommend_nick)
         for recommend in recommend_nick:
             reco = list(db.USER.find({'nickname': recommend}))
             if reco is not None:
