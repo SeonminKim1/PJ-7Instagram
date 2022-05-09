@@ -2,20 +2,6 @@ body {
     font-family: 'Noto Sans KR', sans-serif; 
   }
   
-  /* ================== nav ================== */
-  .navbar{
-    position: fixed;
-    width: 100%;
-    z-index: 999;
-  }
-  
-  .nav-btns{
-    display:flex;
-  }
-  
-  .nav-btn{
-    margin: auto 10px auto 10px;
-  }
   /* ================== Feed ================= */
   
   /* feed box */
@@ -231,3 +217,5 @@ body {
     left: 0;
   }
   /* footer 하단 고정 [E] */
+
+  
