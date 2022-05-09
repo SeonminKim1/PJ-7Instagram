@@ -3,6 +3,7 @@ import hashlib
 import jwt
 import datetime
 import random
+import certifi
 
 app = Flask(__name__)
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
@@ -13,7 +14,7 @@ SECRET_KEY = '$lucky7'
 from pymongo import MongoClient
 
 client = MongoClient(
-    'mongodb+srv://luckyseven:luckyseven@cluster0.2hyld.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+    'mongodb+srv://luckyseven:luckyseven@cluster0.2hyld.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',tlsCAFile=certifi.where())
 db = client.luckyseven
 
 
