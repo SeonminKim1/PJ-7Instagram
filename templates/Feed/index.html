@@ -34,40 +34,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!--쿠키를 사용하기 위한 cdn -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
-    <script>
-        // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
-        function logout() {
-            $.ajax({
-                type: "GET",
-                url: '/logout',
-                data: {},
-                success: function (response) {
-                    $.removeCookie('mytoken');
-                    alert(response['msg'])
-                    window.location.href = '/login'
-                }
-            })
-
-        }
-        // 새 게시물 모달
-        window.onload = function () {
-
-            function onClick() {
-                document.querySelector('.modal-post').style.display = 'block';
-                document.querySelector('.modal-overlay').style.display = 'block';
-            }
-
-            function offClick() {
-                document.querySelector('.modal-post').style.display = 'none';
-                document.querySelector('.modal-overlay').style.display = 'none';
-            }
-
-            document.getElementById('btn-post').addEventListener('click', onClick);
-            document.querySelector('.modal-close').addEventListener('click', offClick);
-        };
-    </script>
-
+    
     <!-- Title -->
     <title>인스타그램 클론 플젝</title>
 
@@ -105,10 +72,10 @@
     }
 
     // 좋아요/안좋아요 DB 수정 - POST
-    function like_func(nickname, feed_num) {
-        let heart = $("#heart").text()
+    function like_func(nickname, feed_num){
+        let heart = event.target.attributes.getNamedItem('data-heart').value;
         let is_like = 0;
-        if (heart == '♥') {
+        if (heart == '1'){
             is_like = 1;
         } else {
             is_like = 0;
@@ -126,10 +93,10 @@
     }
 
     // 좋아요/안좋아요 DB 수정 - POST
-    function bookmark_func(nickname, feed_num) {
-        let bookmark = $("#bookmark").text()
+    function bookmark_func(nickname, feed_num){
+        let bookmark = event.target.attributes.getNamedItem('data-bookmark').value;
         let is_bookmark = 0;
-        if (bookmark == '■') {
+        if (bookmark == '1'){
             is_bookmark = 1;
         } else {
             is_bookmark = 0;
@@ -184,10 +151,16 @@
     }
 </script>
 
+    function feed_modal_func(feed){
+        console.log(feed)
+        document.querySelector('.modal-post').style.display = 'block';
+        document.querySelector('.modal-overlay').style.display = 'block';
+    }
+    
+</script>
 <body>
 
 <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
-
 <div class="article">
     <div class="feed_box_area">
         <!-- 여기서부터 피드박스 -->
@@ -219,33 +192,31 @@
                         <div>
                         <span onclick="like_func('{{ users.nickname }}', '{{ feed.num }}')">
                         {% set nickname_list = [] %}
-                            {% for like_dict in feed.like %}
-                                <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
-                            {% endfor %}
-                            {% if users.nickname in nickname_list %}
-                                <span id='heart'>♥</span>
-                            {% else %}
-                                <span id='heart'>♡</span>
-                            {% endif %}
+                        {% for like_dict in feed.like %}
+                            <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
+                        {% endfor %}
+                        {% if users.nickname in nickname_list %}
+                            <img class="like-icon" src="{{url_for('static', filename='img/heart-solid.svg') }}" data-heart="1">
+                        {% else %}
+                            <img class="like-icon" src="{{url_for('static', filename='img/heart-regular.svg') }}" data-heart="0">
+                        {% endif %}
                         </span>
 
-                            <!-- 게시글 보기, 공유하기-->
-                            <span class="favorite material-icons-outlined"><i class="fa-regular fa-message"></i></span>
-                            <span class="favorite material-icons-outlined"><i
-                                    class="fa-regular fa-paper-plane"></i></span>
-                        </div>
-                        <!-- bookmark -->
-                        <div onclick="bookmark_func('{{ users.nickname }}', '{{ feed.num }}')">
-                            {% set nickname_list = [] %}
-                            {% for bookmark_dict in feed.bookmark %}
-                                <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
-                            {% endfor %}
-                            {% if users.nickname in nickname_list %}
-                                <span id='bookmark'>■</span>
-                            {% else %}
-                                <span id='bookmark'>□</span>
-                            {% endif %}
-                        </div>
+                        <!-- 게시글 보기, 공유하기-->
+                        <img class="message-icon" src="{{url_for('static', filename='img/message-regular.svg') }}">
+                        <img class="paper-plane-icon" src="{{url_for('static', filename='img/paper-plane-regular.svg') }}">
+                    </div>
+                    <!-- bookmark -->
+                    <div onclick = "bookmark_func('{{users.nickname}}', '{{feed.num}}')">
+                        {% set nickname_list = [] %} 
+                        {% for bookmark_dict in feed.bookmark %}
+                            <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
+                        {% endfor %}
+                        {% if users.nickname in nickname_list %}
+                            <img class="bookmark-icon" src="{{url_for('static', filename='img/bookmark-solid.svg') }}" data-bookmark="1">
+                        {% else %}
+                            <img class="bookmark-icon" src="{{url_for('static', filename='img/bookmark-regular.svg') }}" data-bookmark="0">
+                        {% endif %}
                     </div>
                 </div>
 
@@ -255,13 +226,10 @@
                     <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
                 </div>
 
-                <!-- 피드 본문 Tag -->
-                <div class='feed_tag_div'> #tag1 #tag2 #tag3 #tag4</div>
-
-                <!-- 댓글 더보기 -->
-                <div class='feed_reply_view_div'>
-                    댓글 {{ feed.reply|length }}개 더보기
-                </div>
+            <!-- 댓글 더보기 -->
+            <div class='feed_reply_view_div'+ {{feed_num}} onclick= "feed_modal_func({{feed_num}})">
+                댓글 {{feed.reply|length}}개 더보기
+            </div>
 
                 <!-- 댓글 View -->
                 <div>
@@ -281,15 +249,8 @@
                 </div>
             </div>
         {% endfor %}
-    </div> <!-- feed_box_area -->
-    <div class="modal hidden">
-        <div class="bg"></div>
-        <div class="modalBox">
-            <p>인스타 게시글 모달 입니다.</p>
-            <button class="closeBtn">✖</button>
-        </div>
-    </div>
-    <!-- 여기까지 피드박스 -->
+    </div> <!-- 여기까지 피드박스 -->
+    
 
     <!-- 추천 박스 -->
     <div class="recommend_box">
@@ -342,6 +303,32 @@
     </div>
 </div>
 
+<!-- 게시글 작성 모달 -->
+<div class="modal-overlay">
+    <div class="modal-post">
+        <div class="box-modal">
+            <div class="post-title">새 게시물 만들기</div>
+            <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+            <button class="btn-content">컴퓨터에서 선택</button>
+            <div class="modal-close"><a href="#">close</a></div>
+        </div>
+    </div>
+</div>
+
+<!-- 화면 View 모달 -->
+<div class="modal-overlay">
+    <div class="modal-post">
+        <div class="box-modal">
+            <div class="post-title">새 게시물 만들기</div>
+            <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+            <button class="btn-content">컴퓨터에서 선택</button>
+            <div class="modal-close"><a href="#">close</a></div>
+        </div>
+    </div>
+</div>
+
 <!--
 <footer class='footer' style='background-color:black; height:80px; display:flex; justify-content:center; align-item:center;'>
     <div class='footer-text' style='color:white; font-size:20px;'>
@@ -350,19 +337,4 @@
 </footer>
 -->
 </body>
-<script>
-    const open = () => {
-        console.log('open')
-        document.querySelector(".modal").classList.remove("hidden");
-    }
-
-    const close = () => {
-        console.log('close')
-        document.querySelector(".modal").classList.add("hidden");
-    }
-
-    document.querySelector(".feed_reply_view_div").addEventListener("click", open);
-    document.querySelector(".closeBtn").addEventListener("click", close);
-    document.querySelector(".bg").addEventListener("click", close);
-</script>
 </html>

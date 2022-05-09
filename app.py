@@ -240,10 +240,10 @@ def is_like():
     db.FEED.update_one({'num': feed_num}, {'$set': {'like': feed_like}})
     db.USER.update_one({'nickname': nickname}, {'$set': {'like': user_like}})
 
-    if is_like == '1':
-        return jsonify({'msg': '좋아요 제거 Update 완료'})
+    if is_like =='1':
+        return jsonify({'msg': '좋아요 제거 Update 완료', 'is_like':0})
     else:
-        return jsonify({'msg': '좋아요 Update 완료'})
+        return jsonify({'msg': '좋아요 Update 완료', 'is_like':1})
 
 
 # 북마크 - USER DB, FEED DB Update
