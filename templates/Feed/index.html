@@ -42,15 +42,15 @@
             }
         })
     }
-    
+
     // 댓글 작성 - POST
     function reply_write(nickname, feed_num) {
         let reply_content = $(".feed_reply_write").val()
         // console.log('댓글 닉네임, 내용, Feed 넘버', nickname, reply_conten, feed_num)
         $.ajax({
-            type:'POST',
+            type: 'POST',
             url: "/api/reply/writing",
-            data: { nickname:nickname, reply_content: reply_content, feed_num:feed_num},
+            data: {nickname: nickname, reply_content: reply_content, feed_num: feed_num},
             success: function (response) {
                 alert(response["msg"]);
                 window.location.reload();
@@ -59,20 +59,20 @@
     }
 
     // 좋아요/안좋아요 DB 수정 - POST
-    function like_func(nickname, feed_num){
+    function like_func(nickname, feed_num) {
         let heart = $("#heart").text()
         let is_like = 0;
-        if (heart == '♥'){
+        if (heart == '♥') {
             is_like = 1;
-        }else{
+        } else {
             is_like = 0;
         }
         console.log('===', nickname, feed_num, heart, is_like)
         $.ajax({
-            type:'POST',
+            type: 'POST',
             url: '/api/like',
-            data: {nickname:nickname, feed_num:feed_num, is_like:is_like}, // like가 0이면 안좋아함, 1이면 좋아함
-            success: function (response){
+            data: {nickname: nickname, feed_num: feed_num, is_like: is_like}, // like가 0이면 안좋아함, 1이면 좋아함
+            success: function (response) {
                 alert(response["msg"]);
                 window.location.reload();
             }
@@ -80,20 +80,20 @@
     }
 
     // 좋아요/안좋아요 DB 수정 - POST
-    function bookmark_func(nickname, feed_num){
+    function bookmark_func(nickname, feed_num) {
         let bookmark = $("#bookmark").text()
         let is_bookmark = 0;
-        if (bookmark == '■'){
+        if (bookmark == '■') {
             is_bookmark = 1;
-        }else{
+        } else {
             is_bookmark = 0;
         }
         console.log('======', nickname, feed_num, bookmark, is_bookmark)
         $.ajax({
-            type:'POST',
+            type: 'POST',
             url: '/api/bookmark',
-            data: {nickname:nickname, feed_num:feed_num, is_bookmark:is_bookmark}, // like가 0이면 안좋아함, 1이면 좋아함
-            success: function (response){
+            data: {nickname: nickname, feed_num: feed_num, is_bookmark: is_bookmark}, // like가 0이면 안좋아함, 1이면 좋아함
+            success: function (response) {
                 alert(response["msg"]);
                 window.location.reload();
             }
@@ -108,15 +108,15 @@
             type: "POST",
             url: "/api/follow",
             data: {'nick_give': reco_nickname},
-            success: function (response){
-                if(response['is_following'] == 1){
+            success: function (response) {
+                if (response['is_following'] == 1) {
                     alert('팔로우 완료')
                     let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none; color: black">팔로잉</a>`
-                    $('#follow'+ reco_nickname).html(temp_html)
+                    $('#follow' + reco_nickname).html(temp_html)
                 } else {
                     alert('언팔로우 완료')
                     let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>`
-                    $('#follow'+ reco_nickname).html(temp_html)
+                    $('#follow' + reco_nickname).html(temp_html)
                 }
             }
         })
@@ -146,98 +146,101 @@
     <div class="feed_box_area">
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
-        <div class="feed_box">
-            <!-- 피드 - 첫 헤더 (프로필 이미지, 닉네임 등)-->
-            <div class='feed_header_div'>
-                <a id = "tag_a" href="{{url_for('profile', feed_nickname = feed.nickname)}}">
-                    <div class='feed_profile_div'>
-                        <div class="profile_box_div">
-                            <img class="profile" src="{{ feed.profile_img}}">
+            <div class="feed_box">
+                <!-- 피드 - 첫 헤더 (프로필 이미지, 닉네임 등)-->
+                <div class='feed_header_div'>
+                    <a id="tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
+                        <div class='feed_profile_div'>
+                            <div class="profile_box_div">
+                                <img class="profile" src="{{ feed.profile_img }}">
+                            </div>
+                            <div>{{ feed.nickname }}</div>
                         </div>
-                        <div>{{ feed.nickname }}</div>
+                    </a>
+                    <div class="extra_modal"><b>···</b>
                     </div>
-                </a>
-                <div class="extra_modal"><b>···</b>
                 </div>
-            </div>
 
-            <!-- 피드 - 프로필 이미지-->
-            <div>
-                <img class='feed_images' src="{{ feed.feed_images[0] }}">
-            </div>
+                <!-- 피드 - 프로필 이미지-->
+                <div>
+                    <img class='feed_images' src="{{ feed.feed_images[0] }}">
+                </div>
 
-            <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
-            <div>
-                <div class='feed_like_bookmark_div'>
-                    <!-- 좋아요 -->
-                    <div>
-                        <span onclick = "like_func('{{users.nickname}}', '{{feed.num}}')">
+                <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
+                <div>
+                    <div class='feed_like_bookmark_div'>
+                        <!-- 좋아요 -->
+                        <div>
+                        <span onclick="like_func('{{ users.nickname }}', '{{ feed.num }}')">
                         {% set nickname_list = [] %}
-                        {% for like_dict in feed.like %}
-                            <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
-                        {% endfor %}
-                        {% if users.nickname in nickname_list %}
-                            <span id='heart'>♥</span>
-                        {% else %}
-                            <span id='heart'>♡</span>
-                        {% endif %}
+                            {% for like_dict in feed.like %}
+                                <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
+                            {% endfor %}
+                            {% if users.nickname in nickname_list %}
+                                <span id='heart'>♥</span>
+                            {% else %}
+                                <span id='heart'>♡</span>
+                            {% endif %}
                         </span>
 
-                        <!-- 게시글 보기, 공유하기-->
-                        <span class="favorite material-icons-outlined"><i class="fa-regular fa-message"></i></span>
-                        <span class="favorite material-icons-outlined"><i class="fa-regular fa-paper-plane"></i></span>
-                    </div>
-                    <!-- bookmark -->
-                    <div onclick = "bookmark_func('{{users.nickname}}', '{{feed.num}}')">
-                        {% set nickname_list = [] %}
-                        {% for bookmark_dict in feed.bookmark %}
-                            <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
-                        {% endfor %}
-                        {% if users.nickname in nickname_list %}
-                            <span id='bookmark'>■</span>
-                        {% else %}
-                            <span id='bookmark'>□</span>
-                        {% endif %}
+                            <!-- 게시글 보기, 공유하기-->
+                            <span class="favorite material-icons-outlined"><i class="fa-regular fa-message"></i></span>
+                            <span class="favorite material-icons-outlined"><i
+                                    class="fa-regular fa-paper-plane"></i></span>
+                        </div>
+                        <!-- bookmark -->
+                        <div onclick="bookmark_func('{{ users.nickname }}', '{{ feed.num }}')">
+                            {% set nickname_list = [] %}
+                            {% for bookmark_dict in feed.bookmark %}
+                                <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
+                            {% endfor %}
+                            {% if users.nickname in nickname_list %}
+                                <span id='bookmark'>■</span>
+                            {% else %}
+                                <span id='bookmark'>□</span>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 피드 본문, 좋아요-->
-            <div class="feed_like_div">좋아요 {{ feed.like|length}}개</div>
-            <div class="feed_content_div">
-                <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
-            </div>
-
-            <!-- 피드 본문 Tag -->
-            <div class='feed_tag_div'> #tag1 #tag2 #tag3 #tag4</div>
-
-            <!-- 댓글 더보기 -->
-            <div class='feed_reply_view_div'>
-                댓글 {{feed.reply|length}}개 더보기
-            </div>
-
-            <!-- 댓글 View -->
-            <div>
-                {% for reply in feed.reply[::-1][:2] %}
-                <div class='feed_reply_div'>
-                    <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}
+                <!-- 피드 본문, 좋아요-->
+                <div class="feed_like_div">좋아요 {{ feed.like|length }}개</div>
+                <div class="feed_content_div">
+                    <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
                 </div>
-                {% endfor %}
-            </div>
 
-            <!-- 댓글 달기 -->
-            <div class="feed_reply_write_div">
-                <input type="text" class="feed_reply_write" placeholder="댓글 달기..">
-                <button class="feed_reply_upload" onclick="reply_write('{{users.nickname}}', '{{feed.num}}')">게시</button>
+                <!-- 피드 본문 Tag -->
+                <div class='feed_tag_div'> #tag1 #tag2 #tag3 #tag4</div>
+
+                <!-- 댓글 더보기 -->
+                <div class='feed_reply_view_div'>
+                    댓글 {{ feed.reply|length }}개 더보기
+                </div>
+
+                <!-- 댓글 View -->
+                <div>
+                    {% for reply in feed.reply[::-1][:2] %}
+                        <div class='feed_reply_div'>
+                            <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- 댓글 달기 -->
+                <div class="feed_reply_write_div">
+                    <input type="text" class="feed_reply_write" placeholder="댓글 달기..">
+                    <button class="feed_reply_upload" onclick="reply_write('{{ users.nickname }}', '{{ feed.num }}')">
+                        게시
+                    </button>
+                </div>
             </div>
-        </div>
         {% endfor %}
     </div> <!-- feed_box_area -->
     <div class="modal hidden">
         <div class="bg"></div>
         <div class="modalBox">
-          <p>인스타 게시글 모달 입니다.</p>
-          <button class="closeBtn">✖</button>
+            <p>인스타 게시글 모달 입니다.</p>
+            <button class="closeBtn">✖</button>
         </div>
     </div>
     <!-- 여기까지 피드박스 -->
@@ -258,25 +261,32 @@
             </div>
         </div>
         <!-- 추천 회원 출력  -->
-        {% for reco in recommend %}
-        <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
+        {% if recommend == '추천 할 회원이 없습니다.' %}
+            <div>추천 할 회원이 없습니다.</div>
+        {% else %}
+            {% for reco in recommend %}
+                <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
 
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="{{ reco.profile_img }}">
-                </div>
-                <div style="margin-left:10px; text-align:left">
-                    <div id="mynick{{reco.nickname}}" style="font-weight:bold; font-size: 14px">{{reco.nickname}}</div>
-                    <div style="color:gray; font-size:14px">인기</div>
-                </div>
-            </div>
+                    <div style="display: flex; flex-direction: row">
+                        <div class="box" style="width: 35px; height: 35px">
+                            <img class="profile"
+                                 src="{{ reco.profile_img }}">
+                        </div>
+                        <div style="margin-left:10px; text-align:left">
+                            <div id="mynick{{ reco.nickname }}"
+                                 style="font-weight:bold; font-size: 14px">{{ reco.nickname }}</div>
+                            <div style="color:gray; font-size:14px">인기</div>
+                        </div>
+                    </div>
 
-            <div id="follow{{reco.nickname}}">
-                <a onclick="follow('{{reco.nickname}}')" style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>
-            </div>
-        </div>
-        {% endfor %}
+                    <div id="follow{{ reco.nickname }}">
+                        <a onclick="follow('{{ reco.nickname }}')"
+                           style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
 
         <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br>
             개인정보처리방침·약관·위치·인기 계정·해시태그·언어
@@ -298,15 +308,15 @@
     const open = () => {
         console.log('open')
         document.querySelector(".modal").classList.remove("hidden");
-      }
-    
-      const close = () => {
+    }
+
+    const close = () => {
         console.log('close')
         document.querySelector(".modal").classList.add("hidden");
-      }
-    
-      document.querySelector(".feed_reply_view_div").addEventListener("click", open);
-      document.querySelector(".closeBtn").addEventListener("click", close);
-      document.querySelector(".bg").addEventListener("click", close);
+    }
+
+    document.querySelector(".feed_reply_view_div").addEventListener("click", open);
+    document.querySelector(".closeBtn").addEventListener("click", close);
+    document.querySelector(".bg").addEventListener("click", close);
 </script>
 </html>
