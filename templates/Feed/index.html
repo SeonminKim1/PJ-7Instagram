@@ -22,24 +22,6 @@
     <!--쿠키를 사용하기 위한 cdn -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-
-    <script>
-        // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
-        function logout() {
-            $.ajax({
-                type: "GET",
-                url: '/logout',
-                data: {},
-                success: function (response) {
-                    $.removeCookie('mytoken');
-                    alert(response['msg'])
-                    window.location.href = '/login'
-                }
-            })
-
-        }
-
-    </script>
     <!-- Title -->
     <title>인스타그램 클론 플젝</title>
 
@@ -116,6 +98,43 @@
                 window.location.reload();
             }
         })
+    }
+
+    // 팔로우/언팔로우
+    function follow(reco_nickname) {
+        alert(reco_nickname + '팔로우!')
+        reco_nick = reco_nickname
+        $.ajax({
+            type: "POST",
+            url: "/api/follow",
+            data: {'nick_give': reco_nickname},
+            success: function (response){
+                if(response['is_following'] == 1){
+                    alert('팔로우 완료')
+                    let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none; color: black">팔로잉</a>`
+                    $('#follow'+ reco_nickname).html(temp_html)
+                } else {
+                    alert('언팔로우 완료')
+                    let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>`
+                    $('#follow'+ reco_nickname).html(temp_html)
+                }
+            }
+        })
+    }
+
+    // 로그아웃
+    function logout() {
+        $.ajax({
+            type: "GET",
+            url: '/logout',
+            data: {},
+            success: function (response) {
+                $.removeCookie('mytoken');
+                alert(response['msg'])
+                window.location.href = '/login'
+            }
+        })
+
     }
 </script>
 
@@ -248,17 +267,13 @@
                          src="{{ reco.profile_img }}">
                 </div>
                 <div style="margin-left:10px; text-align:left">
-                    <div style="font-weight:bold; font-size: 14px">
-                        {{reco.nickname}}
-                    </div>
-                    <div style="color:gray; font-size:14px">
-                        인기
-                    </div>
+                    <div id="mynick{{reco.nickname}}" style="font-weight:bold; font-size: 14px">{{reco.nickname}}</div>
+                    <div style="color:gray; font-size:14px">인기</div>
                 </div>
             </div>
 
-            <div>
-                <a href="#" style="font-size:14px; font-weight:bold; text-decoration:none">팔로우</a>
+            <div id="follow{{reco.nickname}}">
+                <a onclick="follow('{{reco.nickname}}')" style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>
             </div>
         </div>
         {% endfor %}
