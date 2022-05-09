@@ -76,7 +76,14 @@ body {
     cursor: pointer; 
     margin-right:5px;
   }
-  
+
+  .like-icon, .bookmark-icon, .paper-plane-icon, .message-icon{
+    cursor: pointer; 
+    margin-right:5px;
+    color: black;
+    width:30px;
+    height:30px;
+  }
   .feed_like_div{
     margin: 15px; text-align: left; font-weight:bold; font-size:14px;
   }

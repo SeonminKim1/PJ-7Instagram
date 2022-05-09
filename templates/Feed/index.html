@@ -196,8 +196,8 @@
                         </span>
 
                         <!-- 게시글 보기, 공유하기-->
-                        <span class="favorite material-icons-outlined"><i class="fa-regular fa-message"></i></span>
-                        <span class="favorite material-icons-outlined"><i class="fa-regular fa-paper-plane"></i></span>
+                        <img class="message-icon" src="{{url_for('static', filename='img/message-solid.svg') }}">
+                        <img class="paper-plane-icon" src="{{url_for('static', filename='img/paper-plane-solid.svg') }}">
                     </div>
                     <!-- bookmark -->
                     <div onclick = "bookmark_func('{{users.nickname}}', '{{feed.num}}')">
@@ -306,6 +306,17 @@
 </div>
 
 <!-- 화면 View 모달 -->
+<div class="modal-overlay">
+    <div class="modal-post">
+        <div class="box-modal">
+            <div class="post-title">새 게시물 만들기</div>
+            <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+            <button class="btn-content">컴퓨터에서 선택</button>
+            <div class="modal-close"><a href="#">close</a></div>
+        </div>
+    </div>
+</div>
 
 <!--
 <footer class='footer' style='background-color:black; height:80px; display:flex; justify-content:center; align-item:center;'>
