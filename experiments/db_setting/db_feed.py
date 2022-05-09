@@ -17,6 +17,9 @@ my_collections.insert_many([
         'like':[
             {'nickname':'mgkim', 'date':'2020.05.03'},
         ],
+        'bookmark':[
+            {'nickname':'mgkim', 'date':'2020.05.04'},
+        ],
         'reply':[
             {'num':1, 'nickname':'mgkim','date':'2021.07.04', 'content':'REPLY111'},
         ]
@@ -31,6 +34,10 @@ my_collections.insert_many([
         'like':[
             {'nickname':'jhpark', 'date':'2020.05.05'},
             {'nickname':'mgkim', 'date':'2020.05.06'}
+        ],
+        'bookmark':[
+            {'nickname':'jhpark', 'date':'2020.05.06'},
+            {'nickname':'mgkim', 'date':'2020.05.07'}
         ],
         'reply':[
             {'num':1, 'nickname':'mgkim','date':'2021.07.14', 'content':'REPLY111reply111'},
@@ -49,6 +56,11 @@ my_collections.insert_many([
             {'nickname':'jhpark', 'date':'2020.06.13'},
             {'nickname':'shhwang', 'date':'2020.06.14'},
             {'nickname':'smkim', 'date':'2020.06.14'}
+        ],
+        'bookmark':[
+            {'nickname':'jhpark', 'date':'2020.06.14'},
+            {'nickname':'shhwang', 'date':'2020.06.15'},
+            {'nickname':'smkim', 'date':'2020.06.16'}
         ],
         'reply':[
             {'num':1, 'nickname':'smkim','date':'2021.08.04', 'content':'REPLY111ASD'},
