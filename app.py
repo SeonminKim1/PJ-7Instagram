@@ -327,16 +327,16 @@ def profile():
         follower_count = len(db.USER.find_one({"nickname": feed_nickname})['follower'])
         following_count = len(db.USER.find_one({"nickname": feed_nickname})['following'])
 
-        # my_feed_list = []
         my_feeds = list(db.FEED.find({"nickname": feed_nickname}))
-        print(my_feeds)
-        # for my_feed in my_feeds:
-        #     print(my_feed['feed_images'])
-        #     my_feed_list.extend(my_feed['feed_images'])
-        # print(my_feed_list)
+        # print(my_feeds)
 
-        return render_template('/profile/profile.html'
-                               , post_count=post_count, user_info=user_info, follower_count=follower_count, following_count=following_count, my_feeds=my_feeds)
+        for my_feed in my_feeds:
+            like_count = len(my_feed['like'])
+            reply_count = len(my_feed['reply'])
+            # print(len(my_feed['like']))
+
+        return render_template('/profile/profile.html', post_count=post_count, user_info=user_info, follower_count=follower_count,
+                               following_count=following_count, my_feeds=my_feeds, like_count=like_count, reply_count=reply_count)
 
     except jwt.ExpiredSignatureError:  # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
