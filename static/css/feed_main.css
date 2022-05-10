@@ -8,7 +8,7 @@ body {
 
 /* ================== Nav ================= */
 
-.overlay-post, .overlay-menu {
+.overlay-post, .overlay-post2, .overlay-menu {
     display: none;
     position: absolute;
     width: 100%;
