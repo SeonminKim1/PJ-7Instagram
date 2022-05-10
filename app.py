@@ -327,6 +327,9 @@ def profile():
         follower_count = len(db.USER.find_one({"nickname": feed_nickname})['follower'])
         following_count = len(db.USER.find_one({"nickname": feed_nickname})['following'])
 
+        follower_list = db.USER.find_one({"nickname": feed_nickname})['follower']
+        print(follower_list)
+
         my_feeds = list(db.FEED.find({"nickname": feed_nickname}))
         # print(my_feeds)
 
