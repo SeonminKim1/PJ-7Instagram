@@ -43,17 +43,16 @@
 <script type="text/javascript">
     $(document).ready(function () {
         showFeed();
-
         // 이미지 드래그 앤 드랍으로 업로드
         $('.mdbox-post')
             .on("dragover", dragOver)
             .on("dragleave", dragOver)
             .on("drop", uploadFiles);
-
+    
         function dragOver(e) {
             e.stopPropagation();
             e.preventDefault();
-
+    
             if (e.type == "dragover") {
                 console.log('dragover')
                 $(e.target).css({
@@ -67,19 +66,15 @@
                     "outline-offset": "-10px"
                 });
             }
-        }
-
+        } 
         let files;
-
         function uploadFiles(e) {
             console.log('uploadFiles()호출')
             e.stopPropagation();
             e.preventDefault();
-
             e.dataTransfer = e.originalEvent.dataTransfer;
-
             files = e.dataTransfer.files;
-
+    
             if (files.length > 1) {
                 alert('하나만 올려라.');
                 return;
@@ -93,14 +88,13 @@
                 $('.overlay-post').css({
                     display: 'none'
                 })
-
+    
                 $('#second_modal').css({
                     display: 'flex'
                 })
                 $('.overlay-post2').css({
                     display: 'flex'
                 })
-
                 $('#input_image').css({
                     "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
                     "outline": "none",
@@ -108,30 +102,28 @@
                     "background-repeat": "no-repeat",
                     "background-position": "center"
                 });
-
             } else {
                 alert('이미지가 아닙니다.');
                 return;
             }
-
         }
+    
         // 게시글 공유하기 버튼 클릭했을 때
         $('#write_feed_btn').on('click', () => {
             const image = $('#input_image').css("background-image").replace(/^url\(['"](.+)['"]\)/, '$1');
             const content = $('#input_content').val();
             const profile_image = $('#input_profile_image').attr('src');
             const user_nick = $('#user_nickname').text();
-
             const file = files[0];
-
+    
             let fd = new FormData();
-
+    
             fd.append('file', file);
             fd.append('image', image);
             fd.append('content', content);
             fd.append('profile_image', profile_image);
             fd.append('user_nick', user_nick);
-
+    
             if (image.length <= 0) {
                 alert("이미지가 비어있습니다.");
             } else if (content.length <= 0) {
@@ -162,7 +154,6 @@
                 console.log(files[0]);
             }
         });
-
     });
 
     <!-- 모달: 프로필 메뉴  -->
@@ -193,15 +184,11 @@
             document.querySelector('#first_modal').style.display = 'none';
             document.querySelector('.overlay-post').style.display = 'none';
             document.querySelector('body').style.overflowY = 'visible';
-
         }
 
         document.getElementById('btn-post').addEventListener('click', onClick_w);
         document.querySelector('.close-post').addEventListener('click', offClick_w);
-        {#document.querySelector('.close-post2').addEventListener('click', offClick_w);#}
     };
-
-
     // Feed 조회 - GET
     function showFeed() {
         $.ajax({
@@ -328,40 +315,56 @@
         document.querySelector('.modal_post_'+ feed_num).style.display = 'none';
         document.querySelector('.modal_overlay_'+ feed_num).style.display = 'none';
     }
+
 </script>
 
 <body>
-<nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
-<!-- nav 모달 -->
-<!--새 게시물 -->
-<div class="overlay-post">
-    <div id="first_modal" class="modal-post">
-        <div class="mdbox-post">
-            <div class="post-title">새 게시물 만들기</div>
-            <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
-            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
-            <button class="btn-content">컴퓨터에서 선택</button>
-            <div class="close-post"><a href="#">닫기</a></div>
+    <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
+    <!-- nav 모달 -->
+    <!--새 게시물 -->
+    <div class="overlay-post">
+        <div id="first_modal" class="modal-post">
+            <div class="mdbox-post">
+                <div class="post-title">새 게시물 만들기</div>
+                <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+                <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+                <button class="btn-content">컴퓨터에서 선택</button>
+                <div class="close-post"><a href="#">닫기</a></div>
+            </div>
         </div>
     </div>
-</div>
-<div class="overlay-post2">
-    <div id="second_modal" class="modal-post">
-        <div id="input_image">
-            사진 들어가는 곳
-        </div>
-        <div>
+    <div class="overlay-post2" >
+        <div id="second_modal" class="modal-post">
+            <div id="input_image">
+                사진 들어가는 곳
+            </div>
             <div>
                 <div>
-                    <img id="input_profile_image" src="{{ users.profile_img }}" style="width: 30px; height: 30px; border-radius: 5px;">
+                    <div>
+                        <img id="input_profile_image" src="{{ users.profile_img }}"
+                            style="width: 30px; height: 30px; border-radius: 5px;">
+                    </div>
+                    <div id="user_nickname">{{ users.nickname }}</div>
                 </div>
-                <div id="user_nickname">{{ users.nickname }}</div>
+                <div>
+                    <textarea id="input_content" cols="12" rows="12"></textarea>
+                </div>
+                <div>
+                    <button type="button" id="write_feed_btn">공유하기</button>
+                </div>
             </div>
-            <div>
-                <textarea id="input_content" cols="12" rows="12"></textarea>
-            </div>
-            <div>
-                <button type="button" id="write_feed_btn">공유하기</button>
+        </div>
+    </div>
+    <!--프로필 메뉴 -->
+    <div class="overlay-menu">
+        <div class="modal-menu">
+            <div class="mdbox-menu">
+                <div class="md-menu">프로필</div>
+                <div class="md-menu">저장됨</div>
+                <div class="md-menu">설정</div>
+                <div class="md-menu">계정전환</div>
+                <div class="md-menu">로그아웃</div>
+                <div id=close-menu class="md-menu"><a href="#">닫기</a></div>
             </div>
         </div>
     </div>
@@ -380,6 +383,25 @@
     </div>
 </div>
 
+    <!-- 진행중인 Feed 게시글 modal -->
+    {% for feed in feeds %}
+        <div class="modal_overlay_{{feed.num}}" 
+            style="display:none; position:absolute;
+                    width:100%; height:500%; 
+                    background-color: rgba(0, 0, 0, 0.8);
+                    top:0; left:0; z-index:9999;">
+            <div class="modal_post_{{feed.num}}" 
+                style="display:none; height:1000px; width:1000px; 
+                        margin:60px auto auto auto;
+                        border: 1px solid black; 
+                        border-radius:10px; background-color:#FFFFFF; 
+                        flex-direction:row; text-align:center; 
+                        justify-content:center;">
+                
+                <!-- modal post img -->
+                <div class="modal_post_img_div">
+                    <img class='modal-feed-img' src="/static/upload/{{ feed.feed_images[0] }}">
+                </div>
 
 <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
 <!-- nav 모달 -->
@@ -518,10 +540,10 @@
                     </div>
                 </div>
 
-                <!-- 피드 - 프로필 이미지-->
-                <div>
-                    <img class='feed_images' src="/static/upload/{{ feed.feed_images[0] }}">
-                </div>
+                    <!-- 피드 - 프로필 이미지-->
+                    <div>
+                        <img class='feed_images' src="/static/upload/{{ feed.feed_images[0] }}">
+                    </div>
 
                 <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
                 <div>
@@ -639,28 +661,13 @@
             {% endfor %}
         {% endif %}
 
-
-        <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br>
-            개인정보처리방침·약관·위치·인기 계정·해시태그·언어
-        </div>
-        <button type="button" onclick="logout()">로그아웃</button>
-        <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> © 2022 INSTAGRAM FROM META</div>
-    </div>
-</div>
-
-<!-- 화면 View 모달 
-<div class="modal-overlay">
-    <div class="modal-post">
-        <div class="box-modal">
-            <div class="post-title">새 게시물 만들기</div>
-            <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
-            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
-            <button class="btn-content">컴퓨터에서 선택</button>
-            <div class="modal-close"><a href="#">close</a></div>
+            <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br>
+                개인정보처리방침·약관·위치·인기 계정·해시태그·언어
+            </div>
+            <button type="button" onclick="logout()">로그아웃</button>
+            <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> © 2022 INSTAGRAM FROM META</div>
         </div>
     </div>
-</div>
--->
 <!--
 <footer class='footer' style='background-color:black; height:80px; display:flex; justify-content:center; align-item:center;'>
     <div class='footer-text' style='color:white; font-size:20px;'>

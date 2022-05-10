@@ -48,8 +48,8 @@ user_list = [
         'pwd': 'minki.kim',
         'name': "김민기",
         'nickname':"mgkim",
-        'follower':["jhpark",'mgkim', 'shhwang', 'yhgong'],
-        'following': ["jhpark",'mgkim', 'shhwang', 'yhgong'],
+        'follower':["jhpark", 'shhwang', 'yhgong'],
+        'following': ["jhpark", 'shhwang', 'yhgong'],
         'like':['2'],
         'bookmark':['2'],
         'profile_img': "https://i.pinimg.com/736x/8e/5b/a9/8e5ba9d814a3a3eba006a2dccab26c2e--pokemon-mignon-piggy-bank.jpg"

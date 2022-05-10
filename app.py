@@ -350,7 +350,6 @@ def profile():
     #     user = list(db.USER.find({'nickname': feed_nickname}))  # num, nickname, feed_images, content, like, reply
     # return render_template('/profile/profile.html', user=user)
 
-
 @app.route('/api/feed/upload', methods=['POST'])
 def feed_upload():
 
@@ -401,7 +400,7 @@ def feed_upload():
     db.FEED.insert_one(doc)
 
     return jsonify({'result': 'success'})
-
+    
 ### ================ Main ================
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
