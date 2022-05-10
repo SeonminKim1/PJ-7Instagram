@@ -3,12 +3,9 @@ html, body {
 }
 
 body {
-    font-family: 'Noto Sans KR', sans-serif;
-}
+    font-family: 'Noto Sans KR', sans-serif; 
+  }
 
-<<<<<<< HEAD
-/* ================== Nav ================= */
-=======
 /* 추가 된 부분 */
 .overlay-post, .overlay-post2, .overlay-menu {
   display: none;
@@ -77,9 +74,8 @@ body {
 /* ============================= */
 
   /* ================== Nav ================= */
->>>>>>> Feed/ModalArticle
 
-.overlay-post, .overlay-post2, .overlay-menu {
+.modal-overlay {
     display: none;
     position: absolute;
     width: 100%;
@@ -100,7 +96,7 @@ body {
     background: #FFFFFF;
 }
 
-.mdbox-post {
+.box-modal {
     text-align: center;
 }
 
@@ -136,60 +132,13 @@ body {
     cursor: pointer;
 }
 
-.close-post, #close-menu {
-    width: 26px;
-    height: 26px;
-}
-
-.modal-menu {
-    position: relative;
-    width: 280px;
-    height: 250px;
-    margin-top: 80px;
-    margin-left: 980px;
-    padding: 0;
-    background: #FFFFFF;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    border-radius: 8px;
-}
-
-.modal-menu:after {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 0 12px 12px;
-    border-color: #FFFFFF transparent;
-    display: block;
-    width: 0;
-    z-index: 1;
-    top: -12px;
-    left: 177px;
-}
-
-.mdbox-menu {
-}
-
-.md-menu {
-    height: 30px;
-    font-size: 16px;
-    padding: 18px;
-    margin-left: 50px;
-}
-
-#close-menu, #close-menu > a {
-    width: 200px;
-    color: #262626;
-    text-decoration: none;
-}
-
-/* ================== Feed ================= */
+  /* ================== Feed ================= */
 
 /* feed box */
-.feed_box_area {
-    width: 500px;
-    min-width: 500px;
-    margin-right: 300px;
+.feed_box_area{
+  width: 500px;
+  min-width: 500px;
+  margin-right: 300px;
 }
 
 .feed_box {
@@ -206,11 +155,11 @@ body {
   justify-content: space-between;
 }
 
-.feed_profile_div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 15px;
+.feed_profile_div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin:15px;
 }
 
 #tag_a{
@@ -218,17 +167,15 @@ body {
   color: black;
 }
 
-.profile_box_div {
-    width: 40px;
-    height: 40px;
-    margin: 0 10px 0 0;
+.profile_box_div{
+  width: 40px; height: 40px; margin:0 10px 0 0;
 }
 
 .profile {
-    width: 100%;
-    height: 100%;
-    border-radius: 70%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 70%;
+  object-fit: cover;
 }
 
 .extra_modal{
@@ -236,9 +183,8 @@ body {
 }
 
 /* feed content */
-.feed_images {
-    width: 100%;
-    max-height: 300px;
+.feed_images{
+  width: 100%; max-height:300px;
 }
 
 .feed_like_bookmark_div{
@@ -248,63 +194,46 @@ body {
   justify-content: space-between    
 }
 
-.extra_modal {
-    margin: 15px;
-}
-
 .box {
-    width: 150px;
-    height: 150px;
-    border-radius: 70%;
-    overflow: hidden;
+  width: 150px;
+  height: 150px;
+  border-radius: 70%;
+  overflow: hidden;
 }
 
-.like-icon, .bookmark-icon, .paper-plane-icon, .message-icon {
-    cursor: pointer;
-    margin-right: 5px;
-    color: black;
-    width: 30px;
-    height: 30px;
+.like-icon, .bookmark-icon, .paper-plane-icon, .message-icon{
+  cursor: pointer; 
+  margin-right:5px;
+  color: black;
+  width:30px;
+  height:30px;
+}
+.feed_like_div{
+  margin: 15px; text-align: left; font-weight:bold; font-size:14px;
 }
 
-.feed_like_div {
-    margin: 15px;
-    text-align: left;
-    font-weight: bold;
-    font-size: 14px;
+.feed_content_div{
+  margin: 15px; text-align: left; font-size:16px;
 }
 
-.feed_content_div {
-    margin: 15px;
-    text-align: left;
-    font-size: 16px;
+.feed_tag_div{
+  margin: 15px; text-align: left; font-size:14px; color:cyan;
 }
 
-.feed_tag_div {
-    margin: 15px;
-    text-align: left;
-    font-size: 14px;
-    color: cyan;
+.feed_reply_view_div{
+  margin: 15px 0 0 15px; text-align:left; font-size:14px;
+}
+.feed_reply_div{
+  margin: 10px 0 0 15px; text-align:left; font-size:14px;
 }
 
-.feed_reply_view_div {
-    margin: 15px 0 0 15px;
-    text-align: left;
-    font-size: 14px;
+.feed_reply_write_div{
+  display:flex; flex-direction:row;
+  align-items:center; border-top: solid 1px gray;
+  justify-content: space-between;
 }
-
-.feed_reply_div {
-    margin: 10px 0 0 15px;
-    text-align: left;
-    font-size: 14px;
-}
-
-.feed_reply_write_div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-top: solid 1px gray;
-    justify-content: space-between;
+.feed_reply_write{
+  box-shadow: none; border: none; outline: none; 
 }
 .feed_reply_upload{
   width: 50px; color: cornflowerblue; font-weight: bold;
@@ -314,84 +243,12 @@ body {
 }
 
 /* recommend box */
-.recommend_box {
-    width: 400px;
-    height: 1000px;
-    position: fixed;
-    left: 62%;
-    z-index: 0
-}
-
-/* reply modal */
-/*button*/
-.feed_reply_upload {
-    background-color: #F9B514;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal .bg {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modalBox {
-    position: absolute;
-    background-color: #fff;
-    width: 400px;
-    height: 200px;
-    padding: 15px;
-}
-
-.modalBox button {
-    display: block;
-    width: 80px;
-    margin: 0 auto;
-}
-
-.hidden {
-    display: none;
-}
-
-.modal_overlay {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(1.5px);
-    -webkit-backdrop-filter: blur(1.5px);
-    z-index: 10000;
-}
-
-.modal_window {
-    background: white;
-    backdrop-filter: blur(13.5px);
-    -webkit-backdrop-filter: blur(13.5px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    width: 800px;
-    height: 600px;
-    position: relative;
-    padding: 10px;
+.recommend_box{
+  width: 400px;
+  height: 1000px;
+  position: fixed;
+  left: 62%;
+  z-index: 0
 }
 
 /* recommend box - myprofile */

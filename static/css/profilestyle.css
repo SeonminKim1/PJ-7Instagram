@@ -1,17 +1,104 @@
 * {
     box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
-}
-
-html {
-    height: 100%;
+    font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 body {
     background-color: #fafafa;
-    height: 100%;
     padding: 0;
     margin: 0;
+}
+
+p, span {
+    font-size: 14px;
+}
+
+nav {
+    width: 100%;
+    height: 54px;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+nav img {
+    height: 24px;
+}
+
+span.userID {
+    margin-right: 5px;
+}
+
+span.sub-span {
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+span.point-span {
+    font-size: 14px;
+    color: #262626;
+    font-weight: bold;
+}
+
+.head {
+    min-width: 600px;
+    width: 1000px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    cursor: pointer;
+    /*height: 30px;*/
+    /*width: 370px;*/
+    /*display: flex;*/
+    /*align-items: center;*/
+}
+
+.menu {
+    width: 30%;
+    min-width: 200px;
+    display: flex;
+    /*align-items: center;*/
+    justify-content: space-evenly;
+
+}
+
+.menu img {
+    /*margin-left: 20px;*/
+    cursor: pointer;
+}
+
+.input_search {
+    width: 30%;
+    min-width: 200px;
+    /*height: 12px;*/
+    padding: 5px 5px;
+
+    box-sizing: content-box;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fafafa;
+
+
+    background-image: url("/static/magni.png");
+    background-position: 13px center;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    text-indent: 40px;
+    font-size: 13px;
+}
+
+.input_search:focus {
+    background-image: none;
+    background-position: -10px center;
+    text-indent: 0;
 }
 
 section {
@@ -19,6 +106,28 @@ section {
     margin: 0 auto;
     padding-top: 94px;
     padding-bottom: 40px;
+}
+
+footer p {
+    margin-top: 18px;
+    font-size: 11px;
+    color: #c7c7c7;
+    line-height: 18px;
+}
+
+.modal-ing {
+    font-size: 15px;
+    height: 60px;
+    padding: 20px;
+    border-bottom: 2px solid #EDEDED;
+    text-align: center;
+    cursor: pointer;
+}
+
+.modal-ing span {
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .my_info {
@@ -49,13 +158,14 @@ section {
     font-size: 30px;
 }
 
-/*.profile_btn {*/
-/*    border-radius: 5px;*/
-/*    border: 1px solid #E3E3E3;*/
-/*    background-color: #fafafa;*/
-/*    margin-left: 5%;*/
-/*    font-size: 16px;*/
-/*}*/
+.profile_btn {
+    border-radius: 5px;
+    border: 1px solid #E3E3E3;
+    background-color: #fafafa;
+    margin-left: 5%;
+    font-size: 16px;
+
+}
 
 .user_info {
     width: 70%;
@@ -86,6 +196,15 @@ section {
     margin: 10px 30px;
 }
 
+/*article {*/
+/*    background-color: #1DA0f6;*/
+/*    width: 100%;*/
+/*    height: 300px;*/
+/*    display: flex;*/
+/*    justify-content: space-around;*/
+/*    align-items: center;*/
+/*}*/
+
 article {
     width: 100%;
     height: 900px;
@@ -111,7 +230,80 @@ article img {
     object-position: center;
 }
 
+/*article img {*/
+/*    width: 31%;*/
+/*    height: 290px;*/
+/*    object-fit: cover;*/
+/*    object-position: center;*/
+/*}*/
+
+/*modal*/
+.modal-overlay {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.modal-post {
+    display: none;
+    height: 500px;
+    width: 500px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 10px;
+    background: #FFFFFF;
+}
+
+.box-modal {
+    text-align: center;
+}
+
+.post-title {
+    height: 60px;
+    line-height: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.post-img {
+    height: 80px;
+    width: auto;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.post-info {
+    font-size: 22px;
+}
+
+.btn-content {
+    height: 30px;
+    width: 108px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background-color: #1DA0f6;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.modal_close {
+    width: 26px;
+    height: 26px;
+}
+
 /*img hover*/
+
+
 
 article .likes{
     z-index: 2;
