@@ -1,7 +1,76 @@
-body { 
+html, body {
+    height: 100%;
+}
+
+body {
     font-family: 'Noto Sans KR', sans-serif; 
   }
-  
+
+  /* ================== Nav ================= */
+
+.modal-overlay {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.modal-post {
+    display: none;
+    height: 500px;
+    width: 500px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 10px;
+    background: #FFFFFF;
+}
+
+.box-modal {
+    text-align: center;
+}
+
+.post-title {
+    height: 60px;
+    line-height: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.post-img {
+    height: 80px;
+    width: auto;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.post-info {
+    font-size: 22px;
+}
+
+.btn-content {
+    height: 30px;
+    width: 108px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background-color: #1DA0f6;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.modal_close {
+    width: 26px;
+    height: 26px;
+}
+
   /* ================== Feed ================= */
 
 /* feed box */
@@ -12,7 +81,7 @@ body {
 }
 
 .feed_box {
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0 20px 0;
   border: solid 1px gray;
   border-radius: 5px;
   background-color: white
@@ -37,7 +106,7 @@ body {
 }
 
 .profile_box_div{
-  width: 40px; height: 40px; margin:0px 10px 0px 0px
+  width: 40px; height: 40px; margin:0 10px 0 0;
 }
 
 .profile {
@@ -71,12 +140,6 @@ body {
   overflow: hidden;
 }
 
-.favorite material-icons-outliend{
-  color: black;
-  cursor: pointer; 
-  margin-right:5px;
-}
-
 .like-icon, .bookmark-icon, .paper-plane-icon, .message-icon{
   cursor: pointer; 
   margin-right:5px;
@@ -97,10 +160,10 @@ body {
 }
 
 .feed_reply_view_div{
-  margin: 15px 0px 0px 15px; text-align:left; font-size:14px;
+  margin: 15px 0 0 15px; text-align:left; font-size:14px;
 }
 .feed_reply_div{
-  margin: 10px 0px 0px 15px; text-align:left; font-size:14px;
+  margin: 10px 0 0 15px; text-align:left; font-size:14px;
 }
 
 .feed_reply_write_div{
@@ -132,7 +195,7 @@ body {
   text-align: center;
   justify-content: center;
   padding-top: 60px;
-  background-color:"#FAFAFA";
+  background-color: #FAFAFA;
 }
 
 /* reply modal */

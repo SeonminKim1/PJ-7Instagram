@@ -1,10 +1,4 @@
-html, body {
-    height: 100%;
-}
-
 #nav {
-    height: 60px;
-    /*width: 1134px;*/
     border-bottom: 1px solid #DBDBDB;
 }
 
@@ -72,76 +66,16 @@ html, body {
     text-align: center;
     vertical-align: middle;
 }
+
 .btm-img {
     height: 24px;
     width: 24px;
 }
+
 .img-profile {
     height: 24px;
     width: 24px;
     border-radius: 70%;
     outline: 1px solid #DBDBDB;
     vertical-align: middle;
-}
-
-.modal-post {
-    display: none;
-    height: 500px;
-    width: 500px;
-    margin: auto;
-    margin-top: 80px;
-    border-radius: 10px;
-    background: #FFFFFF;
-}
-
-.modal-overlay {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
-.box-modal {
-    text-align: center;
-}
-
-.post-title {
-    height: 60px;
-    font-size: 16px;
-    font-weight: 600;
-    border-bottom: 1px solid #DBDBDB;
-}
-
-.post-img {
-    height: 80px;
-    width: auto;
-    margin: auto;
-    margin-top: 100px;
-}
-
-.post-info {
-    font-size: 22px;
-}
-
-.btn-content {
-    height: 30px;
-    line-height: 1px;
-    width: 108px;
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #FFFFFF;
-    background-color: #1DA0f6;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-}
-
-.modal_close {
-    width: 26px;
-    height: 26px;
 }
