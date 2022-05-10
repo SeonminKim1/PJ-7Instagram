@@ -177,6 +177,12 @@
         document.querySelector('.modal_post_'+ feed_num).style.display = 'flex';
         document.querySelector('.modal_overlay_'+ feed_num).style.display = 'block';
     }
+
+    function feed_modal_func_off(feed_num){
+        console.log(feed_num, typeof(feed_num))
+        document.querySelector('.modal_post_'+ feed_num).style.display = 'none';
+        document.querySelector('.modal_overlay_'+ feed_num).style.display = 'none';
+    }
 </script>
 
 <body>
@@ -291,6 +297,7 @@
                             게시
                         </button>
                     </div>
+                    <div class="modal_feed_close" onclick="feed_modal_func_off('{{feed.num}}')"><a href="#">Close</a></div>
                 </div> <!--post-content-->
             </div>
         </div>

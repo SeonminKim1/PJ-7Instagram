@@ -10,7 +10,8 @@
 .modal_feed_img{
     vertical-align:middle;
     height:300px;
-    width:100%;
+    width:200px;
+    /* width:100%; */
     background-color:white;
 }
 
@@ -95,4 +96,9 @@
     border-left: solid 1px gray;
     border-right:none; border-top:none;
     border-bottom: none;
+}
+
+.modal_feed_close{
+    text-align: center;
+    margin: 0px 0px 15px 0px;
 }
