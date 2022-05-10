@@ -305,16 +305,16 @@
         console.log(feed_num, typeof(feed_num))
         document.querySelector('.modal_post_'+ feed_num).style.display = 'flex';
         document.querySelector('.modal_overlay_'+ feed_num).style.display = 'block';
+        document.querySelector('.modal_overlay_'+ feed_num).style.top = window.pageYOffset + 'px';
     }
 
     function feed_modal_func_off(feed_num){
         console.log(feed_num, typeof(feed_num))
         document.querySelector('.modal_post_'+ feed_num).style.display = 'none';
         document.querySelector('.modal_overlay_'+ feed_num).style.display = 'none';
+        document.querySelector('.modal_overlay_'+ feed_num).style.top = window.pageYOffset + 'px';
     }
-
 </script>
-
 <body>
     <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
     <!-- nav 모달 -->
