@@ -175,6 +175,18 @@
 
 <body>
     <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
+    <!-- nav 모달 -->
+    <div class="modal-overlay">
+            <div class="modal-post">
+                <div class="box-modal">
+                    <div class="post-title">새 게시물 만들기</div>
+                    <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+                    <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+                    <button class="btn-content">컴퓨터에서 선택</button>
+                    <div class="modal-close"><a href="#">close</a></div>
+                </div>
+            </div>
+        </div>
     <div class="article">
         <div class="feed_box_area">
             <!-- 여기서부터 피드박스 -->
@@ -272,7 +284,7 @@
                 프로필출력
             </div>
             <!-- 회원님을 위한 추천 -->
-            <div style="display: flex;flex-direction: row; justify-content: space-between; margin:15px 0px 15px 0px;">
+            <div style="display: flex;flex-direction: row; justify-content: space-between; margin:15px 0 15px 0;">
                 <div style="font-weight: bold; color: gray">
                     회원님을 위한 추천
                 </div>

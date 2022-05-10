@@ -79,12 +79,13 @@ html, body {
     width: 275px;
     font-size: 14px;
     font-weight: 600;
-    background-color: #C0DFFD;
+    background-color: #0095F6;
     color: #FFFFFF;
     border-style: none;
     border-radius: 3px;
     margin-top: 30px;
     outline: none;
+    cursor: pointer;
 }
 
 .box-login {
