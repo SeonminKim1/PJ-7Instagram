@@ -43,22 +43,128 @@
 <script type="text/javascript">
     $(document).ready(function () {
         showFeed();
+
+        // 이미지 드래그 앤 드랍으로 업로드
+        $('.mdbox-post')
+            .on("dragover", dragOver)
+            .on("dragleave", dragOver)
+            .on("drop", uploadFiles);
+
+        function dragOver(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            if (e.type == "dragover") {
+                console.log('dragover')
+                $(e.target).css({
+                    "background-color": "black",
+                    "outline-offset": "-20px"
+                });
+            } else {
+                console.log('dragleave')
+                $(e.target).css({
+                    "background-color": "white",
+                    "outline-offset": "-10px"
+                });
+            }
+        }
+
+        let files;
+
+        function uploadFiles(e) {
+            console.log('uploadFiles()호출')
+            e.stopPropagation();
+            e.preventDefault();
+
+            e.dataTransfer = e.originalEvent.dataTransfer;
+
+            files = e.dataTransfer.files;
+
+            if (files.length > 1) {
+                alert('하나만 올려라.');
+                return;
+            }
+            console.log('하나 판별 완료')
+            if (files[0].type.match(/image.*/)) {
+                console.log('모달 지우고 다음 모달 실행')
+                $('#first_modal').css({
+                    display: 'none'
+                })
+                $('.overlay-post').css({
+                    display: 'none'
+                })
+
+                $('#second_modal').css({
+                    display: 'flex'
+                })
+                $('.overlay-post2').css({
+                    display: 'flex'
+                })
+
+                $('#input_image').css({
+                    "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+                    "outline": "none",
+                    "background-size": "contain",
+                    "background-repeat": "no-repeat",
+                    "background-position": "center"
+                });
+
+            } else {
+                alert('이미지가 아닙니다.');
+                return;
+            }
+
+        }
+        // 게시글 공유하기 버튼 클릭했을 때
+        $('#write_feed_btn').on('click', () => {
+            const image = $('#input_image').css("background-image").replace(/^url\(['"](.+)['"]\)/, '$1');
+            const content = $('#input_content').val();
+            const profile_image = $('#input_profile_image').attr('src');
+            const user_nick = $('#user_nickname').text();
+
+            const file = files[0];
+
+            let fd = new FormData();
+
+            fd.append('file', file);
+            fd.append('image', image);
+            fd.append('content', content);
+            fd.append('profile_image', profile_image);
+            fd.append('user_nick', user_nick);
+
+            if (image.length <= 0) {
+                alert("이미지가 비어있습니다.");
+            } else if (content.length <= 0) {
+                alert("설명을 입력하세요");
+            } else if (profile_image.length <= 0) {
+                alert("프로필 이미지가 비어있습니다.");
+            } else if (user_nick.length <= 0) {
+                alert("사용자 id가 없습니다.");
+            } else {
+                alert('writeFeed()로 왓다')
+                $.ajax({
+                    url: '/api/feed/upload',
+                    data: fd,
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        alert('게시물 작성 성공!')
+                    },
+                    error: function (request, status, error) {
+                        alert('게시물 작성 실패!')
+                    },
+                    complete: function () {
+                        alert('모달 창 제거 윈도우 리로드!')
+                        location.reload();
+                    }
+                })
+                console.log(files[0]);
+            }
+        });
+
     });
-    <!-- 모달: 새 게시물  -->
-    {#window.onload = function () {#}
-    {#    function onClick() {#}
-    {#        document.querySelector('.modal-post').style.display = 'block';#}
-    {#        document.querySelector('.overlay-post').style.display = 'block';#}
-    {#    }#}
-    {##}
-    {#    function offClick() {#}
-    {#        document.querySelector('.modal-post').style.display = 'none';#}
-    {#        document.querySelector('.overlay-post').style.display = 'none';#}
-    {#    }#}
-    {##}
-    {#    document.getElementById('btn-post').addEventListener('click', onClick);#}
-    {#    document.querySelector('.close-post').addEventListener('click', offClick);#}
-    {#};#}
+
     <!-- 모달: 프로필 메뉴  -->
     window.onload = function () {
         function onClick() {
@@ -73,7 +179,28 @@
 
         document.getElementById('btn-profile').addEventListener('click', onClick);
         document.getElementById('close-menu').addEventListener('click', offClick);
+
+        function onClick_w() {
+            document.querySelector('.overlay-post').style.top = window.pageYOffset + 'px';
+            document.querySelector('#first_modal').style.display = 'flex';
+            document.querySelector('.overlay-post').style.display = 'flex';
+            document.querySelector('body').style.overflowY = 'hidden';
+
+        }
+
+        function offClick_w() {
+            document.querySelector('.overlay-post').style.top = window.pageYOffset + 'px';
+            document.querySelector('#first_modal').style.display = 'none';
+            document.querySelector('.overlay-post').style.display = 'none';
+            document.querySelector('body').style.overflowY = 'visible';
+
+        }
+
+        document.getElementById('btn-post').addEventListener('click', onClick_w);
+        document.querySelector('.close-post').addEventListener('click', offClick_w);
+        {#document.querySelector('.close-post2').addEventListener('click', offClick_w);#}
     };
+
 
     // Feed 조회 - GET
     function showFeed() {
@@ -83,7 +210,6 @@
             data: "",
         })
     }
-
 
     // 댓글 작성 - POST
     function reply_write(nickname, feed_num) {
@@ -101,10 +227,10 @@
     }
 
     // 좋아요/안좋아요 DB 수정 - POST
-    function like_func(nickname, feed_num){
+    function like_func(nickname, feed_num) {
         let heart = event.target.attributes.getNamedItem('data-heart').value;
         let is_like = 0;
-        if (heart == '1'){
+        if (heart == '1') {
             is_like = 1;
         } else {
             is_like = 0;
@@ -122,10 +248,10 @@
     }
 
     // 좋아요/안좋아요 DB 수정 - POST
-    function bookmark_func(nickname, feed_num){
+    function bookmark_func(nickname, feed_num) {
         let bookmark = event.target.attributes.getNamedItem('data-bookmark').value;
         let is_bookmark = 0;
-        if (bookmark == '1'){
+        if (bookmark == '1') {
             is_bookmark = 1;
         } else {
             is_bookmark = 0;
@@ -180,236 +306,253 @@
     }
 
     // feed Modal Func
-    function feed_modal_func(feed_num){
-        console.log(feed_num, typeof(feed_num))
-        document.querySelector('.modal_post_'+ feed_num).style.display = 'flex';
-        document.querySelector('.modal_overlay_'+ feed_num).style.display = 'block';
+    function feed_modal_func(feed_num) {
+        console.log(feed_num, typeof (feed_num))
+        document.querySelector('.modal_post_' + feed_num).style.display = 'flex';
+        document.querySelector('.modal_overlay_' + feed_num).style.display = 'block';
     }
 </script>
 
 <body>
-    <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
-    <!-- nav 모달 -->
-    <!--새 게시물 -->
-{#        <div class="overlay-post">#}
-{#            <div class="modal-post">#}
-{#                <div class="mdbox-post">#}
-{#                    <div class="post-title">새 게시물 만들기</div>#}
-{#                    <img alt=img-upload class="post-img" src="static/nav-img/posting.png">#}
-{#                    <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>#}
-{#                    <button class="btn-content">컴퓨터에서 선택</button>#}
-{#                    <div class="close-post"><a href="#">닫기</a></div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-    <!--프로필 메뉴 -->
-        <div class="overlay-menu">
-            <div class="modal-menu">
-                <div class="mdbox-menu">
-                    <div class="md-menu">프로필</div>
-                    <div class="md-menu">저장됨</div>
-                    <div class="md-menu">설정</div>
-                    <div class="md-menu" >계정전환</div>
-                    <div class="md-menu" >로그아웃</div>
-                    <div id=close-menu class="md-menu"><a href="#">닫기</a></div>
+<nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
+<!-- nav 모달 -->
+<!--새 게시물 -->
+<div class="overlay-post">
+    <div id="first_modal" class="modal-post">
+        <div class="mdbox-post">
+            <div class="post-title">새 게시물 만들기</div>
+            <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+            <button class="btn-content">컴퓨터에서 선택</button>
+            <div class="close-post"><a href="#">닫기</a></div>
+        </div>
+    </div>
+</div>
+<div class="overlay-post2">
+    <div id="second_modal" class="modal-post">
+        <div id="input_image">
+            사진 들어가는 곳
+        </div>
+        <div>
+            <div>
+                <div>
+                    <img id="input_profile_image" src="{{ users.profile_img }}" style="width: 30px; height: 30px; border-radius: 5px;">
+                </div>
+                <div id="user_nickname">{{ users.nickname }}</div>
+            </div>
+            <div>
+                <textarea id="input_content" cols="12" rows="12"></textarea>
+            </div>
+            <div>
+                <button type="button" id="write_feed_btn">공유하기</button>
             </div>
         </div>
     </div>
+</div>
+<!--프로필 메뉴 -->
+<div class="overlay-menu">
+    <div class="modal-menu">
+        <div class="mdbox-menu">
+            <div class="md-menu">프로필</div>
+            <div class="md-menu">저장됨</div>
+            <div class="md-menu">설정</div>
+            <div class="md-menu">계정전환</div>
+            <div class="md-menu">로그아웃</div>
+            <div id=close-menu class="md-menu"><a href="#">닫기</a></div>
+        </div>
+    </div>
+</div>
 
-    {% for feed in feeds %}
-        <!-- 진행중인 modal -->
-        <div class="modal_overlay_{{feed.num}}" 
-            style="display:none; position:absolute;
+{% for feed in feeds %}
+    <!-- 진행중인 modal -->
+    <div class="modal_overlay_{{ feed.num }}"
+         style="display:none; position:absolute;
                      width:100%; height:100%; backgorund-color: rgba(0,0,0,0.8);
                      top:0; left:0; z-index:9999;">
-            <div class="modal_post_{{feed.num}}" 
-                style="display:none; height:1000px; width:1000px; 
+        <div class="modal_post_{{ feed.num }}"
+             style="display:none; height:1000px; width:1000px;
                         margin:60px auto auto auto; padding:60px 0px 60px 0px; 
                         border-radius:10px; background-color:#FFFFFF; 
                         flex-direction:row; text-align:center; 
                         justify-content:center;">
-                <!-- modal post img -->
-                <div class="modal_post_img_div">
-                    <img class='modal-feed-img' src="{{ feed.feed_images[0] }}">
+            <!-- modal post img -->
+            <div class="modal_post_img_div">
+                <img class='modal-feed-img' src="{{ feed.feed_images[0] }}">
+            </div>
+
+            <!-- modal post content -->
+            <div class='modal_post_content'>
+                <div class='modal_feed_header_div'>
+                    <a id="modal_tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
+                        <div class='modal_feed_profile_div'>
+                            <div class="profile_box_div">
+                                <img class="modal_profile" src="{{ feed.profile_img }}">
+                            </div>
+                            <div>{{ feed.nickname }}</div>
+                        </div>
+                    </a>
+                    <div class="modal_extra_modal">
+                        <img class="like-icon" src="{{ url_for('static', filename='img/more.png') }}">
+                    </div>
+                </div>
+                <div class='post-like-bookmark'>like, bookmark 기호</div>
+                <div class='post-like'>like</div>
+                <div class='post-like-count'>like-count개</div>
+                <div class='post-write'>글쓰기</div>
+            </div> <!--post-content-->
+        </div>
+    </div>
+{% endfor %}
+
+<div class="article">
+    <div class="feed_box_area">
+        <!-- 여기서부터 피드박스 -->
+        {% for feed in feeds %}
+            <div class="feed_box">
+                <!-- 피드 - 첫 헤더 (프로필 이미지, 닉네임 등)-->
+                <div class='feed_header_div'>
+                    <a id="tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
+                        <div class='feed_profile_div'>
+                            <div class="profile_box_div">
+                                <img class="profile" src="{{ feed.profile_img }}">
+                            </div>
+                            <div>{{ feed.nickname }}</div>
+                        </div>
+                    </a>
+                    <div class="extra_modal"><img class="like-icon"
+                                                  src="{{ url_for('static', filename='img/more.png') }}">
+                    </div>
                 </div>
 
-                <!-- modal post content -->
-                <div class='modal_post_content'>
-                    <div class='modal_feed_header_div'>
-                        <a id="modal_tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
-                            <div class='modal_feed_profile_div'>
-                                <div class="profile_box_div">
-                                    <img class="modal_profile" src="{{ feed.profile_img }}">
-                                </div>
-                                <div>{{ feed.nickname }}</div>
-                            </div>
-                        </a>
-                        <div class="modal_extra_modal">
-                            <img class="like-icon" src="{{url_for('static', filename='img/more.png') }}">
-                        </div>
-                    </div>
-                    <div class='post-like-bookmark'>like, bookmark 기호</div>
-                    <div class='post-like'>like</div>
-                    <div class='post-like-count'>like-count개</div>
-                    <div class='post-write'>글쓰기</div>
-                </div> <!--post-content-->
-            </div>
-        </div>
-    {% endfor %}
+                <!-- 피드 - 프로필 이미지-->
+                <div>
+                    <img class='feed_images' src="/static/upload/{{ feed.feed_images[0] }}">
+                </div>
 
-    <div class="article">
-        <div class="feed_box_area">
-            <!-- 여기서부터 피드박스 -->
-            {% for feed in feeds %}
-                <div class="feed_box">
-                    <!-- 피드 - 첫 헤더 (프로필 이미지, 닉네임 등)-->
-                    <div class='feed_header_div'>
-                        <a id="tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
-                            <div class='feed_profile_div'>
-                                <div class="profile_box_div">
-                                    <img class="profile" src="{{ feed.profile_img }}">
-                                </div>
-                                <div>{{ feed.nickname }}</div>
-                            </div>
-                        </a>
-                        <div class="extra_modal"><img class="like-icon" src="{{url_for('static', filename='img/more.png') }}">
-                        </div>
-                    </div>
-
-                    <!-- 피드 - 프로필 이미지-->
-                    <div>
-                        <img class='feed_images' src="{{ feed.feed_images[0] }}">
-                    </div>
-
-                    <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
-                    <div>
-                        <div class='feed_like_bookmark_div'>
-                            <!-- 좋아요 -->
-                            <div>
+                <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
+                <div>
+                    <div class='feed_like_bookmark_div'>
+                        <!-- 좋아요 -->
+                        <div>
                                 <span onclick="like_func('{{ users.nickname }}', '{{ feed.num }}')">
                                     {% set nickname_list = [] %}
                                     {% for like_dict in feed.like %}
                                         <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
                                     {% endfor %}
                                     {% if users.nickname in nickname_list %}
-                                        <img class="like-icon" src="{{url_for('static', filename='img/heart-solid.svg') }}" data-heart="1">
+                                        <img class="like-icon"
+                                             src="{{ url_for('static', filename='img/heart-solid.svg') }}"
+                                             data-heart="1">
                                     {% else %}
-                                        <img class="like-icon" src="{{url_for('static', filename='img/heart-regular.svg') }}" data-heart="0">
+                                        <img class="like-icon"
+                                             src="{{ url_for('static', filename='img/heart-regular.svg') }}"
+                                             data-heart="0">
                                     {% endif %}
                                 </span>
 
-                                <!-- 게시글 보기, 공유하기-->
-                                <img class="message-icon" src="{{url_for('static', filename='img/message-regular.svg') }}">
-                                <img class="paper-plane-icon" src="{{url_for('static', filename='img/paper-plane-regular.svg') }}">
-                            </div>
-                            <!-- bookmark -->
-                            <div onclick = "bookmark_func('{{users.nickname}}', '{{feed.num}}')">
-                                {% set nickname_list = [] %}
-                                {% for bookmark_dict in feed.bookmark %}
-                                    <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
-                                {% endfor %}
-                                {% if users.nickname in nickname_list %}
-                                    <img class="bookmark-icon" src="{{url_for('static', filename='img/bookmark-solid.svg') }}" data-bookmark="1">
-                                {% else %}
-                                    <img class="bookmark-icon" src="{{url_for('static', filename='img/bookmark-regular.svg') }}" data-bookmark="0">
-                                {% endif %}
-                            </div>
+                            <!-- 게시글 보기, 공유하기-->
+                            <img class="message-icon" src="{{ url_for('static', filename='img/message-regular.svg') }}">
+                            <img class="paper-plane-icon"
+                                 src="{{ url_for('static', filename='img/paper-plane-regular.svg') }}">
                         </div>
-
-                        <!-- 피드 본문, 좋아요-->
-                        <div class="feed_like_div">좋아요 {{ feed.like|length }}개</div>
-                        <div class="feed_content_div">
-                            <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
+                        <!-- bookmark -->
+                        <div onclick="bookmark_func('{{ users.nickname }}', '{{ feed.num }}')">
+                            {% set nickname_list = [] %}
+                            {% for bookmark_dict in feed.bookmark %}
+                                <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
+                            {% endfor %}
+                            {% if users.nickname in nickname_list %}
+                                <img class="bookmark-icon"
+                                     src="{{ url_for('static', filename='img/bookmark-solid.svg') }}" data-bookmark="1">
+                            {% else %}
+                                <img class="bookmark-icon"
+                                     src="{{ url_for('static', filename='img/bookmark-regular.svg') }}"
+                                     data-bookmark="0">
+                            {% endif %}
                         </div>
                     </div>
-                    <!-- 댓글 더보기 -->
-                    <div class='feed_reply_view_div'+ {{feed.num}} onclick= "feed_modal_func('{{feed.num}}')">
-                        댓글 {{feed.reply|length}}개 더보기
+
+                    <!-- 피드 본문, 좋아요-->
+                    <div class="feed_like_div">좋아요 {{ feed.like|length }}개</div>
+                    <div class="feed_content_div">
+                        <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
+                    </div>
+                </div>
+                <!-- 댓글 더보기 -->
+                <div class='feed_reply_view_div' + {{ feed.num }} onclick="feed_modal_func('{{ feed.num }}')">
+                    댓글 {{ feed.reply|length }}개 더보기
+                </div>
+
+                <!-- 댓글 View -->
+                <div>
+                    {% for reply in feed.reply[::-1][:2] %}
+                        <div class='feed_reply_div'>
+                            <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- 댓글 달기 -->
+                <div class="feed_reply_write_div">
+                    <input type="text" class="feed_reply_write" placeholder="댓글 달기..">
+                    <button class="feed_reply_upload" onclick="reply_write('{{ users.nickname }}', '{{ feed.num }}')">
+                        게시
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    </div> <!-- feed_box_area -->
+
+
+    <!-- 추천 박스 -->
+    <div class="recommend_box">
+        <!-- 마이 프로필 -->
+        <div style="display: flex;flex-direction: row; align-items: center; margin: 20px;">
+            프로필출력
+        </div>
+        <!-- 회원님을 위한 추천 -->
+        <div style="display: flex;flex-direction: row; justify-content: space-between; margin:15px 0 15px 0;">
+            <div style="font-weight: bold; color: gray">
+                회원님을 위한 추천
+            </div>
+            <div>
+                <a href="#" style="font-weight: bold;color: black;text-decoration: none">모두보기</a>
+            </div>
+        </div>
+        <!-- 추천 회원 출력  -->
+        {% if recommend == '추천 할 회원이 없습니다.' %}
+            <div>추천 할 회원이 없습니다.</div>
+        {% else %}
+            {% for reco in recommend %}
+                <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
+                    <div style="display: flex; flex-direction: row">
+                        <div class="box" style="width: 35px; height: 35px">
+                            <img class="profile"
+                                 src="{{ reco.profile_img }}">
+                        </div>
+                        <div style="margin-left:10px; text-align:left">
+                            <div id="mynick{{ reco.nickname }}"
+                                 style="font-weight:bold; font-size: 14px">{{ reco.nickname }}</div>
+                            <div style="color:gray; font-size:14px">인기</div>
+                        </div>
                     </div>
 
-                    <!-- 댓글 View -->
-                    <div>
-                        {% for reply in feed.reply[::-1][:2] %}
-                            <div class='feed_reply_div'>
-                                <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- 댓글 달기 -->
-                    <div class="feed_reply_write_div">
-                        <input type="text" class="feed_reply_write" placeholder="댓글 달기..">
-                        <button class="feed_reply_upload" onclick="reply_write('{{ users.nickname }}', '{{ feed.num }}')">
-                            게시
-                        </button>
+                    <div id="follow{{ reco.nickname }}">
+                        <a onclick="follow('{{ reco.nickname }}')"
+                           style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>
                     </div>
                 </div>
             {% endfor %}
-        </div> <!-- feed_box_area -->
-        
-
-        <!-- 추천 박스 -->
-        <div class="recommend_box">
-            <!-- 마이 프로필 -->
-            <div style="display: flex;flex-direction: row; align-items: center; margin: 20px;">
-                프로필출력
-            </div>
-            <!-- 회원님을 위한 추천 -->
-            <div style="display: flex;flex-direction: row; justify-content: space-between; margin:15px 0 15px 0;">
-                <div style="font-weight: bold; color: gray">
-                    회원님을 위한 추천
-                </div>
-                <div>
-                    <a href="#" style="font-weight: bold;color: black;text-decoration: none">모두보기</a>
-                </div>
-            </div>
-            <!-- 추천 회원 출력  -->
-            {% if recommend == '추천 할 회원이 없습니다.' %}
-                <div>추천 할 회원이 없습니다.</div>
-            {% else %}
-                {% for reco in recommend %}
-                    <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
-                        <div style="display: flex; flex-direction: row">
-                            <div class="box" style="width: 35px; height: 35px">
-                                <img class="profile"
-                                    src="{{ reco.profile_img }}">
-                            </div>
-                            <div style="margin-left:10px; text-align:left">
-                                <div id="mynick{{ reco.nickname }}"
-                                    style="font-weight:bold; font-size: 14px">{{ reco.nickname }}</div>
-                                <div style="color:gray; font-size:14px">인기</div>
-                            </div>
-                        </div>
-
-                        <div id="follow{{ reco.nickname }}">
-                            <a onclick="follow('{{ reco.nickname }}')"
-                            style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
+        {% endif %}
 
 
-            <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br>
-                개인정보처리방침·약관·위치·인기 계정·해시태그·언어
-            </div>
-            <button type="button" onclick="logout()">로그아웃</button>
-            <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> © 2022 INSTAGRAM FROM META</div>
+        <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br>
+            개인정보처리방침·약관·위치·인기 계정·해시태그·언어
         </div>
+        <button type="button" onclick="logout()">로그아웃</button>
+        <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> © 2022 INSTAGRAM FROM META</div>
     </div>
-
-<!-- 게시글 작성 모달 
-<div class="modal-overlay">
-    <div class="modal-post">
-        <div class="box-modal">
-            <div class="post-title">새 게시물 만들기</div>
-            <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
-            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
-            <button class="btn-content">컴퓨터에서 선택</button>
-            <div class="modal-close"><a href="#">close</a></div>
-        </div>
-    </div>
-</div> -->
+</div>
 
 <!-- 화면 View 모달 
 <div class="modal-overlay">

@@ -351,6 +351,57 @@ def profile():
     # return render_template('/profile/profile.html', user=user)
 
 
+@app.route('/api/feed/upload', methods=['POST'])
+def feed_upload():
+
+    file = request.files['file']
+    image = request.form['image']
+    content = request.form['content']
+    profile_image = request.form['profile_image']
+    user_nick = request.form['user_nick']
+
+    # 해당 파일에서 확장자명만 추출
+    extension = file.filename.split('.')[-1]
+    # 파일 이름이 중복되면 안되므로, 지금 시간을 해당 파일 이름으로 만들어서 중복이 되지 않게 함!
+    today = datetime.datetime.utcnow()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+    filename = f'{user_nick}-{mytime}'
+    # 파일 저장 경로 설정 (파일은 db가 아니라, 서버 컴퓨터 자체에 저장됨)
+    save_to = f'static/upload/{filename}.{extension}'
+    # 파일 저장!
+    file.save(save_to)
+
+    count_list = []
+    feed_list = list(db.FEED.find({}, {'num': True, '_id': False}))
+    for number in feed_list:
+        print(number['num'])
+        count_list.append(int(number['num']))
+
+    count = max(count_list) + 1
+
+    print(count)
+    print(file)
+    print(image)
+    print(content)
+    print(profile_image)
+    print(user_nick)
+
+    # 아래와 같이 입력하면 db에 추가 가능!
+    doc = {
+        'num': str(count),
+        'date': mytime,
+        'nickname': user_nick,
+        'feed_images': [f'{filename}.{extension}'],
+        'profile_img': profile_image,
+        'content': content,
+        'like': [],
+        'bookmark': [],
+        'reply': []
+    }
+    db.FEED.insert_one(doc)
+
+    return jsonify({'result': 'success'})
+
 ### ================ Main ================
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
