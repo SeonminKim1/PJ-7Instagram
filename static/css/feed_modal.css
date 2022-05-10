@@ -1,0 +1,114 @@
+.modal-overlay {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.post-modal{
+    display: none;
+    height:500px;
+    width:600px;
+    margin: 60px auto auto auto;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    padding:60px 0px 60px 0px;
+    border-radius: 10px;
+    background-color: black;
+}
+
+
+/* modal feed content */
+
+.modal_feed_box {
+border: solid 1px gray;
+border-radius: 5px;
+background-color: white
+}
+
+
+
+.modal_feed_profile_div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin:0px 15px 0px 15px;
+}
+
+.modal_profile {
+    width: 100%;
+    height: 100%;
+    border-radius: 70%;
+    object-fit: cover;
+}
+
+.modal_extra_modal{
+    margin:0px 15px 0px 15px;
+}
+
+.modal_feed_content_div{
+    margin:0px 15px 0px 15px; text-align: left; font-size:16px;
+}
+
+.modal_feed_reply_div{
+    margin:0px 15px 0px 15px; text-align:left; font-size:14px;
+}
+
+/* TEST */
+
+.modal-post-2{
+    display: none;
+    height:1000px;
+    width:1000px;
+    margin: 60px auto auto auto;
+    padding:60px 0px 60px 0px;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+}
+
+.modal-overlay-2 {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+/* modal img  */
+.modal_post_img_div{
+    background-color:gray;
+    height:100%;
+    line-height:500px;
+}
+.modal_feed_img{
+    vertical-align:middle;
+    height:300px;
+    width:100%;
+    background-color:white;
+}
+
+.modal_post_content{
+    background:gray;
+    height:100%;
+}
+
+.modal_feed_header_div{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#modal_tag_a{
+    text-decoration : none
+  }

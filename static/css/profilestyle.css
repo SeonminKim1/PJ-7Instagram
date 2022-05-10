@@ -196,17 +196,142 @@ footer p {
     margin: 10px 30px;
 }
 
+/*article {*/
+/*    background-color: #1DA0f6;*/
+/*    width: 100%;*/
+/*    height: 300px;*/
+/*    display: flex;*/
+/*    justify-content: space-around;*/
+/*    align-items: center;*/
+/*}*/
+
 article {
     width: 100%;
+    height: 900px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+}
+
+article .post{
+    width: 100%;
+    border: none;
     height: 300px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    overflow: hidden;
+    margin-bottom: 0;
+    position: relative;
+    padding: 0;
 }
 
 article img {
-    width: 31%;
-    height: 290px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
+}
+
+/*article img {*/
+/*    width: 31%;*/
+/*    height: 290px;*/
+/*    object-fit: cover;*/
+/*    object-position: center;*/
+/*}*/
+
+/*modal*/
+.modal-overlay {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.modal-post {
+    display: none;
+    height: 500px;
+    width: 500px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 10px;
+    background: #FFFFFF;
+}
+
+.box-modal {
+    text-align: center;
+}
+
+.post-title {
+    height: 60px;
+    line-height: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.post-img {
+    height: 80px;
+    width: auto;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.post-info {
+    font-size: 22px;
+}
+
+.btn-content {
+    height: 30px;
+    width: 108px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background-color: #1DA0f6;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.modal_close {
+    width: 26px;
+    height: 26px;
+}
+
+/*img hover*/
+
+
+
+article .likes{
+    z-index: 2;
+    position: absolute;
+    top: 0%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: .5s;
+}
+
+article .post:hover .likes{
+    opacity: 1;
+}
+
+.icon{
+    width: 40px;
+    height: 40px;
+}
+
+.likes .likes-count{
+    color: #fff;
 }
