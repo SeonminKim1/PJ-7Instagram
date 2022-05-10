@@ -7,17 +7,17 @@ html {
     height: 100%;
 }
 
-body {
+.profile_body {
     background-color: #fafafa;
     height: 100%;
     padding: 0;
     margin: 0;
 }
 
-section {
+.profile_section {
     width: 960px;
     margin: 0 auto;
-    padding-top: 94px;
+    padding-top: 90px;
     padding-bottom: 40px;
 }
 
@@ -49,14 +49,6 @@ section {
     font-size: 30px;
 }
 
-/*.profile_btn {*/
-/*    border-radius: 5px;*/
-/*    border: 1px solid #E3E3E3;*/
-/*    background-color: #fafafa;*/
-/*    margin-left: 5%;*/
-/*    font-size: 16px;*/
-/*}*/
-
 .user_info {
     width: 70%;
     height: 25%;
@@ -86,15 +78,15 @@ section {
     margin: 10px 30px;
 }
 
-article {
+.profile_article {
     width: 100%;
     height: 900px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
+    gap: 20px;
 }
 
-article .post{
+.profile_article .post{
     width: 100%;
     border: none;
     height: 300px;
@@ -104,7 +96,7 @@ article .post{
     padding: 0;
 }
 
-article img {
+.profile_article img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -113,10 +105,10 @@ article img {
 
 /*img hover*/
 
-article .likes{
+.profile_article .likes{
     z-index: 2;
     position: absolute;
-    top: 0%;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -131,11 +123,11 @@ article .likes{
     transition: .5s;
 }
 
-article .post:hover .likes{
+.profile_article .post:hover .likes{
     opacity: 1;
 }
 
-.icon{
+.likes .icon{
     width: 40px;
     height: 40px;
 }
