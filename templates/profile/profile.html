@@ -100,7 +100,7 @@
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ my_followers.nickname }}"
-                                     style="font-weight:bold; font-size: 14px">{{ my_followers.nickname }}</div>
+                                     style="font-weight:bold; font-size: 14px; margin-top: 8px;">{{ my_followers.nickname }}</div>
                             </div>
                         </div>
                         <div id="follow{{ my_followers.nickname }}">
@@ -132,12 +132,12 @@
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ my_followings.nickname }}"
-                                     style="font-weight:bold; font-size: 14px">{{ my_followings.nickname }}</div>
+                                     style="font-weight:bold; font-size: 14px; margin-top:10px;">{{ my_followings.nickname }}</div>
                             </div>
                         </div>
                         <div id="follow{{ my_followings.nickname }}">
                             <a onclick="follow('{{ my_followings.nickname }}')"
-                               style="font-size:14px; font-weight:bold; text-decoration:none;">언팔로잉</a>
+                               style="font-size:14px; font-weight:bold; margin-top:10px;">언팔로잉</a>
                         </div>
                     </div>
                 {% endfor %}

@@ -22,13 +22,18 @@
     border-bottom: 2px solid #E3E3E3;
 }
 
+.profile {
+    border: 1px solid #DBDBDB;
+}
+
 .my_info img {
     border-radius: 50%;
     width: 200px;
     height: 200px;
     object-fit: cover;
     object-position: center;
-    margin: 3% 10% 3% 3%;
+    margin: 20px 40px 40px 40px;
+    border: 1px solid #DBDBDB;
 }
 
 .info_box {

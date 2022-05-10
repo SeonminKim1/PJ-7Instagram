@@ -168,7 +168,7 @@
         }
 
         document.getElementById('btn-profile').addEventListener('click', onClick);
-        document.getElementById('close-menu').addEventListener('click', offClick);
+        document.querySelector('.overlay-menu').addEventListener('click', offClick);
 
         function onClick_w() {
             document.querySelector('.overlay-post').style.top = window.pageYOffset + 'px';
@@ -176,7 +176,6 @@
             document.querySelector('#first_modal').style.display = 'flex';
             document.querySelector('.overlay-post').style.display = 'flex';
             document.querySelector('body').style.overflowY = 'hidden';
-
         }
 
         function offClick_w() {
@@ -186,9 +185,8 @@
             document.querySelector('.overlay-post').style.display = 'none';
             document.querySelector('body').style.overflowY = 'visible';
         }
-
         document.getElementById('btn-post').addEventListener('click', onClick_w);
-        document.querySelector('.close-post').addEventListener('click', offClick_w);
+        document.querySelector('.overlay-post').addEventListener('click', offClick_w);
     };
     // Feed 조회 - GET
     function showFeed() {
@@ -327,8 +325,6 @@
                 <div class="post-title">새 게시물 만들기</div>
                 <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
                 <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
-                <button class="btn-content">컴퓨터에서 선택</button>
-                <div class="close-post"><a href="#">닫기</a></div>
             </div>
         </div>
     </div>
@@ -358,12 +354,16 @@
     <div class="overlay-menu">
         <div class="modal-menu">
             <div class="mdbox-menu">
-                <div class="md-menu">프로필</div>
-                <div class="md-menu">저장됨</div>
-                <div class="md-menu">설정</div>
-                <div class="md-menu">계정전환</div>
-                <div class="md-menu">로그아웃</div>
-                <div id=close-menu class="md-menu"><a href="#">닫기</a></div>
+                <div class="md-menu">
+                     <img class="img-menu" src="{{url_for('static', filename='nav-img/profile.png')}}">프로필
+                </div>
+                <div class="md-menu">
+                    <img class="img-menu" src="{{url_for('static', filename='nav-img/bookmark.png')}}">저장됨</div>
+                <div class="md-menu">
+                    <img class="img-menu" src="{{url_for('static', filename='nav-img/setting.png')}}">설정</div>
+                <div class="md-menu">
+                    <img class="img-menu" src="{{url_for('static', filename='nav-img/refresh.png')}}">계정전환</div>
+                <div id="logout" class="md-menu" onclick="logout()">로그아웃</div>
             </div>
         </div>
     </div>
@@ -376,10 +376,10 @@
                     background-color: rgba(0, 0, 0, 0.8);
                     top:0; left:0; z-index:9999;">
             <div class="modal_post_{{feed.num}}" 
-                style="display:none; height:1000px; width:1000px; 
+                style="display:none; height:1000px; width:1000px;
                         margin:60px auto auto auto;
                         border: 1px solid black; 
-                        border-radius:10px; background-color:#FFFFFF; 
+                        background-color:#FFFFFF;
                         flex-direction:row; text-align:center; 
                         justify-content:center;">
                 
@@ -481,7 +481,7 @@
                         <a id="tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
                             <div class='feed_profile_div'>
                                 <div class="profile_box_div">
-                                    <img class="profile" src="{{ feed.profile_img }}">
+                                    <img class="profile" src="{{ feed.profile_img }}" style="border: 1px solid #DBDBDB;">
                                 </div>
                                 <div>{{ feed.nickname }}</div>
                             </div>
@@ -553,7 +553,7 @@
                     <!-- 댓글 달기 -->
                     <div class="feed_reply_write_div">
                         <input type="text" class="feed_reply_write_{{feed.num}}" placeholder="댓글 달기.."
-                            style="box-shadow:none; border: none; outline: none; width:500px;">
+                            style="box-shadow:none; border: none; outline: none; width:500px; margin-left: 10px;">
                         <button class="feed_reply_upload" onclick="reply_write('{{ users.nickname }}', '{{ feed.num }}')">
                             게시
                         </button>
@@ -598,9 +598,9 @@
                 {% for reco in recommend %}
                     <div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center; margin:10px 0px 10px 0px">
                         <div style="display: flex; flex-direction: row">
-                            <div class="box" style="width: 35px; height: 35px">
+                            <div class="box" style="width: 35px; height: 35px;">
                                 <img class="profile"
-                                    src="{{ reco.profile_img }}">
+                                    src="{{ reco.profile_img }}" style="border: 1px solid #DBDBDB;">
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ reco.nickname }}"
@@ -611,7 +611,7 @@
 
                         <div id="follow{{ reco.nickname }}">
                             <a onclick="follow('{{ reco.nickname }}')"
-                            style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>
+                            style="font-size:14px; font-weight:bold; text-decoration:none; cursor: pointer;">팔로우</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -621,7 +621,6 @@
             <div style="margin-top: 50px;font-size: 12px;color: gray; text-align: left"> 소개·도움말·홍보 센터·API·채용 정보 <br>
                 개인정보처리방침·약관·위치·인기 계정·해시태그·언어
             </div>
-            <button type="button" onclick="logout()">로그아웃</button>
             <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> © 2022 INSTAGRAM FROM META</div>
         </div>
     </div>

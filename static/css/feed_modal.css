@@ -1,45 +1,43 @@
-
 /* modal img  */
-.modal_post_img_div{
-    background-color:black;
-    height:100%;
-    margin:0px 5px 0px 0px;
-    line-height:1000px;
+.modal_post_img_div {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    margin: 0 5px 0 0;
+    line-height: 1000px;
 }
 
-.modal_feed_img{
-    vertical-align:middle;
-    height:300px;
-    width:200px;
-    /* width:100%; */
-    background-color:white;
+.modal-feed-img {
+    vertical-align: middle;
+    height: 300px;
+    /*width: 100%;*/
 }
 
 /* POST 모달 Content 전체 */
-.modal_post_content_div{
-    display:flex;
+.modal_post_content_div {
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background:white;
-    margin:0px 0px 0px 5px;
-    height:100%;
+    background: white;
+    margin: 0 0 0 5px;
+    height: 100%;
 }
 
 /* Profile / Header */
-.modal_feed_header_div{
-    display:flex;
+.modal_feed_header_div {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 20px 5px 0px 5px;
-    padding: 0px 0px 20px 0px;  
-    border-bottom:1px solid gray;
+    margin: 20px 5px 0 5px;
+    padding: 0 0 20px 0;
+    border-bottom: 1px solid gray;
 }
 
-.modal_feed_profile_div{
+.modal_feed_profile_div {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin:0px 5px 0px 5px;
+    margin: 0 5px 0 5px;
 }
 
 .modal_profile {
@@ -49,56 +47,67 @@
     object-fit: cover;
 }
 
-#modal_tag_a{
-    text-decoration : none;
+#modal_tag_a {
+    text-decoration: none;
     color: black;
 }
 
 /* Content 전체 */
-.modal_feed_content_div{
-    margin:20px 5px 20px 5px; text-align: left; font-size:16px;
-    height:600px; 
-    border-bottom:1px solid gray;
+.modal_feed_content_div {
+    margin: 20px 5px 20px 5px;
+    text-align: left;
+    font-size: 16px;
+    height: 600px;
+    border-bottom: 1px solid gray;
 }
 
-.modal_feed_like_bookmark_div{
-    margin:10px 5px 10px 5px;
+.modal_feed_like_bookmark_div {
+    margin: 10px 5px 10px 5px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between    
+    justify-content: space-between
 }
 
-.modal_feed_like_div{
-    margin: 10px 5px 10px 5px; text-align: left; font-weight:bold; font-size:14px;
-  }
-  
+.modal_feed_like_div {
+    margin: 10px 5px 10px 5px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+}
+
 /* Reply */
-.modal_feed_reply_div{
-    margin:10px 5px 10px 5px; text-align:left; font-size:14px;
+.modal_feed_reply_div {
+    margin: 10px 5px 10px 5px;
+    text-align: left;
+    font-size: 14px;
 }
 
-.modal_feed_reply_write_div{
-    display:flex; flex-direction:row;
-    align-items:center; 
+.modal_feed_reply_write_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    margin:10px 0px 20px 0px;
-    padding:5px 0px 5px 0px;
+    margin: 10px 0 20px 0;
+    padding: 5px 0 5px 0;
     border-bottom: solid 1px gray;
     border-top: solid 1px gray;
 }
 
-.modal_feed_reply_write{
-    box-shadow: none; border: none; outline: none; 
+.modal_feed_reply_write {
+    box-shadow: none;
+    border: none;
+    outline: none;
 }
 
-.modal_feed_reply_upload{
-    width: 50px; color: cornflowerblue; font-weight: bold;
-    border-left: solid 1px gray;
-    border-right:none; border-top:none;
-    border-bottom: none;
+.modal_feed_reply_upload {
+    width: 50px;
+    color: #1DA0f6;
+    font-weight: bold;
+    border: none;
+    background-color: #FFFFFF;
 }
 
-.modal_feed_close{
+.modal_feed_close {
     text-align: center;
-    margin: 0px 0px 15px 0px;
+    margin: 0 0 15px 0;
 }

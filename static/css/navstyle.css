@@ -11,8 +11,10 @@
 
 .box-logo {
     height: 60px;
-    width: 340px;
+    width: 290px;
     line-height: 60px;
+    border: none;
+    background-color: #F8F9FA;
 }
 
 .img-logo {
