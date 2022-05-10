@@ -24,6 +24,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/feed_main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navstyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed_modal.css') }}">
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/bee3d4f913.js" crossorigin="anonymous"></script>
@@ -54,7 +55,6 @@
             document.querySelector('.modal-post').style.display = 'none';
             document.querySelector('.modal-overlay').style.display = 'none';
         }
-
         document.getElementById('btn-post').addEventListener('click', onClick);
         document.querySelector('.modal-close').addEventListener('click', offClick);
     };
@@ -65,9 +65,6 @@
             type: "GET",
             url: "/",
             data: "",
-            success: function (response) {
-                alert(response["msg"]);
-            }
         })
     }
 
@@ -164,12 +161,12 @@
         })
 
     }
-    
+
     // feed Modal Func
-    function feed_modal_func(feed){
-        console.log(feed)
-        document.querySelector('.modal-post').style.display = 'block';
-        document.querySelector('.modal-overlay').style.display = 'block';
+    function feed_modal_func(feed_num){
+        console.log(feed_num, typeof(feed_num))
+        document.querySelector('.modal_post_'+ feed_num).style.display = 'flex';
+        document.querySelector('.modal_overlay_'+ feed_num).style.display = 'block';
     }
 </script>
 
@@ -177,16 +174,58 @@
     <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
     <!-- nav 모달 -->
     <div class="modal-overlay">
-            <div class="modal-post">
-                <div class="box-modal">
-                    <div class="post-title">새 게시물 만들기</div>
-                    <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
-                    <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
-                    <button class="btn-content">컴퓨터에서 선택</button>
-                    <div class="modal-close"><a href="#">close</a></div>
-                </div>
+        <div class="modal-post">
+            <div class="box-modal">
+                <div class="post-title">새 게시물 만들기</div>
+                <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+                <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+                <button class="btn-content">컴퓨터에서 선택</button>
+                <div class="modal-close"><a href="#">close</a></div>
             </div>
         </div>
+    </div>
+
+    {% for feed in feeds %}
+        <!-- 진행중인 modal -->
+        <div class="modal_overlay_{{feed.num}}" 
+            style="display:none; position:absolute;
+                     width:100%; height:100%; backgorund-color: rgba(0,0,0,0.8);
+                     top:0; left:0; z-index:9999;">
+            <div class="modal_post_{{feed.num}}" 
+                style="display:none; height:1000px; width:1000px; 
+                        margin:60px auto auto auto; padding:60px 0px 60px 0px; 
+                        border-radius:10px; background-color:#FFFFFF; 
+                        flex-direction:row; text-align:center; 
+                        justify-content:center;">
+                <!-- modal post img -->
+                <div class="modal_post_img_div">
+                    <img class='modal-feed-img' src="{{ feed.feed_images[0] }}">
+                </div>
+
+                <!-- modal post content -->
+                <div class='modal_post_content'>
+                    <div class='modal_feed_header_div'>
+                        <a id="modal_tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
+                            <div class='modal_feed_profile_div'>
+                                <div class="profile_box_div">
+                                    <img class="modal_profile" src="{{ feed.profile_img }}">
+                                </div>
+                                <div>{{ feed.nickname }}</div>
+                            </div>
+                        </a>
+                        <div class="modal_extra_modal">
+                            <img class="like-icon" src="{{url_for('static', filename='img/more.png') }}">
+                        </div>
+                    </div>
+                    <div class='post-like-bookmark'>like, bookmark 기호</div>
+                    <div class='post-like'>like</div>
+                    <div class='post-like-count'>like-count개</div>
+                    <div class='post-write'>글쓰기</div>
+                </div> <!--post-content-->
+            </div>
+        </div>
+    {% endfor %}
+
     <div class="article">
         <div class="feed_box_area">
             <!-- 여기서부터 피드박스 -->
@@ -253,7 +292,7 @@
                         </div>
                     </div>
                     <!-- 댓글 더보기 -->
-                    <div class='feed_reply_view_div'+ {{feed_num}} onclick= "feed_modal_func({{feed_num}})">
+                    <div class='feed_reply_view_div'+ {{feed.num}} onclick= "feed_modal_func('{{feed.num}}')">
                         댓글 {{feed.reply|length}}개 더보기
                     </div>
 
@@ -275,7 +314,7 @@
                     </div>
                 </div>
             {% endfor %}
-        </div> <!-- 여기까지 피드박스 -->
+        </div> <!-- feed_box_area -->
         
         <!-- 추천 박스 -->
         <div class="recommend_box">
