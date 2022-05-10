@@ -323,33 +323,35 @@ def profile():
         feed_nickname = request.args.get('feed_nickname')
 
         user_info = db.USER.find_one({"nickname": feed_nickname})  # id, num, nickname, feed_images, content, like, reply
-        post_count = len(list(db.FEED.find({"nickname": feed_nickname})))
-        follower_count = len(db.USER.find_one({"nickname": feed_nickname})['follower'])
-        following_count = len(db.USER.find_one({"nickname": feed_nickname})['following'])
+        my_feed_list = list(db.FEED.find({"nickname": feed_nickname}))
+        # print(my_feed_list)
 
-        my_feeds = list(db.FEED.find({"nickname": feed_nickname}))
-        # print(my_feeds)
+        post_count = len(my_feed_list)
+        follower_count = len(user_info['follower'])
+        following_count = len(user_info['following'])
 
-        for my_feed in my_feeds:
-            like_count = len(my_feed['like'])
-            reply_count = len(my_feed['reply'])
-            # print(len(my_feed['like']))
+        my_follower_list = []
+        for my_followers in user_info['follower']:
+            my_follower = db.USER.find_one({'nickname': my_followers})
+            my_follower_list.append(my_follower)
+
+
+        my_following_list = []
+        for my_followings in user_info['following']:
+            my_following = db.USER.find_one({'nickname': my_followings})
+            my_following_list.append(my_following)
 
         return render_template('/profile/profile.html', post_count=post_count, user_info=user_info, follower_count=follower_count,
-                               following_count=following_count, my_feeds=my_feeds, like_count=like_count, reply_count=reply_count)
+                               following_count=following_count, my_feed_list=my_feed_list, my_follower_list=my_follower_list, my_following_list=my_following_list)
 
     except jwt.ExpiredSignatureError:  # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
     except jwt.exceptions.DecodeError:  # 해당 token이 다르다면 login 페이지로 redirect
         return redirect(url_for("login"))
 
-    # if feed_nickname is not None:
-    #     user = list(db.USER.find({'nickname': feed_nickname}))  # num, nickname, feed_images, content, like, reply
-    # return render_template('/profile/profile.html', user=user)
 
 @app.route('/api/feed/upload', methods=['POST'])
 def feed_upload():
-
     file = request.files['file']
     image = request.form['image']
     content = request.form['content']
