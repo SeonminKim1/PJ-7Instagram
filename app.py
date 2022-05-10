@@ -172,7 +172,7 @@ def home():
         else:
             recommend_3 = '추천 할 회원이 없습니다.'
             return render_template('/Feed/index.html',
-                                   feeds=feed_info, users=user_info, recommend=recommend_3 )
+                                   feeds=feed_info, users=user_info, recommend=recommend_3)
 
     except jwt.ExpiredSignatureError: # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
