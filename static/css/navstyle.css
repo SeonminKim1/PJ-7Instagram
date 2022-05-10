@@ -5,14 +5,18 @@
 .box-nav {
     display: flex;
     height: 60px;
-    width: 975px;
+    width: 1000px;
     margin: auto;
 }
 
 .box-logo {
     height: 60px;
-    width: 340px;
+    width: 120px;
     line-height: 60px;
+    margin-right: 200px;
+    background-color: #F8F9FA;
+    border: none;
+    cursor: pointer;
 }
 
 .img-logo {
@@ -45,8 +49,7 @@
     width: 278px;
     line-height: 60px;
     text-align: right;
-    margin-left: 40px;
-
+    margin-left: 100px;
 }
 
 .btn {
