@@ -177,7 +177,7 @@
         {% for my_feed in my_feed_list %}
             {% for my_feed_img in my_feed.feed_images %}
                 <div class="post">
-                    <img src="{{ my_feed_img }}" alt="게시물없음">
+                    <img src="/static/upload/{{ my_feed_img }}" alt="게시물없음">
                     <div class="likes">
                         <img src="{{ url_for('static', filename='img/white-heart.png') }}" class="icon" alt="">
                         <p class="likes-count">{{ my_feed.like|length }} 좋아요, {{ my_feed.reply|length }} 댓글</p>
