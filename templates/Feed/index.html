@@ -320,6 +320,12 @@
         document.querySelector('.modal_post_' + feed_num).style.display = 'flex';
         document.querySelector('.modal_overlay_' + feed_num).style.display = 'block';
     }
+
+    function feed_modal_func_off(feed_num){
+        console.log(feed_num, typeof(feed_num))
+        document.querySelector('.modal_post_'+ feed_num).style.display = 'none';
+        document.querySelector('.modal_overlay_'+ feed_num).style.display = 'none';
+    }
 </script>
 
 <body>
@@ -404,12 +410,9 @@
                     <div class="modal_extra_modal">
                         <img class="like-icon" src="{{ url_for('static', filename='img/more.png') }}">
                     </div>
-                </div>
-                <div class='post-like-bookmark'>like, bookmark 기호</div>
-                <div class='post-like'>like</div>
-                <div class='post-like-count'>like-count개</div>
-                <div class='post-write'>글쓰기</div>
-            </div> <!--post-content-->
+                    <div class="modal_feed_close" onclick="feed_modal_func_off('{{feed.num}}')"><a href="#">Close</a></div>
+                </div> <!--post-content-->
+            </div>
         </div>
     </div>
 {% endfor %}

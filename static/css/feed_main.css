@@ -132,6 +132,7 @@ body {
 .feed_header_div{
   display:flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .feed_profile_div {
