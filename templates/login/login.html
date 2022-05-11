@@ -29,10 +29,10 @@
                 data: {'id_give': id, 'pwd_give': pwd},
                 success: function (response) {
                     if(response['result'] == 'success') {
-                        alert('토큰 생성 완료!')
+                        {#alert('토큰 생성 완료!')#}
                         // 토큰이 정상적으로 발급되면, 토큰을 받아온다! 'token' 토큰을 받아 쿠키에 저장
                         $.cookie('mytoken', response['token']);  //쿠키는 key:value 형태로 저장됨
-                        alert(response['msg']);
+                        {#alert(response['msg']);#}
                         window.location.replace('/')
                     } else {
                         // 로그인 실패 시
