@@ -218,12 +218,12 @@
                     <div class='modal_feed_like_bookmark_div'>
                         <!-- 좋아요 -->
                         <div>
-                                <span onclick="like_func('{{ user_info.nickname }}', '{{ feed.num }}')">
+                                <span onclick="like_func('{{ users.nickname }}', '{{ feed.num }}')">
                                     {% set nickname_list = [] %}
                                     {% for like_dict in feed.like %}
                                         <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
                                     {% endfor %}
-                                    {% if user_info.nickname in nickname_list %}
+                                    {% if users.nickname in nickname_list %}
                                         <img class="like-icon"
                                              src="{{ url_for('static', filename='img/heart-solid.svg') }}"
                                              data-heart="1">
@@ -240,12 +240,12 @@
                                  src="{{ url_for('static', filename='img/paper-plane-regular.svg') }}">
                         </div>
                         <!-- bookmark -->
-                        <div onclick="bookmark_func('{{ user_info.nickname }}', '{{ feed.num }}')">
+                        <div onclick="bookmark_func('{{ users.nickname }}', '{{ feed.num }}')">
                             {% set nickname_list = [] %}
                             {% for bookmark_dict in feed.bookmark %}
                                 <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
                             {% endfor %}
-                            {% if user_info.nickname in nickname_list %}
+                            {% if users.nickname in nickname_list %}
                                 <img class="bookmark-icon"
                                      src="{{ url_for('static', filename='img/bookmark-solid.svg') }}" data-bookmark="1">
                             {% else %}
@@ -274,7 +274,7 @@
                     <input type="text" class="modal_feed_reply_write_{{ feed.num }}" placeholder="댓글 달기.."
                            style="box-shadow:none; border: none; outline: none; width:400px;">
                     <button class="modal_feed_reply_upload"
-                            onclick="reply_write('{{ user_info.nickname }}', '{{ feed.num }}')">
+                            onclick="reply_write('{{ users.nickname }}', '{{ feed.num }}')">
                         게시
                     </button>
                 </div>
@@ -287,10 +287,10 @@
 
 <div class="profile_section">
     <div class="my_info">
-        <img id="user_profile_img" src="/static/profile_images/{{ user_info.profile_img }}" alt="">
+        <img id="user_profile_img" src="/static/profile_images/{{ users.profile_img }}" alt="">
         <div class="info_box">
             <div class="nick_name">
-                {{ user_info.nickname }}
+                {{ users.nickname }}
                 <button class="profile_btn" type="button" onclick="change_profile()">프로필 사진 변경</button>
             </div>
             <div class="user_info">
@@ -301,7 +301,7 @@
                     팔로우 {{ following_count }}</div>
             </div>
             <div class="user_name">
-                {{ user_info.name }}
+                {{ users.name }}
             </div>
         </div>
     </div>
