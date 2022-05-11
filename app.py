@@ -373,13 +373,13 @@ def feed_upload():
     # 파일 저장!
     file.save(save_to)
 
-    count_list = []
+    count_list = [0]
     feed_list = list(db.FEED.find({}, {'num': True, '_id': False}))
     for number in feed_list:
         print(number['num'])
         count_list.append(int(number['num']))
-        
-        count = max(count_list) + 1
+
+    count = max(count_list) + 1
 
     print(count)
     print(file)
