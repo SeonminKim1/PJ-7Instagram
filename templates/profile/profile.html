@@ -8,6 +8,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profilestyle.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/feed_main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed_modal.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navstyle.css') }}">
@@ -74,6 +75,21 @@
                     }
                 }
             })
+        }
+
+        // feed Modal Func
+        function feed_modal_func(feed_num) {
+            console.log(feed_num, typeof (feed_num))
+            document.querySelector('.modal_post_' + feed_num).style.display = 'flex';
+            document.querySelector('.modal_overlay_' + feed_num).style.display = 'block';
+            document.querySelector('.modal_overlay_' + feed_num).style.top = window.pageYOffset + 'px';
+        }
+
+        function feed_modal_func_off(feed_num) {
+            console.log(feed_num, typeof (feed_num))
+            document.querySelector('.modal_post_' + feed_num).style.display = 'none';
+            document.querySelector('.modal_overlay_' + feed_num).style.display = 'none';
+            document.querySelector('.modal_overlay_' + feed_num).style.top = window.pageYOffset + 'px';
         }
 
 
@@ -148,6 +164,119 @@
 
 <nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">{% include 'nav/nav.html' %}</nav>
 
+<!-- 진행중인 Feed 게시글 modal -->
+{% for feed in my_feed_list %}
+    <div class="modal_overlay_{{ feed.num }}"
+         style="display:none; position:absolute;
+                    width:100%; height:500%;
+                    background-color: rgba(0, 0, 0, 0.8);
+                    top:0; left:0; z-index:9999;">
+        <div class="modal_post_{{ feed.num }}"
+             style="display:none; height:500px; width:1000px;
+                        margin:60px auto auto auto;
+                        border: 1px solid black;
+                        background-color:#FFFFFF;
+                        flex-direction:row; text-align:center;
+                        justify-content:center;">
+
+            <!-- modal post img -->
+            <div class="modal_post_img_div">
+                <img class='modal-feed-img' src="/static/upload/{{ feed.feed_images[0] }}">
+            </div>
+
+            <!-- modal post content -->
+            <!-- 모달 게시글 헤더 -->
+            <div class='modal_post_content_div'>
+                <div class='modal_feed_header_div'>
+                    <a id="modal_tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
+                        <div class='modal_feed_profile_div'>
+                            <div class="profile_box_div">
+                                <img class="modal_profile" src="{{ feed.profile_img }}">
+                            </div>
+                            <div>{{ feed.nickname }}</div>
+                        </div>
+                    </a>
+                    <div class="modal_extra_modal">
+                        <img class="like-icon" src="{{ url_for('static', filename='img/more.png') }}">
+                    </div>
+                </div>
+                <!-- 모달 게시글 내용 -->
+                <div class="modal_feed_content_div">
+                    <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
+                </div>
+
+                <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
+                <div>
+                    <div class='modal_feed_like_bookmark_div'>
+                        <!-- 좋아요 -->
+                        <div>
+                                <span onclick="like_func('{{ user_info.nickname }}', '{{ feed.num }}')">
+                                    {% set nickname_list = [] %}
+                                    {% for like_dict in feed.like %}
+                                        <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
+                                    {% endfor %}
+                                    {% if user_info.nickname in nickname_list %}
+                                        <img class="like-icon"
+                                             src="{{ url_for('static', filename='img/heart-solid.svg') }}"
+                                             data-heart="1">
+                                    {% else %}
+                                        <img class="like-icon"
+                                             src="{{ url_for('static', filename='img/heart-regular.svg') }}"
+                                             data-heart="0">
+                                    {% endif %}
+                                </span>
+
+                            <!-- 게시글 보기, 공유하기-->
+                            <img class="message-icon" src="{{ url_for('static', filename='img/message-regular.svg') }}">
+                            <img class="paper-plane-icon"
+                                 src="{{ url_for('static', filename='img/paper-plane-regular.svg') }}">
+                        </div>
+                        <!-- bookmark -->
+                        <div onclick="bookmark_func('{{ user_info.nickname }}', '{{ feed.num }}')">
+                            {% set nickname_list = [] %}
+                            {% for bookmark_dict in feed.bookmark %}
+                                <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
+                            {% endfor %}
+                            {% if user_info.nickname in nickname_list %}
+                                <img class="bookmark-icon"
+                                     src="{{ url_for('static', filename='img/bookmark-solid.svg') }}" data-bookmark="1">
+                            {% else %}
+                                <img class="bookmark-icon"
+                                     src="{{ url_for('static', filename='img/bookmark-regular.svg') }}"
+                                     data-bookmark="0">
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 피드 본문, 좋아요-->
+                    <div class="modal_feed_like_div">좋아요 {{ feed.like|length }}개</div>
+                </div>
+
+                <!-- 댓글 View -->
+                <div>
+                    {% for reply in feed.reply[::-1] %}
+                        <div class='modal_feed_reply_div'>
+                            <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- 댓글 달기 -->
+                <div class="modal_feed_reply_write_div">
+                    <input type="text" class="modal_feed_reply_write_{{ feed.num }}" placeholder="댓글 달기.."
+                           style="box-shadow:none; border: none; outline: none; width:400px;">
+                    <button class="modal_feed_reply_upload"
+                            onclick="reply_write('{{ user_info.nickname }}', '{{ feed.num }}')">
+                        게시
+                    </button>
+                </div>
+                <div class="modal_feed_close" onclick="feed_modal_func_off('{{ feed.num }}')"><a href="#">Close</a>
+                </div>
+            </div> <!--post-content-->
+        </div>
+    </div>
+{% endfor %}
+
 <div class="profile_section">
     <div class="my_info">
         <img src="{{ user_info.profile_img }}" alt="">
@@ -176,7 +305,7 @@
     <div class="profile_article">
         {% for my_feed in my_feed_list %}
             {% for my_feed_img in my_feed.feed_images %}
-                <div class="post">
+                <div class="post" onclick= "feed_modal_func('{{my_feed.num}}')">
                     <img src="/static/upload/{{ my_feed_img }}" alt="게시물없음">
                     <div class="likes">
                         <img src="{{ url_for('static', filename='img/white-heart.png') }}" class="icon" alt="">
