@@ -302,22 +302,21 @@ def is_bookmark():
 def is_following():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    print(payload['id'])
+
     follow_nick = request.form['nick_give']
-    print(follow_nick)
 
     my_follow = db.USER.find_one({'id': payload['id']})
     print(my_follow['following'])
 
     if follow_nick in my_follow['following']:
         db.USER.update_one({'id': payload['id']}, {'$pull': {'following': follow_nick}})
-        db.USER.update_one({'id': follow_nick}, {'$pull': {'follower': payload['id']}})
+        db.USER.update_one({'nickname': follow_nick}, {'$pull': {'follower': my_follow['nickname']}})
         print('DB 에 팔로우 제거 완료!')
         return jsonify(({'result': 'success', 'is_following': 0}))
 
     else:
         db.USER.update_one({'id': payload['id']}, {'$push': {'following': follow_nick}})
-        db.USER.update_one({'id': follow_nick}, {'$push': {'follower': payload['id']}})
+        db.USER.update_one({'nickname': follow_nick}, {'$push': {'follower': my_follow['nickname']}})
         print('DB 에 팔로우 추가 완료!')
         return jsonify({'result': 'success', 'is_following': 1})
 
