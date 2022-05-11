@@ -163,11 +163,13 @@
         function onClick() {
             document.querySelector('.modal-menu').style.display = 'block';
             document.querySelector('.overlay-menu').style.display = 'block';
+            document.querySelector('.overlay-menu').style.top = window.pageYOffset + 'px';
         }
 
         function offClick() {
             document.querySelector('.modal-menu').style.display = 'none';
             document.querySelector('.overlay-menu').style.display = 'none';
+            document.querySelector('.overlay-menu').style.top = window.pageYOffset + 'px';
         }
 
         document.getElementById('btn-profile').addEventListener('click', onClick);
