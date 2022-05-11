@@ -33,7 +33,8 @@
     <!--파비콘-->
     <link rel="icon" href="https://cdn.icon-icons.com/icons2/1211/PNG/128/1491580658-yumminkysocialmedia06_83104.png">
 
-    <title>Instagram</title>
+    <!-- Title -->
+    <title>7Instagram - profile</title>
 
     <script>
 
@@ -119,7 +120,7 @@
                         <div style="display: flex; flex-direction: row">
                             <div class="box" style="width: 35px; height: 35px">
                                 <img class="profile"
-                                     src="/static/profile_upload/{{ my_followers.profile_img }}" alt="">
+                                     src="/static/profile_images/{{ my_followers.profile_img }}" alt="">
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ my_followers.nickname }}"
@@ -151,7 +152,7 @@
                         <div style="display: flex; flex-direction: row">
                             <div class="box" style="width: 35px; height: 35px">
                                 <img class="profile"
-                                     src="/static/profile_upload/{{ my_followings.profile_img }}" alt="">
+                                     src="/static/profile_images/{{ my_followings.profile_img }}" alt="">
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ my_followings.nickname }}"
@@ -179,7 +180,7 @@
                     background-color: rgba(0, 0, 0, 0.8);
                     top:0; left:0; z-index:9999;">
         <div class="modal_post_{{ feed.num }}"
-             style="display:none; height:500px; width:1000px;
+             style="display:none; height:600px; width:1000px;
                         margin:60px auto auto auto;
                         border: 1px solid black;
                         background-color:#FFFFFF;
@@ -198,7 +199,7 @@
                     <a id="modal_tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
                         <div class='modal_feed_profile_div'>
                             <div class="profile_box_div">
-                                <img class="modal_profile" src="{{ feed.profile_img }}">
+                                <img class="modal_profile" src="/static/profile_images/{{ feed.profile_img }}">
                             </div>
                             <div>{{ feed.nickname }}</div>
                         </div>
@@ -288,9 +289,9 @@
     <div class="my_info">
         <img id="user_profile_img" src="/static/profile_images/{{ user_info.profile_img }}" alt="">
         <div class="info_box">
-            <div class="nick_name">{{ user_info.nickname }}</div>
-            <div>
-                <button type="button" onclick="change_profile()">프로필 사진 변경</button>
+            <div class="nick_name">
+                {{ user_info.nickname }}
+                <button class="profile_btn" type="button" onclick="change_profile()">프로필 사진 변경</button>
             </div>
             <div class="user_info">
                 <div>게시물 {{ post_count }}</div>

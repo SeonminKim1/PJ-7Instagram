@@ -5,12 +5,18 @@
     width: 100%;
     margin: 0 5px 0 0;
     line-height: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-feed-img {
-    vertical-align: middle;
-    height: 300px;
-    /*width: 100%;*/
+    object-fit: contain;
+    object-position: center;
+    /*vertical-align: middle;*/
+    height: 100%;
+    width: 100%;
+
 }
 
 /* POST 모달 Content 전체 */
