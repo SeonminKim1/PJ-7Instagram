@@ -436,7 +436,7 @@ def file_upload():
     db.USER.update_one({'nickname': nick_receive}, {'$set': {'profile_img': f'{filename}.{extension}'}})
     feed = list(db.FEED.find({'nickname': nick_receive}))  # num, nickname, feed_images, content, like, reply
 
-    db.FEED.update({'nickname': nick_receive}, {'$set': {'profile_img': f'{filename}.{extension}'}})
+    db.FEED.update_many({'nickname': nick_receive}, {'$set': {'profile_img': f'{filename}.{extension}'}})
     for nick in feed:
         print(nick)
     return jsonify({'result': 'success'})
