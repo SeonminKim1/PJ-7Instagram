@@ -35,6 +35,7 @@
     <title>Instagram</title>
 
     <script>
+
         {#function abcd() {#}
         {#    let abc = $('#nick_name').val()#}
         {#    alert(abc)        }#}
@@ -75,7 +76,12 @@
                 }
             })
         }
-
+        function change_profile(){
+            var url = '/change_profile';
+            var name = '프로필 사진 변경';
+            var option = 'width = 500, height = 500, top = 100, left = 200, location = no'
+            window.open(url, name, option);
+        }
 
     </script>
 
@@ -150,12 +156,10 @@
 
 <div class="profile_section">
     <div class="my_info">
-        <img src="{{ user_info.profile_img }}" alt="">
+        <img id="user_profile_img" src="{{ user_info.profile_img }}" alt="">
         <div class="info_box">
-            <div class="nick_name">
-                {{ user_info.nickname }}
-                {#                <button class="profile_btn">프로필 편집</button>#}
-            </div>
+            <div class="nick_name">{{ user_info.nickname }}</div>
+            <div><button type="button" onclick="change_profile()">프로필 사진 변경</button></div>
             <div class="user_info">
                 <div>게시물 {{ post_count }}</div>
                 <div style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#followerModal">
