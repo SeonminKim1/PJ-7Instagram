@@ -49,6 +49,14 @@
     font-size: 30px;
 }
 
+.nick_name .profile_btn {
+    border-radius: 5px;
+    border: 1px solid #E3E3E3;
+    background-color: #fafafa;
+    margin-left: 5%;
+    font-size: 16px;
+}
+
 .user_info {
     width: 70%;
     height: 25%;
