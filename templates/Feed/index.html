@@ -329,17 +329,16 @@
         </div>
     </div>
     <div class="overlay-post2" >
-        <div id="second_modal" class="modal-post">
+        <div id="second_modal" class="second_modal_box">
             <div id="input_image">
-                사진 들어가는 곳
             </div>
             <div>
-                <div>
-                    <div>
-                        <img id="input_profile_image" src="/static/profile_images/{{ users.profile_img }}"
-                            style="width: 30px; height: 30px; border-radius: 5px;">
+                <div style="display: flex">
+                    <div style="margin: 10px 0 0 10px; width: 30px;" >
+                        <img id="input_profile_image" src="{{ users.profile_img }}"
+                            style="width: 30px; height: 30px; border-radius: 70%; border: 1px solid #DBDBDB;">
                     </div>
-                    <div id="user_nickname">{{ users.nickname }}</div>
+                    <div id="user_nickname" style="width: 100px; margin: 10px 0 0 10px; font-weight: 600">{{ users.nickname }}</div>
                 </div>
                 <div>
                     <textarea id="input_content" cols="12" rows="12"></textarea>
@@ -355,7 +354,9 @@
         <div class="modal-menu">
             <div class="mdbox-menu">
                 <div class="md-menu">
-                     <img class="img-menu" src="{{url_for('static', filename='nav-img/profile.png')}}">프로필
+                     <a href="{{url_for('profile', feed_nickname = users.nickname)}}">
+                         <img class="img-menu" src="{{url_for('static', filename='nav-img/profile.png')}}">프로필
+                     </a>
                 </div>
                 <div class="md-menu">
                     <img class="img-menu" src="{{url_for('static', filename='nav-img/bookmark.png')}}">저장됨</div>

@@ -81,7 +81,7 @@
         function change_profile() {
             var url = '/change_profile';
             var name = '프로필 사진 변경';
-            var option = 'width = 500, height = 500, top = 100, left = 200, location = no'
+            var option = 'width = 800, height = 800, top = 100, left = 200, location = no'
             window.open(url, name, option);
         }
 
@@ -119,7 +119,7 @@
                         <div style="display: flex; flex-direction: row">
                             <div class="box" style="width: 35px; height: 35px">
                                 <img class="profile"
-                                     src="{{ my_followers.profile_img }}" alt="">
+                                     src="/static/profile_upload/{{ my_followers.profile_img }}" alt="">
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ my_followers.nickname }}"
@@ -151,7 +151,7 @@
                         <div style="display: flex; flex-direction: row">
                             <div class="box" style="width: 35px; height: 35px">
                                 <img class="profile"
-                                     src="{{ my_followings.profile_img }}" alt="">
+                                     src="/static/profile_upload/{{ my_followings.profile_img }}" alt="">
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ my_followings.nickname }}"
@@ -286,7 +286,7 @@
 
 <div class="profile_section">
     <div class="my_info">
-        <img id="user_profile_img" src="{{ user_info.profile_img }}" alt="">
+        <img id="user_profile_img" src="/static/profile_images/{{ user_info.profile_img }}" alt="">
         <div class="info_box">
             <div class="nick_name">{{ user_info.nickname }}</div>
             <div>
