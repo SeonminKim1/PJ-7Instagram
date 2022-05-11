@@ -406,28 +406,34 @@ def feed_upload():
 
 @app.route('/change_profile')
 def change_profile():
-    return render_template('/profile/change_profile.html')
+    # 현재 컴퓨터에 저장 된 'mytoken'인 쿠키 확인
+    token_receive = request.cookies.get('mytoken')
+    # 암호화되어있는 token의 값 디코딩(암호화 풀기)
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    my_info = db.USER.find_one({'id':payload['id']})
+
+    return render_template('/profile/change_profile.html', my_info=my_info)
 
 
 # 방식1 : DB에는 파일 이름만 넣어놓고, 이미지 자체는 서버 컴퓨터에 저장하는 방식
 @app.route('/fileupload', methods=['POST'])
 def file_upload():
-    title_receive = request.form['title_give']
+    print('file_upload() 도착')
+    nick_receive = request.form['nick_give']
     file = request.files['file_give']
     # 해당 파일에서 확장자명만 추출
     extension = file.filename.split('.')[-1]
     # 파일 이름이 중복되면 안되므로, 지금 시간을 해당 파일 이름으로 만들어서 중복이 되지 않게 함!
-    today = datetime.now()
+    today = datetime.datetime.utcnow()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-    filename = f'{title_receive}-{mytime}'
+    filename = f'{nick_receive}-{mytime}'
     # 파일 저장 경로 설정 (파일은 db가 아니라, 서버 컴퓨터 자체에 저장됨)
-    save_to = f'static/{filename}.{extension}'
+    save_to = f'static/profile_images/{filename}.{extension}'
     # 파일 저장!
     file.save(save_to)
 
-    # 아래와 같이 입력하면 db에 추가 가능!
-    doc = {'title': title_receive, 'img': f'{filename}.{extension}'}
-    db.camp.insert_one(doc)
+    db.USER.update_one({'nickname': nick_receive}, {'$set': {'profile_img': f'{filename}.{extension}'}})
 
     return jsonify({'result': 'success'})
 
