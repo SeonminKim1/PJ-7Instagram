@@ -166,6 +166,38 @@ body {
     cursor: pointer;
 }
 
+.second_modal_box {
+    display: none;
+    height: 500px;
+    width: 500px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 10px;
+    background: #FFFFFF;
+}
+#input_image {
+    width: 300px;
+    background-color: #000000;
+    border-radius: 10px 0 0 10px;
+}
+#input_content {
+    height: 300px;
+    width: 300px;
+    right: 10px;
+    margin: 30px 10px 10px 10px;
+    border: 1px solid #DBDBDB;
+    outline-style: none;
+}
+
+#write_feed_btn {
+    font-weight: 600;
+    margin-left: 10px;
+    color: #FFFFFF;
+    background-color: #1DA0f6;
+    /*box-shadow: none;*/
+    border: 0;
+}
+
 /* ================== Feed ================= */
 
 /* feed box */

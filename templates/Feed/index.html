@@ -329,17 +329,16 @@
         </div>
     </div>
     <div class="overlay-post2" >
-        <div id="second_modal" class="modal-post">
+        <div id="second_modal" class="second_modal_box">
             <div id="input_image">
-                사진 들어가는 곳
             </div>
             <div>
                 <div>
-                    <div>
+                    <div style="display: flex; background-color: #3B666B;">
                         <img id="input_profile_image" src="{{ users.profile_img }}"
-                            style="width: 30px; height: 30px; border-radius: 5px;">
+                            style="width: 30px; height: 30px; border-radius: 70%; border: 1px solid #DBDBDB;">
                     </div>
-                    <div id="user_nickname">{{ users.nickname }}</div>
+                    <div id="user_nickname" style="display: flex;">{{ users.nickname }}</div>
                 </div>
                 <div>
                     <textarea id="input_content" cols="12" rows="12"></textarea>
