@@ -88,6 +88,14 @@ body {
     cursor: pointer;
 }
 
+.md-menu > a {
+    text-decoration-line: none;
+}
+
+a:visited {
+    color: #000000;
+}
+
 .img-menu {
     height: 20px;
     width: 20px;
@@ -169,32 +177,34 @@ body {
 .second_modal_box {
     display: none;
     height: 500px;
-    width: 500px;
+    width: 700px;
     margin: auto;
     margin-top: 80px;
     border-radius: 10px;
     background: #FFFFFF;
 }
+
 #input_image {
     width: 300px;
     background-color: #000000;
     border-radius: 10px 0 0 10px;
 }
+
 #input_content {
-    height: 300px;
-    width: 300px;
+    height: 350px;
+    width: 380px;
     right: 10px;
-    margin: 30px 10px 10px 10px;
+    margin: 30px 10px 0 10px;
     border: 1px solid #DBDBDB;
     outline-style: none;
 }
 
 #write_feed_btn {
     font-weight: 600;
-    margin-left: 10px;
+    float: right;
+    margin-right: 10px;
     color: #FFFFFF;
     background-color: #1DA0f6;
-    /*box-shadow: none;*/
     border: 0;
 }
 
@@ -372,7 +382,6 @@ body {
 .rcbox_profile_div {
     display: flex;
     flex-direction: row;
-    align-items: left;
     margin-bottom: 20px;
 }
 
@@ -394,6 +403,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
 }
 
 .rcbox_nickname_box {
@@ -403,8 +413,9 @@ body {
 }
 
 .rcbox_name_box {
-    /*margin-top: 5px;*/
-
+    display: flex;
+    margin-left: 26px;
+    margin-top: 5px;
 }
 
 /* modal */
