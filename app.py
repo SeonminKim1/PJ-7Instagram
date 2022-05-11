@@ -363,10 +363,13 @@ def profile():
 
 @app.route('/api/feed/upload', methods=['POST'])
 def feed_upload():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    my_follow = db.USER.find_one({'id': payload['id']})
+
     file = request.files['file']
     image = request.form['image']
     content = request.form['content']
-    profile_image = request.form['profile_image']
     user_nick = request.form['user_nick']
 
     # 해당 파일에서 확장자명만 추출
@@ -392,7 +395,7 @@ def feed_upload():
     print(file)
     print(image)
     print(content)
-    print(profile_image)
+    print(my_follow['profile_img'])
     print(user_nick)
 
     # 아래와 같이 입력하면 db에 추가 가능!
@@ -401,7 +404,7 @@ def feed_upload():
         'date': mytime,
         'nickname': user_nick,
         'feed_images': [f'{filename}.{extension}'],
-        'profile_img': profile_image,
+        'profile_img': my_follow['profile_img'],
         'content': content,
         'like': [],
         'bookmark': [],
