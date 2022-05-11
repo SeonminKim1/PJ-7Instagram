@@ -14,7 +14,8 @@ SECRET_KEY = '$lucky7'
 from pymongo import MongoClient
 
 client = MongoClient(
-    'mongodb+srv://luckyseven:luckyseven@cluster0.2hyld.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',tlsCAFile=certifi.where())
+    'mongodb+srv://luckyseven:luckyseven@cluster0.2hyld.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    tlsCAFile=certifi.where())
 db = client.luckyseven
 
 
@@ -143,7 +144,7 @@ def home():
                 if feed is not None:
                     feed_info.extend(feed)
             # Feed 시간 순으로 Sorting
-            feed_info = sorted(feed_info, key=lambda x: x['date'], reverse=True) # 최신 글 순서로 Sorting
+            feed_info = sorted(feed_info, key=lambda x: x['date'], reverse=True)  # 최신 글 순서로 Sorting
 
         # 회원님을 위한 추천 리스트 출력
         all_users_nick_list = []
@@ -169,14 +170,14 @@ def home():
             if len(recommend_info) >= 3:
                 recommend_3 = random.sample(recommend_info, 3)
                 return render_template('/Feed/index.html',
-                                feeds=feed_info, users=user_info, recommend=recommend_3)
+                                       feeds=feed_info, users=user_info, recommend=recommend_3)
             else:
                 recommend_3 = '추천 할 회원이 없습니다.'
                 return render_template('/Feed/index.html',
-                                    feeds=feed_info, users=user_info, recommend=recommend_3)
-        return render_template('/Feed/index.html',feeds=feed_info, users=user_info)
+                                       feeds=feed_info, users=user_info, recommend=recommend_3)
+        return render_template('/Feed/index.html', feeds=feed_info, users=user_info)
 
-    except jwt.ExpiredSignatureError: # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
+    except jwt.ExpiredSignatureError:  # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
     except jwt.exceptions.DecodeError:  # 해당 token이 다르다면 login 페이지로 redirect
         return redirect(url_for("login"))
@@ -242,10 +243,10 @@ def is_like():
     db.FEED.update_one({'num': feed_num}, {'$set': {'like': feed_like}})
     db.USER.update_one({'nickname': nickname}, {'$set': {'like': user_like}})
 
-    if is_like =='1':
-        return jsonify({'msg': '좋아요 제거 Update 완료', 'is_like':0})
+    if is_like == '1':
+        return jsonify({'msg': '좋아요 제거 Update 완료', 'is_like': 0})
     else:
-        return jsonify({'msg': '좋아요 Update 완료', 'is_like':1})
+        return jsonify({'msg': '좋아요 Update 완료', 'is_like': 1})
 
 
 # 북마크 - USER DB, FEED DB Update
@@ -290,6 +291,7 @@ def is_bookmark():
     else:
         return jsonify({'msg': '북마크 등록 Update 완료'})
 
+
 ### nickname을 받아와서 내 계정에 팔로우 되어있는지 확인
 ### 팔로우 - nickname 을 받아와서 DB에 저장
 ### 언팔로우 - nickname 을 받아와서 DB에서 제거
@@ -301,7 +303,7 @@ def is_following():
     follow_nick = request.form['nick_give']
     print(follow_nick)
 
-    my_follow = db.USER.find_one({'id':payload['id']})
+    my_follow = db.USER.find_one({'id': payload['id']})
     print(my_follow['following'])
 
     if follow_nick in my_follow['following']:
@@ -316,6 +318,7 @@ def is_following():
         print('DB 에 팔로우 추가 완료!')
         return jsonify({'result': 'success', 'is_following': 1})
 
+
 ### ================ Profile Page (Mypage) ================
 @app.route('/api/profile')
 def profile():
@@ -326,7 +329,8 @@ def profile():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         feed_nickname = request.args.get('feed_nickname')
 
-        user_info = db.USER.find_one({"nickname": feed_nickname})  # id, num, nickname, feed_images, content, like, reply
+        user_info = db.USER.find_one(
+            {"nickname": feed_nickname})  # id, num, nickname, feed_images, content, like, reply
         my_feed_list = list(db.FEED.find({"nickname": feed_nickname}))
         # print(my_feed_list)
 
@@ -339,14 +343,15 @@ def profile():
             my_follower = db.USER.find_one({'nickname': my_followers})
             my_follower_list.append(my_follower)
 
-
         my_following_list = []
         for my_followings in user_info['following']:
             my_following = db.USER.find_one({'nickname': my_followings})
             my_following_list.append(my_following)
 
-        return render_template('/profile/profile.html', post_count=post_count, users=user_info, follower_count=follower_count,
-                               following_count=following_count, my_feed_list=my_feed_list, my_follower_list=my_follower_list, my_following_list=my_following_list)
+        return render_template('/profile/profile.html', post_count=post_count, users=user_info,
+                               follower_count=follower_count,
+                               following_count=following_count, my_feed_list=my_feed_list,
+                               my_follower_list=my_follower_list, my_following_list=my_following_list)
 
     except jwt.ExpiredSignatureError:  # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
@@ -404,6 +409,7 @@ def feed_upload():
 
     return jsonify({'result': 'success'})
 
+
 @app.route('/change_profile')
 def change_profile():
     # 현재 컴퓨터에 저장 된 'mytoken'인 쿠키 확인
@@ -411,7 +417,7 @@ def change_profile():
     # 암호화되어있는 token의 값 디코딩(암호화 풀기)
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-    my_info = db.USER.find_one({'id':payload['id']})
+    my_info = db.USER.find_one({'id': payload['id']})
 
     return render_template('/profile/change_profile.html', my_info=my_info)
 
@@ -445,4 +451,3 @@ def file_upload():
 ### ================ Main ================
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)  # 기본포트값 5000으로 설정
-
