@@ -120,7 +120,7 @@ def api_join():
         'following': [],
         'like': [],
         'bookmark': [],
-        'profile_img': ''
+        'profile_img': 'profile_default.png'
     }
     db.USER.insert_one(doc)
     return jsonify({'result': 'success', 'msg': '회원 가입 완료'})
@@ -149,30 +149,32 @@ def home():
         all_users_nick_list = []
         # 모든 유저의 닉네임 추출
         all_users = list(db.USER.find({}, {'nickname': True, '_id': False}))
-        for all_users_nick in all_users:
-            all_users_nick_list.append(all_users_nick['nickname'])
-        # print(all_users_nick_list)  # 모든 유저의 닉 리스트
-        # print(user_info['following'])  # 내가 팔로우한 유저의 닉 리스트
+        if len(all_users) != 0:
+            for all_users_nick in all_users:
+                all_users_nick_list.append(all_users_nick['nickname'])
+            # print(all_users_nick_list)  # 모든 유저의 닉 리스트
+            # print(user_info['following'])  # 내가 팔로우한 유저의 닉 리스트
 
-        # 모든 유저 닉 - 내가 팔로잉중인 유저 닉 - 나의 닉네임 = 추천 친구 리스트
-        recommend_info = []
-        recommend_nick = list(set(all_users_nick_list) - set(user_info['following']))  # 내 팔로잉 유저들 제외
-        recommend_nick.remove(user_info['nickname'])  # 나 제외
-        for recommend in recommend_nick:
-            reco = list(db.USER.find({'nickname': recommend}))
-            if reco is not None:
-                recommend_info.extend(reco)
+            # 모든 유저 닉 - 내가 팔로잉중인 유저 닉 - 나의 닉네임 = 추천 친구 리스트
+            recommend_info = []
+            recommend_nick = list(set(all_users_nick_list) - set(user_info['following']))  # 내 팔로잉 유저들 제외
+            recommend_nick.remove(user_info['nickname'])  # 나 제외
+            for recommend in recommend_nick:
+                reco = list(db.USER.find({'nickname': recommend}))
+                if reco is not None:
+                    recommend_info.extend(reco)
 
-        # print(recommend_info)
-        # 추천 친구 리스트 중 랜덤으로 중복 허용하지 않으면서 3개만 뽑아서 출력
-        if len(recommend_info) >= 3:
-            recommend_3 = random.sample(recommend_info, 3)
-            return render_template('/Feed/index.html',
-                               feeds=feed_info, users=user_info, recommend=recommend_3)
-        else:
-            recommend_3 = '추천 할 회원이 없습니다.'
-            return render_template('/Feed/index.html',
-                                   feeds=feed_info, users=user_info, recommend=recommend_3)
+            # print(recommend_info)
+            # 추천 친구 리스트 중 랜덤으로 중복 허용하지 않으면서 3개만 뽑아서 출력
+            if len(recommend_info) >= 3:
+                recommend_3 = random.sample(recommend_info, 3)
+                return render_template('/Feed/index.html',
+                                feeds=feed_info, users=user_info, recommend=recommend_3)
+            else:
+                recommend_3 = '추천 할 회원이 없습니다.'
+                return render_template('/Feed/index.html',
+                                    feeds=feed_info, users=user_info, recommend=recommend_3)
+        return render_template('/Feed/index.html',feeds=feed_info, users=user_info)
 
     except jwt.ExpiredSignatureError: # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
         return redirect(url_for("login"))
