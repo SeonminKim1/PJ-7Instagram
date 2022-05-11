@@ -323,7 +323,7 @@
         <div id="first_modal" class="modal-post">
             <div class="mdbox-post">
                 <div class="post-title">새 게시물 만들기</div>
-                <img alt=img-upload class="post-img" src="static/nav-img/posting.png">
+                <img alt=img-upload class="post-img" src="{{url_for('static', filename = 'nav-img/posting.png')}}">
                 <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
             </div>
         </div>
@@ -336,7 +336,7 @@
             <div>
                 <div>
                     <div>
-                        <img id="input_profile_image" src="{{ users.profile_img }}"
+                        <img id="input_profile_image" src="/static/profile_images/{{ users.profile_img }}"
                             style="width: 30px; height: 30px; border-radius: 5px;">
                     </div>
                     <div id="user_nickname">{{ users.nickname }}</div>
@@ -395,7 +395,7 @@
                         <a id="modal_tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
                             <div class='modal_feed_profile_div'>
                                 <div class="profile_box_div">
-                                    <img class="modal_profile" src="{{ feed.profile_img }}">
+                                    <img class="modal_profile" src="/static/profile_images/{{ feed.profile_img }}">
                                 </div>  
                                 <div>{{ feed.nickname }}</div>
                             </div>
@@ -481,7 +481,7 @@
                         <a id="tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
                             <div class='feed_profile_div'>
                                 <div class="profile_box_div">
-                                    <img class="profile" src="{{ feed.profile_img }}" style="border: 1px solid #DBDBDB;">
+                                    <img class="profile" src="/static/profile_images/{{ feed.profile_img }}" style="border: 1px solid #DBDBDB;">
                                 </div>
                                 <div>{{ feed.nickname }}</div>
                             </div>
@@ -490,7 +490,7 @@
                         </div>
                     </div>
 
-                    <!-- 피드 - 프로필 이미지-->
+                    <!-- 피드 - 이미지-->
                     <div>
                         <img class='feed_images' src="/static/upload/{{ feed.feed_images[0] }}">
                     </div>
@@ -570,7 +570,7 @@
                     <a id="tag_a" href="{{ url_for('profile', feed_nickname = users.nickname) }}">
                         <div class='rcbox_profile_div'>
                             <div class="rcbox_profile_box_div">
-                                <img class="rcbox_profile_img" src="{{ users.profile_img }}">
+                                <img class="rcbox_profile_img" src="/static/profile_images/{{ users.profile_img }}">
                             </div>
                             <div class="rcbox_nickname_name_box_div">
                                 <div class="rcbox_nickname_box">{{ users.nickname }}</div>
@@ -600,7 +600,7 @@
                         <div style="display: flex; flex-direction: row">
                             <div class="box" style="width: 35px; height: 35px;">
                                 <img class="profile"
-                                    src="{{ reco.profile_img }}" style="border: 1px solid #DBDBDB;">
+                                    src="/static/profile_images/{{ reco.profile_img }}" style="border: 1px solid #DBDBDB;">
                             </div>
                             <div style="margin-left:10px; text-align:left">
                                 <div id="mynick{{ reco.nickname }}"

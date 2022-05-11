@@ -120,7 +120,7 @@ def api_join():
         'following': [],
         'like': [],
         'bookmark': [],
-        'profile_img': ''
+        'profile_img': 'profile_default.png'
     }
     db.USER.insert_one(doc)
     return jsonify({'result': 'success', 'msg': '회원 가입 완료'})
