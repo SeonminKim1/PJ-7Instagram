@@ -195,7 +195,10 @@ def write_reply():
     feed_reply = feed['reply']  # list[dict, dict]
 
     # 3) DB Update 할 Reply Dictionary 만들기
-    num = int(feed['reply'][-1]['num']) + 1  # 맨 마지막 num의 +1
+    if len(feed['reply'])==0:
+        num = 1
+    else:
+        num = int(feed['reply'][-1]['num']) + 1  # 맨 마지막 num의 +1
     date = datetime.datetime.today().strftime("%Y.%m.%d.%H.%M.%S")
     feed_reply.append({'num': num, 'nickname': nickname, 'date': date, 'content': reply_content})
 
