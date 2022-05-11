@@ -124,7 +124,7 @@
 
         // 팔로우/언팔로우
         function follow(reco_nickname) {
-            alert(reco_nickname + '팔로우!')
+            {#alert(reco_nickname + '팔로우!')#}
             reco_nick = reco_nickname
             $.ajax({
                 type: "POST",
@@ -132,11 +132,11 @@
                 data: {'nick_give': reco_nickname},
                 success: function (response) {
                     if (response['is_following'] == 1) {
-                        alert('팔로우 완료')
+                        {#alert('팔로우 완료')#}
                         let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none; color: black">팔로잉</a>`
                         $('#follow' + reco_nickname).html(temp_html)
                     } else {
-                        alert('언팔로우 완료')
+                        {#alert('언팔로우 완료')#}
                         let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>`
                         $('#follow' + reco_nickname).html(temp_html)
                     }

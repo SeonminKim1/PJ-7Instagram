@@ -144,13 +144,13 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        alert('게시물 작성 성공!')
+                        {#alert('게시물 작성 성공!')#}
                     },
                     error: function (request, status, error) {
-                        alert('게시물 작성 실패!')
+                        {#alert('게시물 작성 실패!')#}
                     },
                     complete: function () {
-                        alert('모달 창 제거 윈도우 리로드!')
+                        {#alert('모달 창 제거 윈도우 리로드!')#}
                         location.reload();
                     }
                 })
@@ -188,10 +188,12 @@
             document.querySelector('.overlay-post2').style.top = window.pageYOffset + 'px';
             document.querySelector('#first_modal').style.display = 'none';
             document.querySelector('.overlay-post').style.display = 'none';
+            document.querySelector('.overlay-post2').style.display = 'none';
             document.querySelector('body').style.overflowY = 'visible';
         }
         document.getElementById('btn-post').addEventListener('click', onClick_w);
         document.querySelector('.overlay-post').addEventListener('click', offClick_w);
+        document.querySelector('.overlay-post2').addEventListener('click', offClick_w);
     };
     // Feed 조회 - GET
     function showFeed() {
@@ -220,7 +222,7 @@
             url: "/api/reply/writing",
             data: {nickname: nickname, reply_content: reply_content, feed_num: feed_num},
             success: function (response) {
-                alert(response["msg"]);
+                {#alert(response["msg"]);#}
                 window.location.reload();
             }
         })
@@ -241,7 +243,7 @@
             url: '/api/like',
             data: {nickname: nickname, feed_num: feed_num, is_like: is_like}, // like가 0이면 안좋아함, 1이면 좋아함
             success: function (response) {
-                alert(response["msg"]);
+                {#alert(response["msg"]);#}
                 window.location.reload();
             }
         })
@@ -262,7 +264,7 @@
             url: '/api/bookmark',
             data: {nickname: nickname, feed_num: feed_num, is_bookmark: is_bookmark}, // like가 0이면 안좋아함, 1이면 좋아함
             success: function (response) {
-                alert(response["msg"]);
+                {#alert(response["msg"]);#}
                 window.location.reload();
             }
         })
@@ -270,7 +272,7 @@
 
     // 팔로우/언팔로우
     function follow(reco_nickname) {
-        alert(reco_nickname + '팔로우!')
+        {#alert(reco_nickname + '팔로우!')#}
         reco_nick = reco_nickname
         $.ajax({
             type: "POST",
@@ -278,11 +280,11 @@
             data: {'nick_give': reco_nickname},
             success: function (response) {
                 if (response['is_following'] == 1) {
-                    alert('팔로우 완료')
+                    {#alert('팔로우 완료')#}
                     let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none; color: black">팔로잉</a>`
                     $('#follow' + reco_nickname).html(temp_html)
                 } else {
-                    alert('언팔로우 완료')
+                    {#alert('언팔로우 완료')#}
                     let temp_html = `<a onclick="follow(reco_nick)" style="font-size:14px; font-weight:bold; text-decoration:none;">팔로우</a>`
                     $('#follow' + reco_nickname).html(temp_html)
                 }
@@ -298,7 +300,7 @@
             data: {},
             success: function (response) {
                 $.removeCookie('mytoken');
-                alert(response['msg'])
+                {#alert(response['msg'])#}
                 window.location.href = '/login'
             }
         })
@@ -340,7 +342,7 @@
             <div>
                 <div style="display: flex">
                     <div style="margin: 10px 0 0 10px; width: 30px;" >
-                        <img id="input_profile_image" src="{{ users.profile_img }}"
+                        <img id="input_profile_image" src="/static/profile_images/{{ users.profile_img }}"
                             style="width: 30px; height: 30px; border-radius: 70%; border: 1px solid #DBDBDB;">
                     </div>
                     <div id="user_nickname" style="width: 100px; margin: 10px 0 0 10px; font-weight: 600">{{ users.nickname }}</div>
