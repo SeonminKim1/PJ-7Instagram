@@ -304,11 +304,13 @@ def is_following():
 
     if follow_nick in my_follow['following']:
         db.USER.update_one({'id': payload['id']}, {'$pull': {'following': follow_nick}})
+        db.USER.update_one({'id': follow_nick}, {'$pull': {'follower': payload['id']}})
         print('DB 에 팔로우 제거 완료!')
         return jsonify(({'result': 'success', 'is_following': 0}))
 
     else:
         db.USER.update_one({'id': payload['id']}, {'$push': {'following': follow_nick}})
+        db.USER.update_one({'id': follow_nick}, {'$push': {'follower': payload['id']}})
         print('DB 에 팔로우 추가 완료!')
         return jsonify({'result': 'success', 'is_following': 1})
 
