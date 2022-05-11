@@ -188,12 +188,10 @@
             document.querySelector('.overlay-post2').style.top = window.pageYOffset + 'px';
             document.querySelector('#first_modal').style.display = 'none';
             document.querySelector('.overlay-post').style.display = 'none';
-            document.querySelector('.overlay-post2').style.display = 'none';
             document.querySelector('body').style.overflowY = 'visible';
         }
         document.getElementById('btn-post').addEventListener('click', onClick_w);
         document.querySelector('.overlay-post').addEventListener('click', offClick_w);
-        document.querySelector('.overlay-post2').addEventListener('click', offClick_w);
     };
     // Feed 조회 - GET
     function showFeed() {
