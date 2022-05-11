@@ -345,7 +345,7 @@ def profile():
             my_following = db.USER.find_one({'nickname': my_followings})
             my_following_list.append(my_following)
 
-        return render_template('/profile/profile.html', post_count=post_count, user_info=user_info, follower_count=follower_count,
+        return render_template('/profile/profile.html', post_count=post_count, users=user_info, follower_count=follower_count,
                                following_count=following_count, my_feed_list=my_feed_list, my_follower_list=my_follower_list, my_following_list=my_following_list)
 
     except jwt.ExpiredSignatureError:  # 해당 token의 로그인 시간이 만료시 login 페이지로 redirect
