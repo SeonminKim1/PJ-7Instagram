@@ -376,8 +376,8 @@ def feed_upload():
     for number in feed_list:
         print(number['num'])
         count_list.append(int(number['num']))
-
-    count = max(count_list) + 1
+        
+        count = max(count_list) + 1
 
     print(count)
     print(file)
