@@ -1,0 +1,86 @@
+{% for feed in feeds %}
+<div class="feed_box">
+    <!-- 피드 - 첫 헤더 (프로필 이미지, 닉네임 등)-->
+    <div class='feed_header_div'>
+        <a id="tag_a" href="{{ url_for('profile', feed_nickname = feed.nickname) }}">
+            <div class='feed_profile_div'>
+                <div class="profile_box_div">
+                    <img class="profile" src="/static/profile_images/{{ feed.profile_img }}" style="border: 1px solid #DBDBDB;">
+                </div>
+                <div>{{ feed.nickname }}</div>
+            </div>
+        </a>
+        <div class="extra_modal"><img class="like-icon" src="{{url_for('static', filename='img/more.png') }}">
+        </div>
+    </div>
+
+    <!-- 피드 - 이미지-->
+    <div>
+        <img class='feed_images' src="/static/upload/{{ feed.feed_images[0] }}">
+    </div>
+
+    <!-- 피드 본문 좋아요, 게시글 보기, 공유하기, 북마크-->
+    <div>
+        <div class='feed_like_bookmark_div'>
+            <!-- 좋아요 -->
+            <div>
+                <span onclick="like_func('{{ users.nickname }}', '{{ feed.num }}')">
+                    {% set nickname_list = [] %}
+                    {% for like_dict in feed.like %}
+                        <!-- {{ nickname_list.append(like_dict['nickname']) }} -->
+                    {% endfor %}
+                    {% if users.nickname in nickname_list %}
+                        <img class="like-icon" src="{{url_for('static', filename='img/heart-solid.svg') }}" data-heart="1">
+                    {% else %}
+                        <img class="like-icon" src="{{url_for('static', filename='img/heart-regular.svg') }}" data-heart="0">
+                    {% endif %}
+                </span>
+
+                <!-- 게시글 보기, 공유하기-->
+                <img class="message-icon" src="{{url_for('static', filename='img/message-regular.svg') }}">
+                <img class="paper-plane-icon" src="{{url_for('static', filename='img/paper-plane-regular.svg') }}">
+            </div>
+            <!-- bookmark -->
+            <div onclick = "bookmark_func('{{users.nickname}}', '{{feed.num}}')">
+                {% set nickname_list = [] %} 
+                {% for bookmark_dict in feed.bookmark %}
+                    <!-- {{ nickname_list.append(bookmark_dict['nickname']) }} -->
+                {% endfor %}
+                {% if users.nickname in nickname_list %}
+                    <img class="bookmark-icon" src="{{url_for('static', filename='img/bookmark-solid.svg') }}" data-bookmark="1">
+                {% else %}
+                    <img class="bookmark-icon" src="{{url_for('static', filename='img/bookmark-regular.svg') }}" data-bookmark="0">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 피드 본문, 좋아요-->
+        <div class="feed_like_div">좋아요 {{ feed.like|length }}개</div>
+        <div class="feed_content_div">
+            <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
+        </div>
+    </div>
+    <!-- 댓글 더보기 -->
+    <div class='feed_reply_view_div'+ {{feed.num}} onclick= "feed_modal_func('{{feed.num}}')">
+        댓글 {{feed.reply|length}}개 더보기
+    </div>
+
+    <!-- 댓글 View -->
+    <div>
+        {% for reply in feed.reply[::-1][:2] %}
+            <div class='feed_reply_div'>
+                <b>{{ reply.nickname }}</b> &nbsp; {{ reply.content }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- 댓글 달기 -->
+    <div class="feed_reply_write_div">
+        <input type="text" class="feed_reply_write_{{feed.num}}" placeholder="댓글 달기.."
+            style="box-shadow:none; border: none; outline: none; width:500px; margin-left: 10px;">
+        <button class="feed_reply_upload" onclick="reply_write('{{ users.nickname }}', '{{ feed.num }}')">
+            게시
+        </button>
+    </div>
+</div>
+{% endfor %}

@@ -1,34 +1,36 @@
-<!--nav: 로고, 검색창, 창 이동할 수 있는 픽토그램 6종-->
-<div class="box-nav">
-    <button class="box-logo">
-        <a href="#">
-            <img alt="Instagram" class="img-logo" onClick='top.location!="javascript:location.reload();"'
-                 src="{{url_for('static', filename='nav-img/instagram_logo.png')}}">
-        </a>
-    </button>
-    <div class="box-input">
-        <input class="search" type="text" value="검색">
-    </div>
-    <div class="icons">
-        <button class="btn">
-            <a href="/">
-                <img alt="Home" class="btm-img" src="{{url_for('static', filename='nav-img/home.png')}}">
+<nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <!--nav: 로고, 검색창, 창 이동할 수 있는 픽토그램 6종-->
+    <div class="box-nav">
+        <button class="box-logo">
+            <a href="#">
+                <img alt="Instagram" class="img-logo" onClick='top.location!="javascript:location.reload();"'
+                    src="{{url_for('static', filename='nav-img/instagram_logo.png')}}">
             </a>
         </button>
-        <button class="btn">
-            <img alt="Message" class="btm-img" src="{{url_for('static', filename='nav-img/dm.png')}}">
-        </button>
-        <button id="btn-post" class="btn">
-            <img alt="Post" class="btm-img" src="{{url_for('static', filename='nav-img/post.png')}}">
-        </button>
-        <button class="btn">
-            <img alt="Compass" class="btm-img" src="{{url_for('static', filename='nav-img/compass.png')}}">
-        </button>
-        <button class="btn">
-            <img alt="Like" class="btm-img" src="{{url_for('static', filename='nav-img/heart-w.png')}}">
-        </button>
-        <button id="btn-profile" class="btn">
-            <img class="img-profile" alt="profile" src="/static/profile_images/{{ users.profile_img }}">
-        </button>
+        <div class="box-input">
+            <input class="search" type="text" value="검색">
+        </div>
+        <div class="icons">
+            <button class="btn">
+                <a href="/">
+                    <img alt="Home" class="btm-img" src="{{url_for('static', filename='nav-img/home.png')}}">
+                </a>
+            </button>
+            <button class="btn">
+                <img alt="Message" class="btm-img" src="{{url_for('static', filename='nav-img/dm.png')}}">
+            </button>
+            <button id="btn-post" class="btn">
+                <img alt="Post" class="btm-img" src="{{url_for('static', filename='nav-img/post.png')}}">
+            </button>
+            <button class="btn">
+                <img alt="Compass" class="btm-img" src="{{url_for('static', filename='nav-img/compass.png')}}">
+            </button>
+            <button class="btn">
+                <img alt="Like" class="btm-img" src="{{url_for('static', filename='nav-img/heart-w.png')}}">
+            </button>
+            <button id="btn-profile" class="btn">
+                <img class="img-profile" alt="profile" src="/static/profile_images/{{ users.profile_img }}">
+            </button>
+        </div>
     </div>
-</div>
+</nav>

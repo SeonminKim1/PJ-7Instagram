@@ -19,6 +19,15 @@
 
 }
 
+.modal_feed{
+    display:none; height:600px; width:1000px;
+    margin:60px auto auto auto;
+    border: 1px solid black; 
+    background-color:#FFFFFF;
+    flex-direction:row; text-align:center; 
+    justify-content:center;
+}
+
 /* POST 모달 Content 전체 */
 .modal_post_content_div {
     display: flex;

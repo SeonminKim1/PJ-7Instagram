@@ -1,0 +1,50 @@
+<div class="overlay-post">
+    <div id="first_modal" class="modal-post">
+        <div class="mdbox-post">
+            <div class="post-title">새 게시물 만들기</div>
+            <img alt=img-upload class="post-img" src="{{url_for('static', filename = 'nav-img/posting.png')}}">
+            <div class="post-info">사진과 동영상을 여기에 끌어다 놓으세요</div>
+        </div>
+    </div>
+</div>
+<div class="overlay-post2" >
+    <div id="second_modal" class="second_modal_box">
+        <div id="input_image">
+        </div>
+        <div>
+            <div style="display: flex">
+                <div style="margin: 10px 0 0 10px; width: 30px;" >
+                    <img id="input_profile_image" src="/static/profile_images/{{ users.profile_img }}"
+                        style="width: 30px; height: 30px; border-radius: 70%; border: 1px solid #DBDBDB;">
+                </div>
+                <div id="user_nickname" style="width: 100px; margin: 10px 0 0 10px; font-weight: 600">{{ users.nickname }}</div>
+            </div>
+            <div>
+                <textarea id="input_content" cols="12" rows="12"></textarea>
+            </div>
+            <div>
+                <button type="button" id="write_feed_btn">공유하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--프로필 메뉴 -->
+<div class="overlay-menu">
+    <div class="modal-menu">
+        <div class="mdbox-menu">
+            <div class="md-menu">
+                    <a href="{{url_for('profile', feed_nickname = users.nickname)}}">
+                        <img class="img-menu" src="{{url_for('static', filename='nav-img/profile.png')}}">프로필
+                    </a>
+            </div>
+            <div class="md-menu">
+                <img class="img-menu" src="{{url_for('static', filename='nav-img/bookmark.png')}}">저장됨</div>
+            <div class="md-menu">
+                <img class="img-menu" src="{{url_for('static', filename='nav-img/setting.png')}}">설정</div>
+            <div class="md-menu">
+                <img class="img-menu" src="{{url_for('static', filename='nav-img/refresh.png')}}">계정전환</div>
+            <div id="logout" class="md-menu" onclick="logout()">로그아웃</div>
+        </div>
+    </div>
+</div>
