@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<script>
+    $(document).ready(function () {
+        $('#file').change(function () {
+            setImageFromFile(this, '#preview');
+        });
+
+        function setImageFromFile(input, expression) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(expression).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    })
+
+    function posting(nickname) {
+        alert('사진 변경 시작!')
+        let nick = nickname
+        let file = $('#file')[0].files[0]
+        let form_data = new FormData()
+
+        form_data.append("nick_give", nick)
+        form_data.append("file_give", file)
+
+        $.ajax({
+            type: "POST",
+            url: "/fileupload",
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                {#alert(response["result"])#}
+                opener.parent.location.reload();
+                window.close();
+            }
+        });
+    }
+
+
+</script>
+<body>
+<div class="file-upload">
+    <input type="hidden" id="nickname" value="{{ my_info.nickname }}">
+    <input type="file" id="file">
+    <button onclick="posting('{{ my_info.nickname }}')">업로드</button>
+</div>
+<hr>
+<div>
+    <img src="/static/profile_images/{{ my_info.profile_img }}" id="preview">
+</div>
+</body>
+</html>
