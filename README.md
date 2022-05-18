@@ -1,18 +1,19 @@
 This repository is where we keep a record of our Instagram-clone-project progress.
 
 ## Table of Contents
-- [Project Introduction](#Project Introduction)
+- [Project Introduction](#Project-Introduction)
 - [Team](#Team)
+- [Project-Rules](#Project-Rules)
 - [Development](#Development)
 - [Structure](#Structure)
 
-## Project Introduction
+## Project-Introduction
 - 주제 : 인스타그램 Clone 프로젝트
 - 기간 : 22.05.03(화) ~ 22.05.11(수)
 
 <hr>
 
-## Project Introduction
+## Team
 - 김선민 [Git-hub](https://github.com/SeonminKim1)
 - 김민기 [Git-hub](https://github.com/kmingky)
 - 박재현 [Git-hub](https://github.com/Aeius)
@@ -20,7 +21,7 @@ This repository is where we keep a record of our Instagram-clone-project progres
 
 <hr>
 
-## Project Rules
+## Project-Rules
 - Figma Mock-up : [Figma Link](https://www.figma.com/file/mAAgNkm5xXXMtmUD3qGpyA/7%EC%A1%B0-%EC%9D%B8%EC%8A%A4%ED%83%80%EA%B7%B8%EB%9E%A8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)
 - Schedule Management : [Git Project Link](https://github.com/SeonminKim1/7Instagram/projects/1), [간트차트 Link](https://docs.google.com/spreadsheets/d/1_1Sx46dnKnI8_DLJQzAASMSr7u525RFjm2Iat0beU14/edit#gid=1115838130)
 - Git Issue : [Git Issue Link](https://github.com/SeonminKim1/7Instagram/issues)
