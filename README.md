@@ -26,9 +26,12 @@ This repository is where we keep a record of our Instagram-clone-project progres
 - Schedule Management : [Git Project Link](https://github.com/SeonminKim1/7Instagram/projects/1), [간트차트 Link](https://docs.google.com/spreadsheets/d/1_1Sx46dnKnI8_DLJQzAASMSr7u525RFjm2Iat0beU14/edit#gid=1115838130)
 - Git Issue : [Git Issue Link](https://github.com/SeonminKim1/7Instagram/issues)
 - API Design : [Notion Link](https://www.notion.so/c1bcd82a87284af2a31417eb05f91bbe?v=af9524e1b4424fc1ab878849998a052d)
-- Tool : FE : HTML, CSS, JS / BE : Flask / DB : MongoDB (Atlas)
+- Tool
+  - FE : HTML, CSS, JS
+  - BE : Flask
+  - DB : MongoDB (Atlas)
 - DB Design
-![그림1](https://user-images.githubusercontent.com/33525798/168956345-cc4e7a7d-1198-481e-85f4-68dbaea2f721.png)
+  - ![그림1](https://user-images.githubusercontent.com/33525798/168956345-cc4e7a7d-1198-481e-85f4-68dbaea2f721.png)
 
 <hr>
 
